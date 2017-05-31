@@ -1,0 +1,38 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="exmg-datatable">
+  <template>
+    <style>
+      :host {
+        display: table;
+        width: 100%;
+        font-size: 12px;
+        color: rgba(0,0,0,.78);
+        font-family: 'Roboto', 'Noto', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+    </style>
+    <slot></slot>
+  </template>
+
+  <script>
+    /**
+     * `exmg-datatable`
+     * Datatable
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ExmgDatatable extends Polymer.Element {
+      static get is() { return 'exmg-datatable'; }
+      static get properties() {
+        return {
+
+        };
+      }
+    }
+
+    window.customElements.define(ExmgDatatable.is, ExmgDatatable);
+  </script>
+</dom-module>

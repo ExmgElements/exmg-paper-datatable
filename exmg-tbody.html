@@ -1,0 +1,529 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/elements/array-selector.html">
+
+<dom-module id="exmg-tbody">
+  <template>
+    <style>
+      :host {
+        display: table-row-group;
+        border-bottom: 1px solid #dbdbdb;
+      }
+      .tr {
+        display:table-row;
+      }
+
+      .td {
+        display:table-cell;
+        height: 48px;
+        line-height: 36px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: 6px 6px 6px 24px;
+        overflow: hidden;
+        border: 0px;
+        border-bottom: 1px;
+        border-style: solid;
+        border-color: #dbdbdb;
+        box-sizing: border-box;
+      }
+    </style>
+    <slot></slot>
+    <!-- Array helper -->
+    <array-selector id="selector" items="{{items}}" selected="{{selectedItems}}" selected-item="{{selectedItem}}"></array-selector>
+
+  </template>
+
+  <script>
+    /**
+     * `exmg-tbody`
+     * Datatable
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+
+    class ExmgTbody extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.Element) {
+      static get is() { return 'exmg-tbody'; }
+      static get properties() {
+        return {
+          /**
+          * An array containing items determining how many instances of the template
+          * to stamp and that that each template instance should bind to.
+          */
+          items: {
+            type: Array
+          },
+          /**
+          * The name of the variable to add to the binding scope for the array
+          * element associated with a given template instance.
+          */
+          as: {
+            type: String,
+            value: 'item'
+          },
+          /**
+          * The name of the variable to add to the binding scope to indicate
+          * if the row is selected.
+          */
+          selectedAs: {
+            type: String,
+            value: 'selected'
+          },
+          /**
+          * The name of the variable to add to the binding scope with the index
+          * for the row.
+          */
+          indexAs: {
+            type: String,
+            value: 'index'
+          },
+          /**
+          * When true, tapping a row will select the item, placing its data model
+          * in the set of selected items retrievable via the selection property.
+          *
+          * Note that tapping focusable elements within the list item will not
+          * result in selection, since they are presumed to have their * own action.
+          */
+          selectionEnabled: {
+            type: Boolean,
+            value: false
+          },
+          /**
+          * When `multiSelection` is false, this is the currently selected item, or `null`
+          * if no item is selected.
+          */
+          selectedItem: {
+            type: Object,
+            notify: true
+          },
+          /**
+          * When `multiSelection` is true, this is an array that contains the selected items.
+          */
+          selectedItems: {
+            type: Object,
+            notify: true
+          },
+          /**
+          * When `true`, multiple items may be selected at once (in this case,
+          * `selected` is an array of currently selected items).  When `false`,
+          * only one item may be selected at a time.
+          */
+          multiSelection: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+          * When `true`, extra style information is set on the first column for correct display.
+          */
+          checkboxUsed: {
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+
+      static get observers() {
+        return [
+          '_itemsChanged(items.*)',
+          '_selectionEnabledChanged(selectionEnabled)'
+        ]
+      }
+
+      /**
+      * Add an event listener to `tap` if `selectionEnabled` is true,
+      * it will remove the listener otherwise.
+      */
+      _selectionEnabledChanged(selectionEnabled) {
+        if(selectionEnabled) {
+          this._addTapListener();
+        } else {
+          this._removeTapListener();
+        }
+      }
+
+      _addTapListener() {
+        Polymer.Gestures.addListener(this, 'tap', this._selectionHandler);
+      }
+
+      _removeTapListener() {
+        Polymer.Gestures.removeListener(this, 'tap', this._selectionHandler);
+      }
+
+      /**
+      * Select an item from an event object.
+      */
+      _selectionHandler(e) {
+        var model = this.modelForElement(e.target);
+         if (!model) {
+           return;
+         }
+
+        var modelTabIndex, activeElTabIndex;
+        var target = Polymer.dom(e).path[0];
+        var activeEl = Polymer.dom(this.domHost ? this.domHost.root : document).activeElement;
+        var physicalItem = this._physicalItems[model[this.indexAs]];
+        // Safari does not focus certain form controls via mouse
+        // https://bugs.webkit.org/show_bug.cgi?id=118043
+        if (target.localName === 'input' ||
+            target.localName === 'button' ||
+            target.localName === 'select') {
+          return;
+        }
+        // Set a temporary tabindex
+        modelTabIndex = model.tabIndex;
+        model.tabIndex = SECRET_TABINDEX;
+        activeElTabIndex = activeEl ? activeEl.tabIndex : -1;
+        model.tabIndex = modelTabIndex;
+        // Only select the item if the tap wasn't on a focusable child
+        // or the element bound to `tabIndex`
+        if (activeEl && physicalItem !== activeEl && physicalItem.contains(activeEl) && activeElTabIndex !== SECRET_TABINDEX) {
+          return;
+        }
+        this.toggleSelectionForItem(model[this.as]);
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this._removeTapListener();
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+
+        console.log('connectedCallback');
+        if (this._physicalCount === 0) {
+          this._debounceTemplate(this._render);
+        }
+        // props.__key__ = true;
+        // props[this.as] = true;
+        // props[this.indexAs] = true;
+        // props[this.selectedAs] = true;
+        // props.tabIndex = true;
+        // this._instanceProps = props;
+        //
+        // let template = this.querySelector('template');
+        //
+        // this.templatize(template);
+        //
+        // var instance = this.stamp(props);
+        //
+        // this.shadowRoot.appendChild(instance.root);
+        //
+        // props.name= 'test1';
+        // props.emai= 'mark@edsf.nl';
+
+
+      /*
+        this.ctor = Polymer.Templatize.templatize(this._templatizerTemplate, this, {
+          mutableData: false,
+          parentModel: true,
+          instanceProps: this._instanceProps,
+          forwardHostProp: this._forwardHostPropV2,
+          notifyInstanceProp: this._notifyInstancePropV2
+        });
+
+        let count = 0;
+
+        this.items.forEach((item) => {
+          console.log('item', item);
+          let instance = new this.ctor(null);
+          this.shadowRoot.appendChild(instance.root);
+          instance[this.as] = item;
+          instance[this.selectedAs] =  (this.$.selector).isSelected(item);
+          instance[this.indexAs] = count++;
+        });*/
+
+      }
+
+      _debounceRender(cb) {
+        this._renderDebouncer = Polymer.Debouncer.debounce(
+          this._renderDebouncer,
+          Polymer.Async.animationFrame,
+          cb.bind(this));
+        Polymer.enqueueDebouncer(this._renderDebouncer);
+      }
+
+      // _itemsChanged(change) {
+      //   console.log('_itemsChanged', change);
+      //
+      //   change.base.forEach((item) => {
+      //     let instance = this.stamp({
+      //       name: item.name,
+      //       email: item.email
+      //     });
+      //     this.shadowRoot.appendChild(instance.root);
+      //   });
+      //
+      // }
+
+      /**
+      * Renders the a new list.
+      */
+     _render() {
+       if (!this.isAttached) {
+         return;
+       }
+       if (this._physicalCount === 0) {
+          this._increasePool(this.items.length);
+        } else {
+          if(this.items.length > this._physicalCount) {
+            this._increasePool(this.items.length - this._physicalCount);
+          } else {
+            this._update();
+          }
+        }
+     }
+
+      /**
+      * Called when the items have changed. That is, ressignments
+      * to `items`, splices or updates to a single item.
+      */
+      _itemsChanged(change) {
+        console.log('_itemsChanged', change);
+        if (change.path === 'items') {
+          this.items = this.items || [];
+          this._physicalCount = this._physicalCount || 0;
+          this._physicalItems = this._physicalItems || [];
+          this._debounceRender(this._render);
+        } else if (change.path === 'items.splices') {
+           change.value.indexSplices.forEach(function(splice) {
+            // deselect removed items
+            splice.removed.forEach(this._removeItem, this);
+           }, this);
+          this._debounceRender(this._render);
+        } else {
+          this._forwardItemPath(change.path, change.value);
+        }
+      }
+
+      _forwardItemPath(path, value) {
+        debugger;
+        path = path.slice(6); // 'items.'.length == 6
+        var dot = path.indexOf('.') + 1;
+        if (dot === 0) {
+          dot = path.length;
+        }
+        var idx = parseInt(path.substring(0, dot), 10);
+        var offscreenItem = this._offscreenFocusedItem;
+        var isIndexRendered = this._isIndexRendered(idx);
+        var inst;
+        if (isIndexRendered) {
+          inst = this.modelForElement(this._physicalItems[this._getPhysicalIndex(idx)]);
+        } else if (offscreenItem) {
+          inst = this.modelForElement(offscreenItem);
+        }
+        if (!inst || inst[this.indexAs] !== idx) {
+          return;
+        }
+        path = path.substring(dot);
+        path = this.as + (path ? '.' + path : '');
+        inst._setPendingPropertyOrPath(path, value, false, true);
+        inst._flushProperties && inst._flushProperties(true);
+        // TODO(blasten): V1 doesn't do this and it's a bug
+        if (isIndexRendered) {
+          this._updateMetrics([idx]);
+          this._positionItems();
+          this._updateScrollerSize();
+        }
+      }
+
+      /**
+      * Creates a pool of DOM elements and attaches them to the local dom.
+      *
+      * @param {number} size Size of the pool
+      */
+      _createPool(size) {
+        console.log('_createPool');
+        var physicalItems = new Array(size);
+        this._ensureTemplatized();
+        for (var i = 0; i < size; i++) {
+          var inst = this.stamp(null);
+          // First element child is item; Safari doesn't support children[0]
+          // on a doc fragment.
+          physicalItems[i] = inst.root.querySelector('*');
+          this.shadowRoot.appendChild(inst.root);
+        }
+        return physicalItems;
+      }
+
+      /**
+      * Increases the pool size.
+      */
+      _increasePool(poolSize) {
+        var ts = window.performance.now();
+        // Concat arrays in place.
+        [].push.apply(this._physicalItems, this._createPool(poolSize));
+        this._physicalCount = this._physicalItems.length;
+        this._update();
+        this._templateCost = (window.performance.now() - ts);
+      }
+
+      /**
+      * Templetizes the user template.
+      */
+      _ensureTemplatized() {
+        // Check if already templatized
+        if (!this.ctor) {
+          // Template instance props that should be excluded from forwarding
+          var props = {};
+          props.__key__ = true;
+          props[this.as] = true;
+          props[this.indexAs] = true;
+          props[this.selectedAs] = true;
+          props.tabIndex = true;
+          this._instanceProps = props;
+          this._userTemplate = this.querySelector('template');
+          if (this._userTemplate) {
+            this.templatize(this._userTemplate);
+          } else {
+            console.warn('exm-tbody requires a template to be provided in light-dom');
+          }
+        }
+      }
+
+      /**
+      * Update the list of items, starting from the `_virtualStart` item.
+      * @param {!Array<number>=} itemSet
+      */
+      _update(itemSet) {
+        if ((itemSet && itemSet.length === 0) || this._physicalCount === 0) {
+         return;
+        }
+        this._assignModels(itemSet);
+      }
+
+      /**
+      * Assigns the data models to a given set of items.
+      * @param {!Array<number>=} itemSet
+      */
+      _assignModels(itemSet) {
+        var count = 0;
+        this._physicalItems.forEach((el) => {
+          var inst = this.modelForElement(el);
+          var item = this.items[count];
+          if (item != null) {
+            //inst.__key__ = this._collection ? this._collection.getKey(item) : null;
+            this._forwardProperty(inst, this.as, item);
+            this._forwardProperty(inst, this.selectedAs, this.$.selector.isSelected(item));
+            this._forwardProperty(inst, this.indexAs, count);
+            this._forwardProperty(inst, 'tabIndex', -1);
+          //  this._physicalIndexForKey[inst.__key__] = pidx;
+            inst._flushProperties && inst._flushProperties(true);
+            el.removeAttribute('hidden');
+          } else {
+            inst.__key__ = null;
+            el.setAttribute('hidden', '');
+          }
+          count++;
+        });
+      }
+
+      _forwardProperty(inst, name, value) {
+        inst._setPendingProperty(name, value);
+      }
+
+      /* Templatizer bindings for v2 */
+      _forwardHostPropV2(prop, value) {
+        console.log('_forwardHostPropV2', prop, value);
+        (this._physicalItems || [])
+          .concat([this._offscreenFocusedItem, this._focusBackfillItem])
+          .forEach(function(item) {
+            if (item) {
+              this.modelForElement(item).forwardHostProp(prop, value);
+            }
+          }, this);
+      }
+
+      _notifyInstancePropV2(inst, prop, value) {
+        console.log('_notifyInstancePropV2', inst, prop, value);
+       if (Polymer.Path.matches(this.as, prop)) {
+          var idx = inst[this.indexAs];
+          if (prop == this.as) {
+            this.items[idx] = value;
+          }
+          this.notifyPath(Polymer.Path.translate(this.as, 'items.' + idx, prop), value);
+        }
+      }
+
+      /**
+      * Selects the given item.
+      *
+      * @method selectItem
+      * @param {Object} item The item instance.
+      */
+      selectItem(item) {
+        console.log('selectItem', item);
+       return this.selectIndex(this.items.indexOf(item));
+      }
+
+      /**
+      * Selects the item at the given index in the items array.
+      *
+      * @method selectIndex
+      * @param {Object} index The item instance.
+      */
+      selectIndex(index) {
+       if (index < 0 || index >= this._virtualCount) {
+         return;
+       }
+       if (!this.multiSelection && this.selectedItem) {
+        this.clearSelection();
+       }
+       if (this._isIndexRendered(index)) {
+         var model = this.modelForElement(this._physicalItems[this._getPhysicalIndex(index)]);
+         if (model) {
+           model[this.selectedAs] = true;
+         }
+         this.updateSizeForIndex(index);
+       }
+       if (this.$.selector.selectIndex) {
+         // v2
+         this.$.selector.selectIndex(index);
+       } else {
+         // v1
+         this.$.selector.select(this.items[index]);
+       }
+      }
+
+      /**
+      * Deselects the given item.
+      *
+      * @method deselect
+      * @param {Object} item The item instance.
+      */
+      deselectItem(item) {
+        console.log('deselectItem', item);
+        return this.deselectIndex(this.items.indexOf(item));
+      }
+
+      /**
+      * Selects or deselects a given item depending on whether the item
+      * has already been selected.
+      *
+      * @method toggleSelectionForItem
+      * @param {Object} item The item object.
+      */
+      toggleSelectionForItem(item) {
+        return this.toggleSelectionForIndex(this.items.indexOf(item));
+      }
+
+      /**
+       * Selects or deselects the item at the given index in the items array
+       * depending on whether the item has already been selected.
+       *
+       * @method toggleSelectionForIndex
+       * @param {Object} index The index of the item in the items array.
+       */
+      toggleSelectionForIndex(index) {
+        var isSelected = this.$.selector.isIndexSelected
+            ? this.$.selector.isIndexSelected(index) : this.$.selector.isSelected(this.items[index]);
+          isSelected ? this.deselectIndex(index) : this.selectIndex(index);
+      }
+
+    }
+
+    window.customElements.define(ExmgTbody.is, ExmgTbody);
+  </script>
+</dom-module>

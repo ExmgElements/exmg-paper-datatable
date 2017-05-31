@@ -1,0 +1,166 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="exmg-icons.html">
+
+<dom-module id="exmg-paging">
+  <template>
+    <style>
+      :host {
+        display: block;
+        height:56px;
+        padding:0px 6px;
+        @apply --layout-horizontal;
+        @apply --layout-end-justified;
+        @apply --layout-center;
+      }
+
+      paper-dropdown-menu {
+        --paper-input-container-input: {
+          font-size: 14px;
+          font-weight: 500;
+        };
+        --paper-dropdown-menu: {
+          text-align: right;
+          width: 68px;
+        };
+        --paper-dropdown-menu-icon: {
+          color: var(--exmg-paging-icon-color, rgba(0,0,0,.54));
+        };
+        --paper-icon-button: {
+          color: var(--exmg-paging-icon-color, rgba(0,0,0,.54));
+        };
+        --paper-icon-button-disabled: {
+          color: var(--exmg-paging-icon-disabled-color, rgba(0,0,0,.36));
+        };
+        --paper-input-container-underline-focus: { display: none; };
+        --paper-input-container-underline-disabled: { display: none; };
+        --paper-input-container-underline: { display: none; };
+      }
+
+      paper-icon-button {
+        margin: 0 4px;
+      }
+
+      .page-information {
+        margin: 0 20px 0 32px;
+        @apply(--exm-paging-page-information);
+      }
+    </style>
+
+    <span>Rows per page:</span>
+    <paper-dropdown-menu no-label-float>
+      <paper-listbox slot="dropdown-content" selected="{{_pageSize}}" attr-for-selected="value">
+        <paper-item value="5">5</paper-item>
+        <paper-item value="10">10</paper-item>
+        <paper-item value="25">25</paper-item>
+        <paper-item value="50">50</paper-item>
+        <paper-item value="100">100</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+    <span class="page-information">
+      [[_pageInfoStart(pageIndex, pageSize)]]
+      -
+      [[_pageInfoEnd(pageIndex,pageSize,totalItems)]] of [[totalItems]]
+    </span>
+    <paper-icon-button icon="exmg-icons:chevron-left" on-tap="previousPage" disabled="[[_isFirstPage(pageIndex)]]"></paper-icon-button>
+    <paper-icon-button icon="exmg-icons:chevron-right" on-tap="nextPage" disabled="[[_isLastPage(pageIndex, pageSize, totalItems)]]"></paper-icon-button>
+
+  </template>
+
+  <script>
+    /**
+     * `exmg-paging`
+     * Datatable
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ExmgPaging extends Polymer.GestureEventListeners(Polymer.Element) {
+      static get is() { return 'exmg-paging'; }
+      static get properties() {
+        return {
+          /**
+          * Total items
+          */
+          totalItems: {
+            type: Number,
+            value: 0
+          },
+
+          /**
+          * This property can be used to change the current visible page
+          */
+          pageIndex: {
+            type: Number,
+            notify: true,
+            value: 0
+          },
+
+          /**
+          * Set the page size of the table. Valid options are 5/10/25/50/100
+          */
+          pageSize: {
+            type: Number,
+            notify: true,
+            value: 10
+          },
+
+          _pageSize: {
+            type: Number,
+          }
+        };
+      }
+
+      static get observers() {
+        return [
+          '_observePageSizeList(_pageSize)',
+          '_observePageSize(pageSize)',
+        ]
+      }
+
+      _observePageSizeList(ps) {
+        console.log('_observePageSizeList', ps);
+        this.pageSize = Number(ps);
+      }
+
+      _observePageSize(ps) {
+        console.log('_oservePageSize', ps);
+        this._pageSize = Number(ps);
+      }
+
+      _pageInfoStart(pageIndex, pageSize) {
+        return pageIndex * pageSize;
+      }
+
+      _pageInfoEnd(pageIndex, pageSize, totalItems) {
+        var end = (pageIndex + 1) * pageSize;
+        return end < totalItems ? end : totalItems;
+      }
+
+      _isFirstPage() {
+        return this.pageIndex < 1;
+      }
+
+      _isLastPage() {
+        return ((this.pageIndex + 1) * this.pageSize) > this.totalItems;
+      }
+
+      nextPage() {
+        this.pageIndex++;
+      }
+
+      previousPage() {
+        this.pageIndex--;
+      }
+
+    }
+
+    window.customElements.define(ExmgPaging.is, ExmgPaging);
+  </script>
+</dom-module>

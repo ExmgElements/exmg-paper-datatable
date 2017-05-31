@@ -1,0 +1,104 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
+
+<dom-module id="exmg-thead">
+  <template>
+    <style>
+      :host {
+        display: table-header-group;
+        line-height: 36px;
+        font-weight: 500;
+        border-bottom: 1px solid #dbdbdb;
+        user-select: none;
+        color: rgba(0,0,0,.54);
+      }
+    </style>
+    <slot></slot>
+  </template>
+
+  <script>
+    /**
+     * `exmg-thead`
+     * Datatable
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ExmgThead extends Polymer.GestureEventListeners(Polymer.Element) {
+      static get is() { return 'exmg-thead'; }
+      static get properties() {
+        return {
+          /**
+          * An string containing the column sort key
+          */
+          sorted: {
+            type: String,
+            notify: true
+          },
+          /**
+          * An string containing 'ASC' or 'DESC' to indicate the sorting direction
+          */
+          sortDirection: {
+            type: String,
+            notify: true,
+            reflectToAttribute: true,
+            value: 'ASC'
+          }
+        };
+      }
+      static get observers() {
+        return [
+          '_sortedByChanged(sorted)',
+        ]
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        Polymer.Gestures.addListener(this, 'tap', this._handleTap);
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        Polymer.Gestures.removeListener(this, 'tap', this._handleTap);
+      }
+
+      /*
+      * Triggered on column change when sorting
+      */
+      _sortedByChanged(sorted) {
+        let headerColumns = this.querySelectorAll('.th');
+        this._resetOldSorting();
+        headerColumns.forEach((el) => {
+          if(el.getAttribute('sortable') === sorted) {
+            el.setAttribute('sorted','');
+            this.set('sortDirection', 'ASC');
+          }
+        });
+      }
+      /*
+      * Handle column header tap
+      */
+      _handleTap(e) {
+        let sortField = e.path[0].getAttribute("sortable");
+        if(e.path[0].classList.contains('th') && sortField){
+          if(this.sorted === sortField){
+            this.set('sortDirection', this.sortDirection === 'ASC' ? 'DESC' : 'ASC');
+          } else {
+            this._resetOldSorting();
+            this.set('sorted', sortField);
+          }
+        }
+      }
+      /*
+      * Reset old column sorting attributes
+      */
+      _resetOldSorting(tr) {
+        let rowChildren = this.querySelectorAll('.th[sorted]');
+        rowChildren.forEach(el => el.removeAttribute('sorted'));
+      }
+    }
+
+    window.customElements.define(ExmgThead.is, ExmgThead);
+  </script>
+</dom-module>

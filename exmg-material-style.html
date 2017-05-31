@@ -1,0 +1,95 @@
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="exmg-material-style">
+  <template>
+    <style>
+      exmg-toolbar {
+        @apply --paper-font-common-base;
+        background: none;
+        color: rgba(0,0,0,.87);
+        font-size: 20px;
+        height:64px;
+      };
+
+      exmg-toolbar .flex,
+      exmg-toolbar .title-container{
+        @apply --layout-flex;
+      }
+
+      exmg-toolbar > * {
+        padding:0px 12px 0px 24px;
+      }
+
+      exmg-thead .tr,
+      exmg-tbody .tr {
+        display:table-row;
+      }
+
+      exmg-thead .tr .th,
+      exmg-tbody .tr .td {
+        display:table-cell;
+      }
+
+      exmg-datatable .colgroup {
+        display:table-column-group;
+      }
+      exmg-datatable .colgroup .col {
+        display:table-column;
+      }
+
+      exmg-thead .tr .th[sorted] {
+        color: red;
+      }
+
+      exmg-thead .th {
+        height: 48px;
+        line-height: 36px;
+        box-sizing: border-box;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: 6px 6px 6px 24px;
+        overflow:hidden;
+        text-align: left;
+        background: #f5f5f5;
+      }
+
+      exmg-thead .th[sortable]:hover,
+      exmg-thead .th[sorted]{
+        padding-left:0px;
+      }
+
+      exmg-thead .th[sortable]:hover{
+        cursor: pointer;
+        color: rgba(0,0,0, .87);
+      }
+
+      exmg-thead .th[sortable]:hover::before {
+        display: block;
+        content: "";
+        background-image: url('arrow-downward.svg');
+        background-size: 12px 12px;
+        height: 12px;
+        width: 12px;
+        float: left;
+        margin: 12px 6px;
+      }
+
+      exmg-thead .th[sorted]::before {
+        display: block;
+        content: "";
+        background-image: url('arrow-downward.svg');
+        background-size: 12px 12px;
+        height: 12px;
+        width: 12px;
+        float: left;
+        margin: 12px 6px;
+        transition: transform .1s linear;
+        transform: rotate(0deg);
+      }
+
+      exmg-thead[sort-direction='DESC'] .th[sorted]::before {
+        transform: rotate(180deg);
+      }
+    </style>
+  </template>
+</dom-module>

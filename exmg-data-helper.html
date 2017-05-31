@@ -1,0 +1,165 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
+
+<dom-module id="exmg-data-helper">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <slot></slot>
+  </template>
+
+  <script>
+    /**
+     * `exmg-data-helper`
+     * Datatable
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ExmgDataHelper extends Polymer.GestureEventListeners(Polymer.Element) {
+      static get is() { return 'exmg-data-helper'; }
+      static get properties() {
+        return {
+          /**
+           * Raw item list
+           */
+          rawItems: {
+            type: Array
+          },
+
+          /**
+           * Returnes a page of the sorted items
+           */
+          items: {
+            type: Array,
+            notify: true
+          },
+
+          /**
+          * Returns the total length of the raw list that will be used in the exm-paging
+          * as indication on how much pages there are available.
+          */
+          totalItems: {
+            notify: true,
+            type: Number,
+            computed: '_computeLength(rawItems.*)'
+          },
+
+          /**
+          * This property can be used to change the current visible items page
+          */
+          pageIndex: {
+            type: Number,
+            value: 0
+          },
+
+          /**
+          * Set the page size of the exposed item list
+          */
+          pageSize: {
+            type: Number,
+            value: 10
+          },
+
+          /**
+          * An string containing the column sort key
+          */
+          sorted: String,
+
+          /**
+          * An string containing 'ASC' or 'DESC' to indicate the sorting direction
+          */
+          sortDirection: String,
+
+          _doSort: false,
+        };
+      }
+      static get observers() {
+        return [
+          '_sortChanged(sorted,sortDirection)',
+          '_ramItemsChanged(rawItems.*)',
+          '_pageChanged(pageIndex, pageSize)'
+        ]
+      }
+
+      _sortChanged(sorted, sortDirection) {
+        this._doSort = true;
+        this._updatePage();
+      }
+
+      _computeLength(rawItems) {
+        return this.rawItems.length;
+      }
+
+      _ramItemsChanged() {
+        this._doSort = true;
+        this._updatePage();
+      }
+
+      _pageChanged(pageIndex, pageSize) {
+        this._updatePage();
+      }
+
+      _updatePage() {
+
+        console.log('pageIndex, pageSize',this.pageIndex, this.pageSize);
+
+        if(this.rawItems === undefined) {
+          return;
+        }
+        /* Make sure to always start with same array to ensure consistency in sorting results */
+        var workArray = this.rawItems.slice();
+        var start = (this.pageIndex * this.pageSize);
+
+        console.log('start, this._doSort', start, this._doSort);
+
+        if(this._doSort && this.sorted) {
+          var lookupItemByPath = (item, path) => {
+            var parts = path.split(".");
+            if (parts.length === 1){
+              return item[parts[0]];
+            }
+            return lookupItemByPath(item[parts[0]], parts.slice(1).join("."));
+          };
+
+          workArray.sort((a, b) => {
+            var fieldA = lookupItemByPath(a, this.sorted);
+            var fieldB = lookupItemByPath(b, this.sorted);
+            if(typeof fieldA === 'number' || typeof fieldA === 'boolean') {
+              return this.sortDirection === 'ASC' ? fieldA - fieldB : fieldB - fieldA;
+            } else {
+              fieldA = fieldA.toLowerCase();
+              fieldB = fieldB.toLowerCase();
+              if (fieldA < fieldB) {
+                return this.sortDirection === 'ASC' ? -1 : 1;
+              }
+              if (fieldA > fieldB) {
+                return this.sortDirection === 'ASC' ? 1 : -1;
+              }
+            }
+            return 0;
+          });
+
+          this._doSort = false;
+        }
+
+        this.set('items', []);
+
+        console.log('start, this._doSort', workArray, workArray.slice(start, start + this.pageSize));
+        this.set('items', workArray.slice(start, start + this.pageSize));
+        // for(var i = start; i < start + this.pageSize; i++) {
+        //   if(workArray[i] !== undefined) {
+        //     this.push('items', workArray[i]);
+        //   }
+        // }
+      }
+
+    }
+
+    window.customElements.define(ExmgDataHelper.is, ExmgDataHelper);
+  </script>
+</dom-module>
