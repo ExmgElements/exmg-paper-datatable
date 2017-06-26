@@ -45,7 +45,6 @@
           margin: auto;
           --paper-card-background-color: white;
         }
-
         h2,
         .buttons {
           width: 800px;
@@ -85,11 +84,12 @@
             </div>
           </exmg-thead>
           <!-- TBody -->
-          <exmg-tbody items='[[items]]' multi-selection selection-enabled checkbox-used selected-items="{{selectedItems}}">
+          <exmg-tbody items='[[items]]' selection-enabled checkbox-used selected-items="{{selectedItems}}">
             <template>
               <div class="tr">
-                <div class="td"><paper-checkbox checked$="{{selected}}"></paper-checkbox></div>
-                <div class="td"><paper-input value="{{item.name}}" label="Name"></paper-input></div>
+                <div class="td"><paper-checkbox checked="{{selected}}"></paper-checkbox></div>
+                <!--div class="td"><paper-input value="{{item.name}}" label="Name" no-label-float></paper-input></div-->
+                <div class="td">[[item.name]]</div>
                 <div class="td">[[item.email]]</div>
                 <div class="td">[[selected]]</div>
               </div>
@@ -105,8 +105,6 @@
 
       <!-- Manage sorting and paging  -->
       <exmg-data-helper raw-items="[[rawItems]]" items="{{items}}" page-index="[[pageIndex]]" page-size="[[pageSize]]" sorted="[[sorted]]" sort-direction="[[sortDirection]]" total-items="{{totalItems}}"></exmg-data-helper>
-
-      itemslength: [[items.length]]
 
     </template>
     <script>

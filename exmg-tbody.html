@@ -11,7 +11,6 @@
       .tr {
         display:table-row;
       }
-
       .td {
         display:table-cell;
         height: 48px;
@@ -21,10 +20,12 @@
         padding: 6px 6px 6px 24px;
         overflow: hidden;
         border: 0px;
-        border-bottom: 1px;
-        border-style: solid;
-        border-color: #dbdbdb;
+        border-bottom: 1px solid #dbdbdb;
         box-sizing: border-box;
+      }
+
+      .tr[hidden] {
+        display: none;
       }
     </style>
     <slot></slot>
@@ -127,8 +128,18 @@
       static get observers() {
         return [
           '_itemsChanged(items.*)',
-          '_selectionEnabledChanged(selectionEnabled)'
+          '_selectionEnabledChanged(selectionEnabled)',
+          '_observeSelectedItem(selectedItem)',
+          '_observeSelectedItems(selectedItems.*)',
         ]
+      }
+
+      _observeSelectedItem(item) {
+        console.log('_observeSelectedItem', item);
+      }
+
+      _observeSelectedItems(chnages) {
+        console.log('_observeSelectedItems', chnages);
       }
 
       /**
@@ -155,7 +166,13 @@
       * Select an item from an event object.
       */
       _selectionHandler(e) {
-        var model = this.modelForElement(e.target);
+        console.log('_selectionHandler', e);
+      //  debugger;
+        var m = e.path.find(entry => {
+          console.log('entry', entry);
+          return entry.classList && entry.classList.contains('tr');
+        });
+        var model = this.modelForElement(m);
          if (!model) {
            return;
          }
@@ -173,7 +190,7 @@
         }
         // Set a temporary tabindex
         modelTabIndex = model.tabIndex;
-        model.tabIndex = SECRET_TABINDEX;
+        model.tabIndex = -100;
         activeElTabIndex = activeEl ? activeEl.tabIndex : -1;
         model.tabIndex = modelTabIndex;
         // Only select the item if the tap wasn't on a focusable child
@@ -196,44 +213,6 @@
         if (this._physicalCount === 0) {
           this._debounceTemplate(this._render);
         }
-        // props.__key__ = true;
-        // props[this.as] = true;
-        // props[this.indexAs] = true;
-        // props[this.selectedAs] = true;
-        // props.tabIndex = true;
-        // this._instanceProps = props;
-        //
-        // let template = this.querySelector('template');
-        //
-        // this.templatize(template);
-        //
-        // var instance = this.stamp(props);
-        //
-        // this.shadowRoot.appendChild(instance.root);
-        //
-        // props.name= 'test1';
-        // props.emai= 'mark@edsf.nl';
-
-
-      /*
-        this.ctor = Polymer.Templatize.templatize(this._templatizerTemplate, this, {
-          mutableData: false,
-          parentModel: true,
-          instanceProps: this._instanceProps,
-          forwardHostProp: this._forwardHostPropV2,
-          notifyInstanceProp: this._notifyInstancePropV2
-        });
-
-        let count = 0;
-
-        this.items.forEach((item) => {
-          console.log('item', item);
-          let instance = new this.ctor(null);
-          this.shadowRoot.appendChild(instance.root);
-          instance[this.as] = item;
-          instance[this.selectedAs] =  (this.$.selector).isSelected(item);
-          instance[this.indexAs] = count++;
-        });*/
 
       }
 
@@ -244,19 +223,6 @@
           cb.bind(this));
         Polymer.enqueueDebouncer(this._renderDebouncer);
       }
-
-      // _itemsChanged(change) {
-      //   console.log('_itemsChanged', change);
-      //
-      //   change.base.forEach((item) => {
-      //     let instance = this.stamp({
-      //       name: item.name,
-      //       email: item.email
-      //     });
-      //     this.shadowRoot.appendChild(instance.root);
-      //   });
-      //
-      // }
 
       /**
       * Renders the a new list.
@@ -299,7 +265,6 @@
       }
 
       _forwardItemPath(path, value) {
-        debugger;
         path = path.slice(6); // 'items.'.length == 6
         var dot = path.indexOf('.') + 1;
         if (dot === 0) {
@@ -343,6 +308,7 @@
           // First element child is item; Safari doesn't support children[0]
           // on a doc fragment.
           physicalItems[i] = inst.root.querySelector('*');
+          console.log('_createPool', physicalItems[i]);
           this.shadowRoot.appendChild(inst.root);
         }
         return physicalItems;
@@ -400,20 +366,19 @@
       */
       _assignModels(itemSet) {
         var count = 0;
+        console.log('_assignModels, ', this._physicalItems, this._physicalCount);
         this._physicalItems.forEach((el) => {
           var inst = this.modelForElement(el);
           var item = this.items[count];
-          if (item != null) {
+          if (item != null && item !== undefined) {
             //inst.__key__ = this._collection ? this._collection.getKey(item) : null;
             this._forwardProperty(inst, this.as, item);
             this._forwardProperty(inst, this.selectedAs, this.$.selector.isSelected(item));
             this._forwardProperty(inst, this.indexAs, count);
             this._forwardProperty(inst, 'tabIndex', -1);
-          //  this._physicalIndexForKey[inst.__key__] = pidx;
             inst._flushProperties && inst._flushProperties(true);
             el.removeAttribute('hidden');
           } else {
-            inst.__key__ = null;
             el.setAttribute('hidden', '');
           }
           count++;
@@ -455,7 +420,7 @@
       */
       selectItem(item) {
         console.log('selectItem', item);
-       return this.selectIndex(this.items.indexOf(item));
+        return this.selectIndex(this.items.indexOf(item));
       }
 
       /**
@@ -465,26 +430,35 @@
       * @param {Object} index The item instance.
       */
       selectIndex(index) {
-       if (index < 0 || index >= this._virtualCount) {
+       console.log('selectIndex', index);
+       if (index < 0 || index >= this.items) {
          return;
        }
        if (!this.multiSelection && this.selectedItem) {
         this.clearSelection();
        }
-       if (this._isIndexRendered(index)) {
-         var model = this.modelForElement(this._physicalItems[this._getPhysicalIndex(index)]);
-         if (model) {
-           model[this.selectedAs] = true;
-         }
-         this.updateSizeForIndex(index);
+
+       var model = this.modelForElement(this._physicalItems[index]);
+       if (model) {
+         model[this.selectedAs] = true;
        }
-       if (this.$.selector.selectIndex) {
-         // v2
-         this.$.selector.selectIndex(index);
-       } else {
-         // v1
-         this.$.selector.select(this.items[index]);
-       }
+
+       this.$.selector.selectIndex(index);
+
+      }
+
+      /**
+       * Clears the current selection in the list.
+       *
+       * @method clearSelection
+       */
+      clearSelection() {
+        console.log('clearSelection');
+        this._physicalItems.map((el) => {
+          this.modelForElement(el)[this.selectedAs] = false;
+        });
+
+        this.$.selector.clearSelection();
       }
 
       /**
@@ -496,6 +470,23 @@
       deselectItem(item) {
         console.log('deselectItem', item);
         return this.deselectIndex(this.items.indexOf(item));
+      }
+
+      /**
+       * Deselects the item at the given index in the items array.
+       *
+       * @method deselectIndex
+       * @param {number} index The index of the item in the items array.
+       */
+      deselectIndex(index) {
+        if (index < 0 || index >= this.items) {
+          return;
+        }
+
+        var model = this.modelForElement(this._physicalItems[index]);
+        model[this.selectedAs] = false;
+
+        this.$.selector.deselectIndex(index);
       }
 
       /**
