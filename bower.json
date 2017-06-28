@@ -32,6 +32,7 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
     "paper-card": "PolymerElements/paper-card#^2.0.0",
     "iron-ajax": "PolymerElements/iron-ajax#^2.0.2",
+    "iron-input": "PolymerElements/iron-input#^2.0.0",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^2.0.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "paper-slider": "PolymerElements/paper-slider#^2.0.0",

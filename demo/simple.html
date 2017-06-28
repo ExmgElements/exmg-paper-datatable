@@ -37,6 +37,9 @@
       <style include="exmg-material-style">
         :host {
           display: block;
+          --exmg-tbody-tr-selected: {
+            background-color: #dbdbdb;
+          };
         }
         paper-card {
           display: block;
@@ -66,9 +69,9 @@
             </div>
           </exmg-thead>
           <!-- TBody -->
-          <exmg-tbody items='[[items]]' selection-enabled multi-selection checkbox-used>
+          <exmg-tbody items='[[items]]' selection-enabled checkbox-used>
             <template>
-              <div class="tr">
+              <div class$="[[_computedClass(selected)]]">
                 <div class="td">[[item.name]]</div>
                 <div class="td">[[item.email]]</div>
                 <div class="td">[[item.city]]</div>
@@ -110,6 +113,13 @@
               value: 'ASC',
             }
           };
+        }
+        _computedClass(isSelected) {
+          var classes = 'tr ';
+          if (isSelected) {
+            classes += ' selected';
+          }
+          return classes;
         }
       }
       window.customElements.define(XTable.is, XTable);

@@ -4,15 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>exmg-datatable Collapse Demo</title>
+    <title>exmg-datatable Filter Demo</title>
 
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../../shadycss/apply-shim.html">
-    <link rel="import" href="../../polymer/lib/elements/custom-style.html">
     <link rel="import" href="../../paper-card/paper-card.html">
+    <link rel="import" href="../../iron-input/iron-input.html">
     <link rel="import" href="../../paper-slider/paper-slider.html">
     <link rel="import" href="../../paper-button/paper-button.html">
     <link rel="import" href="../../paper-input/paper-input.html">
@@ -26,6 +25,7 @@
     <link rel="import" href="../exmg-tbody.html">
     <link rel="import" href="../exmg-paging.html">
     <link rel="import" href="../exmg-data-helper.html">
+    <link rel="import" href="../exmg-data-filter.html">
     <link rel="import" href="../exmg-icons.html">
 
     <custom-style>
@@ -33,55 +33,59 @@
       </style>
     </custom-style>
   </head>
-  <body unresolved>
+  <body>
 
   <dom-module id="x-table">
     <template>
-      <custom-style>
-        <style include="exmg-material-style">
-          :host {
-            display: block;
-            --exmg-tbody-tr-expandable: {
-              padding: 8px;
-            };
-            --exmg-tbody-tr-expandable-expanded: {
-              padding: 8px;
-            };
-          }
-          paper-card {
-            display: block;
-            width: 800px;
-            margin: auto;
-            --paper-card-background-color: white;
-          }
-          h2 {
-            width: 800px;
-            margin: 20px auto;
-          }
-          .selected {
-            background-color: #F5F5F5;
-          }
-        </style>
-      </custom-style>
+      <style include="exmg-material-style">
+        :host {
+          display: block;
+        }
+        paper-card {
+          display: block;
+          width: 800px;
+          margin: auto;
+          --paper-card-background-color: white;
+        }
+        h2 {
+          width: 800px;
+          margin: 20px auto;
+        }
+        input {
+          margin: 0px 10px;
+          padding: 8px;
+          border: 1px solid #dbdbdb;
+          width: 100%;
+        }
+      </style>
 
-      <h2>Collapsible Table</h2>
+      <h2>Filter Table</h2>
 
       <paper-card elevation="1">
         <!-- Table Toobar -->
         <exmg-toolbar selected-items="[[selectedItems]]">
           <div slot="default">
-            <div class="title-container">
-              <span>Admin Users</span>
-            </div>
-            <paper-icon-button icon="exmg-icons:add"></paper-icon-button>
+            <iron-icon icon="exmg-icons:search"></iron-icon>
+            <iron-input bind-value="{{filterValue}}">
+              <input value="{{value::input}}">
+            </iron-input>
+            <paper-icon-button icon="exm-icons:add" on-tap="_addItem"></paper-icon-button>
           </div>
            <div slot="selected">
-             <span class="flex"></span>
+            <span class="flex"></span>
             <paper-icon-button icon="exmg-icons:delete"></paper-icon-button>
           </div>
         </exmg-toolbar>
         <!-- DataTable -->
         <exmg-datatable>
+          <!-- Colgroup -->
+          <div class="colgroup">
+            <div class="col" style="width:60px;"></div>
+            <div class="col" style="width:140px;"></div>
+            <div class="col" style="width:220px;"></div>
+            <div class="col" style="width:120px;"></div>
+            <div class="col" style="width:50%;"></div>
+          </div>
           <!-- THead -->
           <exmg-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
             <div class="tr">
@@ -93,36 +97,30 @@
             </div>
           </exmg-thead>
           <!-- TBody -->
-          <exmg-tbody items='[[items]]' selection-enabled checkbox-used selected-items="{{selectedItems}}">
+          <exmg-tbody items='[[items]]' selection-enabled multi-selection checkbox-used selected-items="{{selectedItems}}">
             <template>
-              <div class$="[[_computedClass(selected)]]">
+              <div class="tr">
                 <div class="td"><paper-checkbox checked="{{selected}}"></paper-checkbox></div>
                 <div class="td">[[item.name]]</div>
                 <div class="td">[[item.email]]</div>
                 <div class="td">[[item.city]]</div>
                 <div class="td">[[item.country]]</div>
               </div>
-              <div class="tr expandable" aria-expanded$="[[selected]]">
-                <div>
-                  <img src="[[item.image]]" />
-                  <div style="padding: 8px;">
-                    <h3>[[item.shortText]]</h3>
-                    <div>[[item.mediumText]]</div>
-                  </div>
-                </div>
-              </tr>
             </template>
           </exmg-tbody>
         </exmg-datatable>
         <!-- Table Paging -->
-        <exmg-paging total-items="[[rawItems.length]]" page-index="{{pageIndex}}" page-size="{{pageSize}}"></exmg-paging>
+        <exmg-paging total-items="[[totalItems]]" page-index="{{pageIndex}}" page-size="{{pageSize}}"></exmg-paging>
       </paper-card>
 
       <!-- Load contacts from json file  -->
       <iron-ajax url="data/contacts.json" last-response="{{rawItems}}" auto></iron-ajax>
 
+      <!-- Filter items by filter value and return resulting items to the data provider  -->
+      <exmg-data-filter raw-items="[[rawItems]]" items="{{filteredItems}}" filter-value="[[filterValue]]" filter-fields="name,email"></exmg-data-filter>
+
       <!-- Manage sorting and paging  -->
-      <exmg-data-helper raw-items="[[rawItems]]" items="{{items}}" page-index="[[pageIndex]]" page-size="[[pageSize]]" sorted="[[sorted]]" sort-direction="[[sortDirection]]" total-items="{{totalItems}}"></exmg-data-helper>
+      <exmg-data-helper raw-items="[[filteredItems]]" items="{{items}}" page-index="[[pageIndex]]" page-size="[[pageSize]]" sorted="[[sorted]]" sort-direction="[[sortDirection]]" total-items="{{totalItems}}"></exmg-data-helper>
 
     </template>
     <script>
@@ -147,23 +145,11 @@
               type: String,
               value: 'ASC',
             },
-            items: {
-              type: Array,
-            },
-            rawItems: {
-              type: Array,
+            filterValue: {
+              type: String,
+              value: '',
             }
           };
-        }
-        static get observers() {
-          return []
-        }
-        _computedClass(isSelected) {
-          var classes = 'tr item';
-          if (isSelected) {
-            classes += ' selected';
-          }
-          return classes;
         }
       }
       window.customElements.define(XTable.is, XTable);

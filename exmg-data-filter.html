@@ -1,0 +1,118 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<!--
+ `exmg-data-filter` is filter element that lets you filter local data sets.
+
+ ```html
+ <iron-ajax url="data/contacts.json" last-response="{{rawItems}}" auto></iron-ajax>
+
+ <exmg-data-filter
+   raw-items="[[rawItems]]"
+   items="{{filteredItems}}"
+   filter-value="[[filterValue]]"
+   filter-fields="name,email">
+ </exmg-data-filter>
+
+ <input is="iron-input" bind-value="{{filterValue}}">
+
+ <exmg-datatable>
+   <exmg-tbody items='[[filteredItems]]'>
+     <template>
+       <tr>
+         <td>[[item.name]]</td>
+         <td>[[item.email]]</td>
+         <td>[[item.phone]]</td>
+       </tr>
+     </template>
+   </exmg-tbody>
+ </exmg-datatable>
+ ```
+
+ @element exm-data-filter
+ @customElement
+ @polymer
+ @demo demo/index.html
+ -->
+
+<dom-module id="exmg-data-filter">
+  <template></template>
+
+  <script>
+
+    class ExmgDataFilter extends Polymer.Element {
+      static get is() { return 'exmg-data-filter'; }
+      static get properties() {
+        return {
+          /**
+           * Raw item list
+           */
+          rawItems: {
+            type: Array
+          },
+
+          /**
+           * This array will conatin the filtered items list
+           */
+          items: {
+            type: Array,
+            notify: true
+          },
+
+          /**
+           * Text string used for filtering the fields.
+           */
+          filterValue: {
+            type: String
+          },
+
+          /**
+           * Comma seperated list of filter fields.
+           */
+          filterFields: {
+            type: String
+          }
+        };
+      }
+      static get observers() {
+        return [
+          '_updateItems(rawItems.*, filterValue, filterFields)'
+        ]
+      }
+
+      _updateItems() {
+
+        console.log('_updateItems, ');
+
+        /* Skip if raw items or filterfields are not set */
+        if(this.rawItems === undefined || this.filterFields === undefined) {
+          return;
+        }
+
+        /* return all items when filter is empty */
+        if(this.filterValue === undefined && this.filterValue === '') {
+            this.set('items', []);
+            this.set('items', this.rawItems);
+            return;
+        }
+
+        /* Look for occurances of the filter value in the item fields */
+        var items = [];
+        var filterFields = this.filterFields.split(',');
+        for(var i = 0; i < this.rawItems.length; i++) {
+            for(var j = 0; j < filterFields.length; j++) {
+                if(this.rawItems[i][filterFields[j].trim()].indexOf(this.filterValue) !== -1){
+                    items.push(this.rawItems[i]);
+                    break;
+                }
+            }
+        }
+        this.set('items', []);
+        this.set('items', items);
+
+      }
+
+    }
+
+    window.customElements.define(ExmgDataFilter.is, ExmgDataFilter);
+  </script>
+</dom-module>
