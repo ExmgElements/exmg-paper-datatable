@@ -1,7 +1,9 @@
 # \<exmg-datatable\>
 ================
 
-Material design datatable. Please visit the [API Documentation and demo](http://exmg.github.io/exmg-datatable/) page for more information.
+Polymer 2.0 Material design datatable. Please visit the [API Documentation and demo](http://exmg.github.io/exmg-datatable/) page for more information.
+
+Please note due to the removal of support for extending native elements in Polymer 2.0 it was not possible to create a hybrid approach for the data table. Old version is available here [EXM-DATATABLE Polymer 1.0](https://github.com/exmg/exm-datatable).
 
 Supports:
  - Paper(Material design) style data table
