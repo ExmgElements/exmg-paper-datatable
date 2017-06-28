@@ -5,11 +5,9 @@
     <style>
       :host {
         display: table;
+        table-layout: fixed;
         width: 100%;
-        font-size: 12px;
-        color: rgba(0,0,0,.78);
-        font-family: 'Roboto', 'Noto', sans-serif;
-        -webkit-font-smoothing: antialiased;
+        border-collapse: collapse;
       }
     </style>
     <slot></slot>
@@ -26,11 +24,6 @@
      */
     class ExmgDatatable extends Polymer.Element {
       static get is() { return 'exmg-datatable'; }
-      static get properties() {
-        return {
-
-        };
-      }
     }
 
     window.customElements.define(ExmgDatatable.is, ExmgDatatable);

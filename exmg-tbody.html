@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../polymer/lib/elements/array-selector.html">
 
 <dom-module id="exmg-tbody">
@@ -6,24 +7,35 @@
     <style>
       :host {
         display: table-row-group;
-        border-bottom: 1px solid #dbdbdb;
       }
       .tr {
         display:table-row;
+        @apply --exmg-tbody-tr;
+      }
+      .tr.selected {
+        @apply --exmg-tbody-tr-selected;
+      }
+      .tr.expandable[aria-expanded] {
+        display:table-cell;
+      }
+      .tr.expandable[aria-expanded] > div {
+        float: left;
+        position: relative;
+        left: 0;
+        top: 0px;
+        height: 100px;
+        width: 780px;
+        @apply --layout-horizontal;
+        @apply --exmg-tbody-tr-expandable-expanded;
+      }
+      .tr.expandable {
+        display: none;
+        @apply --exmg-tbody-tr-expandable;
       }
       .td {
         display:table-cell;
-        height: 48px;
-        line-height: 36px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        padding: 6px 6px 6px 24px;
-        overflow: hidden;
-        border: 0px;
-        border-bottom: 1px solid #dbdbdb;
-        box-sizing: border-box;
+        @apply --exmg-tbody-td;
       }
-
       .tr[hidden] {
         display: none;
       }
@@ -128,18 +140,14 @@
       static get observers() {
         return [
           '_itemsChanged(items.*)',
-          '_selectionEnabledChanged(selectionEnabled)',
-          '_observeSelectedItem(selectedItem)',
-          '_observeSelectedItems(selectedItems.*)',
+          '_multiSelectionChanged(multiSelection)',
+          '_selectionEnabledChanged(selectionEnabled)'
         ]
       }
 
-      _observeSelectedItem(item) {
-        console.log('_observeSelectedItem', item);
-      }
-
-      _observeSelectedItems(chnages) {
-        console.log('_observeSelectedItems', chnages);
+      _multiSelectionChanged(multiSelection) {
+        this.clearSelection();
+        this.$.selector.multi = multiSelection;
       }
 
       /**
@@ -169,14 +177,12 @@
         console.log('_selectionHandler', e);
       //  debugger;
         var m = e.path.find(entry => {
-          console.log('entry', entry);
           return entry.classList && entry.classList.contains('tr');
         });
         var model = this.modelForElement(m);
-         if (!model) {
-           return;
-         }
-
+        if (!model) {
+         return;
+        }
         var modelTabIndex, activeElTabIndex;
         var target = Polymer.dom(e).path[0];
         var activeEl = Polymer.dom(this.domHost ? this.domHost.root : document).activeElement;
@@ -430,7 +436,8 @@
       * @param {Object} index The item instance.
       */
       selectIndex(index) {
-       console.log('selectIndex', index);
+        debugger;
+       console.log('selectIndex', index, this.multiSelection,this.selectedItem);
        if (index < 0 || index >= this.items) {
          return;
        }
@@ -454,10 +461,11 @@
        */
       clearSelection() {
         console.log('clearSelection');
-        this._physicalItems.map((el) => {
-          this.modelForElement(el)[this.selectedAs] = false;
-        });
-
+        if(this._physicalItems) {
+          this._physicalItems.map((el) => {
+            this.modelForElement(el)[this.selectedAs] = false;
+          });
+        }
         this.$.selector.clearSelection();
       }
 
@@ -508,9 +516,11 @@
        * @param {Object} index The index of the item in the items array.
        */
       toggleSelectionForIndex(index) {
+        console.log('toggleSelectionForIndex', index, this.$.selector.isIndexSelected(index));
         var isSelected = this.$.selector.isIndexSelected
             ? this.$.selector.isIndexSelected(index) : this.$.selector.isSelected(this.items[index]);
-          isSelected ? this.deselectIndex(index) : this.selectIndex(index);
+        console.log('isSelected', isSelected);
+        isSelected ? this.deselectIndex(index) : this.selectIndex(index);
       }
 
     }

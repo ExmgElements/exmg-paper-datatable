@@ -3,6 +3,15 @@
 <dom-module id="exmg-material-style">
   <template>
     <style>
+
+      exmg-datatable {
+        width: 100%;
+        font-size: 12px;
+        color: rgba(0,0,0,.78);
+        font-family: 'Roboto', 'Noto', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
       exmg-toolbar {
         @apply --paper-font-common-base;
         background: none;
@@ -35,6 +44,13 @@
       }
       exmg-datatable .colgroup .col {
         display:table-column;
+      }
+
+      exmg-thead {
+        font-weight: 500;
+        border-bottom: 1px solid #dbdbdb;
+        user-select: none;
+        color: rgba(0,0,0,.54);
       }
 
       exmg-thead .tr .th[sorted] {
@@ -89,6 +105,64 @@
 
       exmg-thead[sort-direction='DESC'] .th[sorted]::before {
         transform: rotate(180deg);
+      }
+
+      exmg-tbody {
+        border-bottom: 1px solid #dbdbdb;
+        --exmg-tbody-td: {
+          height: 48px;
+          line-height: 36px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          padding: 6px 6px 6px 24px;
+          overflow: hidden;
+          border: 0px;
+          border-bottom: 1px solid #dbdbdb;
+          box-sizing: border-box;
+        };
+        --exmg-tbody-tr-expandable-expanded: {
+          padding 8px;
+        };
+    
+      }
+
+      exmg-paging {
+        height:56px;
+        padding:0px 6px;
+        @apply --layout-horizontal;
+        @apply --layout-end-justified;
+        @apply --layout-center;
+      }
+
+      exmg-paging {
+        --paper-input-container-input: {
+          font-size: 14px;
+          font-weight: 500;
+        };
+        --paper-dropdown-menu: {
+          text-align: right;
+          width: 68px;
+        };
+        --paper-dropdown-menu-icon: {
+          color: var(--exmg-paging-icon-color, rgba(0,0,0,.54));
+        };
+        --paper-icon-button: {
+          color: var(--exmg-paging-icon-color, rgba(0,0,0,.54));
+        };
+        --paper-icon-button-disabled: {
+          color: var(--exmg-paging-icon-disabled-color, rgba(0,0,0,.36));
+        };
+        --paper-input-container-underline-focus: { display: none; };
+        --paper-input-container-underline-disabled: { display: none; };
+        --paper-input-container-underline: { display: none; };
+
+        --exm-paging-page-information: {
+          margin: 0 20px 0 32px;
+        };
+      }
+
+      exmg-paging paper-icon-button {
+        margin: 0 4px;
       }
 
     </style>

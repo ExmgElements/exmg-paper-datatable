@@ -12,42 +12,9 @@
     <style>
       :host {
         display: block;
-        height:56px;
-        padding:0px 6px;
-        @apply --layout-horizontal;
-        @apply --layout-end-justified;
-        @apply --layout-center;
       }
-
-      paper-dropdown-menu {
-        --paper-input-container-input: {
-          font-size: 14px;
-          font-weight: 500;
-        };
-        --paper-dropdown-menu: {
-          text-align: right;
-          width: 68px;
-        };
-        --paper-dropdown-menu-icon: {
-          color: var(--exmg-paging-icon-color, rgba(0,0,0,.54));
-        };
-        --paper-icon-button: {
-          color: var(--exmg-paging-icon-color, rgba(0,0,0,.54));
-        };
-        --paper-icon-button-disabled: {
-          color: var(--exmg-paging-icon-disabled-color, rgba(0,0,0,.36));
-        };
-        --paper-input-container-underline-focus: { display: none; };
-        --paper-input-container-underline-disabled: { display: none; };
-        --paper-input-container-underline: { display: none; };
-      }
-
-      paper-icon-button {
-        margin: 0 4px;
-      }
-
+      
       .page-information {
-        margin: 0 20px 0 32px;
         @apply(--exm-paging-page-information);
       }
     </style>

@@ -4,12 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>exmg-datatable Simple Demo</title>
+    <title>exmg-datatable Collapse Demo</title>
 
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../shadycss/apply-shim.html">
+    <link rel="import" href="../../polymer/lib/elements/custom-style.html">
     <link rel="import" href="../../paper-card/paper-card.html">
     <link rel="import" href="../../paper-slider/paper-slider.html">
     <link rel="import" href="../../paper-button/paper-button.html">
@@ -17,11 +19,12 @@
     <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
     <link rel="import" href="../../paper-checkbox/paper-checkbox.html">
     <link rel="import" href="../../iron-ajax/iron-ajax.html">
-
     <link rel="import" href="../exmg-material-style.html">
     <link rel="import" href="../exmg-datatable.html">
+    <link rel="import" href="../exmg-toolbar.html">
     <link rel="import" href="../exmg-thead.html">
     <link rel="import" href="../exmg-tbody.html">
+    <link rel="import" href="../exmg-paging.html">
     <link rel="import" href="../exmg-data-helper.html">
     <link rel="import" href="../exmg-icons.html">
 
@@ -30,35 +33,60 @@
       </style>
     </custom-style>
   </head>
-  <body>
+  <body unresolved>
 
   <dom-module id="x-table">
     <template>
-      <style include="exmg-material-style">
-        :host {
-          display: block;
-        }
-        paper-card {
-          display: block;
-          width: 800px;
-          margin: auto;
-          --paper-card-background-color: white;
-        }
-        h2,
-        .buttons {
-          width: 800px;
-          margin: 20px auto;
-        }
-      </style>
+      <custom-style>
+        <style include="exmg-material-style">
+          :host {
+            display: block;
+            --exmg-tbody-tr-expandable: {
+              padding: 8px;
+            };
+            --exmg-tbody-tr-expandable-expanded: {
+              padding: 8px;
+            };
+          }
+          paper-card {
+            display: block;
+            width: 800px;
+            margin: auto;
+            --paper-card-background-color: white;
+          }
+          h2 {
+            width: 800px;
+            margin: 20px auto;
+          }
+          .selected {
+            background-color: #F5F5F5;
+          }
 
-      <h2>Simple Table</h2>
+
+        </style>
+      </custom-style>
+
+      <h2>Collapsible Table</h2>
 
       <paper-card elevation="1">
+        <!-- Table Toobar -->
+        <exmg-toolbar selected-items="[[selectedItems]]">
+          <div slot="default">
+            <div class="title-container">
+              <span>Admin Users</span>
+            </div>
+            <paper-icon-button icon="exm-icons:add"></paper-icon-button>
+          </div>
+           <div slot="selected">
+            <paper-icon-button icon="exm-icons:delete"></paper-icon-button>
+          </div>
+        </exmg-toolbar>
         <!-- DataTable -->
         <exmg-datatable>
           <!-- THead -->
           <exmg-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
             <div class="tr">
+              <div class="th"></div>
               <div class="th" sortable="name">Name</div>
               <div class="th" sortable="email">Email</div>
               <div class="th" sortable="city">City</div>
@@ -66,25 +94,36 @@
             </div>
           </exmg-thead>
           <!-- TBody -->
-          <exmg-tbody items='[[items]]' selection-enabled multi-selection checkbox-used>
+          <exmg-tbody items='[[items]]' selection-enabled checkbox-used selected-items="{{selectedItems}}">
             <template>
-              <div class="tr">
+              <div class$="[[_computedClass(selected)]]">
+                <div class="td"><paper-checkbox checked="{{selected}}"></paper-checkbox></div>
                 <div class="td">[[item.name]]</div>
                 <div class="td">[[item.email]]</div>
                 <div class="td">[[item.city]]</div>
                 <div class="td">[[item.country]]</div>
               </div>
+              <div class="tr expandable" aria-expanded$="[[selected]]">
+                <div>
+                  <img src="[[item.image]]" />
+                  <div style="padding: 8px;">
+                    <h3>[[item.shortText]]</h3>
+                    <div>[[item.mediumText]]</div>
+                  </div>
+                </div>
+              </tr>
             </template>
           </exmg-tbody>
         </exmg-datatable>
         <!-- Table Paging -->
+        <exmg-paging total-items="[[rawItems.length]]" page-index="{{pageIndex}}" page-size="{{pageSize}}"></exmg-paging>
       </paper-card>
 
       <!-- Load contacts from json file  -->
       <iron-ajax url="data/contacts.json" last-response="{{rawItems}}" auto></iron-ajax>
 
       <!-- Manage sorting and paging  -->
-      <exmg-data-helper raw-items="[[rawItems]]" items="{{items}}" page-index="[[pageIndex]]" page-size="[[pageSize]]" ></exmg-data-helper>
+      <exmg-data-helper raw-items="[[rawItems]]" items="{{items}}" page-index="[[pageIndex]]" page-size="[[pageSize]]" sorted="[[sorted]]" sort-direction="[[sortDirection]]" total-items="{{totalItems}}"></exmg-data-helper>
 
     </template>
     <script>
@@ -108,8 +147,24 @@
             sortDirection: {
               type: String,
               value: 'ASC',
+            },
+            items: {
+              type: Array,
+            },
+            rawItems: {
+              type: Array,
             }
           };
+        }
+        static get observers() {
+          return []
+        }
+        _computedClass(isSelected) {
+          var classes = 'tr item';
+          if (isSelected) {
+            classes += ' selected';
+          }
+          return classes;
         }
       }
       window.customElements.define(XTable.is, XTable);
