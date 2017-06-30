@@ -1,6 +1,6 @@
 {
   "name": "exmg-datatable",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Material design data table (Polymer 2.0)",
   "authors": [
     "Mark Smits"
@@ -24,7 +24,13 @@
     "url": "git://github.com/exmg/exmg-datatable.git"
   },
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0"
+    "polymer": "Polymer/polymer#^2.0.0",
+    "paper-item": "PolymerElements/paper-item#^2.0.0",
+    "paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
+    "paper-icon-button": "PolymerElements/paper-icon-button#^2.0.0",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
+    "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^2.0.0"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
