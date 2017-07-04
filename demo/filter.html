@@ -51,11 +51,37 @@
           width: 800px;
           margin: 20px auto;
         }
-        input {
-          margin: 0px 10px;
-          padding: 8px;
-          border: 1px solid #dbdbdb;
+        iron-input {
           width: 100%;
+        }
+        input {
+          font-size: 14px;
+          margin: 0px 4px;
+          padding: 4px;
+          border: 0px solid #dbdbdb;
+          width: 100%;
+        }
+        exmg-toolbar span.interactive-content {
+          margin-left: 10px;
+          white-space: nowrap;
+          overflow: hidden;
+          color: rgba(0,0,0,0.38);
+          font-size: 14px;
+          text-overflow: ellipsis;
+          letter-spacing: .005em;
+          box-sizing: border-box;
+          font-weight: 400;
+          cursor: pointer;
+          width: 100%;
+        }
+        .search {
+          background: white;
+          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+              0 1px 5px 0 rgba(0, 0, 0, 0.12),
+              0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        }
+        .search input {
+          outline: none;
         }
       </style>
 
@@ -64,12 +90,18 @@
       <paper-card elevation="1">
         <!-- Table Toobar -->
         <exmg-toolbar selected-items="[[selectedItems]]">
-          <div slot="default">
-            <iron-icon icon="exmg-icons:search"></iron-icon>
-            <iron-input bind-value="{{filterValue}}">
-              <input value="{{value::input}}">
-            </iron-input>
-            <paper-icon-button icon="exm-icons:add" on-tap="_addItem"></paper-icon-button>
+          <div slot="default" class$="[[_computeSearchClasses(isSearch)]]">
+            <template is="dom-if" if="[[isSearch]]" restamp="true">
+              <iron-icon icon="exmg-icons:search"></iron-icon>
+              <iron-input bind-value="{{filterValue}}" >
+                <input id="searchInput" placeholder="[[this.placeHolder]]" value="{{value::input}}" on-keyup="_handleKeyUp" on-blur="_handleInputBlur">
+              </iron-input>
+            </template>
+            <template is="dom-if" if="[[!isSearch]]" restamp="true">
+              <iron-icon icon="exmg-icons:search"></iron-icon>
+              <span class="interactive-content" on-tap="_showSearch">[[_getFilterValue(filterValue)]]</span>
+              <paper-icon-button icon="exmg-icons:add" on-tap="_addItem"></paper-icon-button>
+            </template>
           </div>
            <div slot="selected">
             <span class="flex"></span>
@@ -148,8 +180,40 @@
             filterValue: {
               type: String,
               value: '',
+            },
+            isSearch: {
+              type: Boolean,
+              value: false,
+            },
+            placeHolder: {
+              type: String,
+              value: 'Search admin user by name',
             }
           };
+        }
+        _getFilterValue(filterValue) {
+          return filterValue || this.placeHolder;
+        }
+
+        _handleKeyUp(e) {
+          if(e.keyCode === 27) {
+            this._hideSearch();
+          }
+        }
+
+        _handleInputBlur() {
+          this._hideSearch();
+        }
+
+        _hideSearch() {
+          this.set('isSearch', false);
+        }
+        _showSearch() {
+          this.set('isSearch', true);
+          setTimeout(() => this.shadowRoot.querySelector('#searchInput').focus(), 200);
+        }
+        _computeSearchClasses(isSearch) {
+          return isSearch ? 'search' : '';
         }
       }
       window.customElements.define(XTable.is, XTable);
