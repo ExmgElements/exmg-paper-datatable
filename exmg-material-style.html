@@ -55,7 +55,7 @@
       }
 
       exmg-thead .tr .th[sorted] {
-        color: red;
+        color: rgba(0,0,0,.78);
       }
 
       exmg-thead .th {
@@ -116,11 +116,21 @@
           line-height: 36px;
           white-space: nowrap;
           text-overflow: ellipsis;
-          padding: 6px 6px 6px 24px;
+          padding: 6px 6px 5px 24px;
           overflow: hidden;
           border: 0px;
           border-bottom: 1px solid #dbdbdb;
           box-sizing: border-box;
+        };
+        --exmg-tbody-td-hover: {
+          background-color: #f5f5f5;
+        };
+        --exmg-tbody-td-hover-content: {
+          max-height: 35px;
+          margin-right: -6px;
+        };
+        --exmg-tbody-tr-selected: {
+          background-color: #E8EFFD;
         };
         --exmg-tbody-tr-expandable-expanded: {
           padding 8px;

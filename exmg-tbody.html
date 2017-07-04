@@ -39,6 +39,16 @@
       .tr[hidden] {
         display: none;
       }
+      .tr .td.hover > * {
+        display: none;
+      }
+      .tr:hover .td {
+        @apply --exmg-tbody-td-hover;
+      }
+      .tr:hover .td.hover > * {
+        display: inline-block;
+        @apply --exmg-tbody-td-hover-content;
+      }
     </style>
     <slot></slot>
     <!-- Array helper -->
@@ -436,7 +446,7 @@
       * @param {Object} index The item instance.
       */
       selectIndex(index) {
-  
+
        console.log('selectIndex', index, this.multiSelection,this.selectedItem);
        if (index < 0 || index >= this.items) {
          return;
