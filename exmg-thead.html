@@ -120,6 +120,7 @@
 
         if(!templ) {
           console.error('Error: exmg-thead template not found!');
+          return;
         }
         this.templatize(templ);
         this.shadowRoot.appendChild(this.stamp(null).root);

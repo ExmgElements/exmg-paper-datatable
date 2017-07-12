@@ -42,7 +42,7 @@
         let templ = this.querySelector('template');
 
         if(!templ) {
-          console.error('Error: exmg-datatable template not found!');
+          return;
         }
         this.templatize(templ);
         this.shadowRoot.appendChild(this.stamp(null).root);
