@@ -6,6 +6,70 @@
     <style>
       :host {
         display: table-header-group;
+        font-weight: 500;
+        border-bottom: 1px solid #dbdbdb;
+        user-select: none;
+        color: rgba(0,0,0,.54);
+      }
+
+      .th[sorted] {
+        color: rgba(0,0,0,.78);
+      }
+
+      .tr {
+        display:table-row;
+      }
+
+      .th {
+        display:table-cell;
+        height: 36px;
+        line-height: 36px;
+        background-color: #f5f5f5;
+        box-sizing: border-box;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: 0px 6px 0px 24px;
+        border-bottom: 1px solid #dbdbdb;
+        overflow:hidden;
+        text-align: left;
+      }
+
+      .th[sortable]:hover,
+      .th[sorted]{
+        padding-left:0px;
+      }
+
+      .th[sortable]:hover{
+        cursor: pointer;
+        color: rgba(0,0,0, .87);
+      }
+
+      .th[sortable]:hover::before {
+        display: block;
+        content: "";
+        background-image: url('arrow-downward.svg');
+        background-size: 12px 12px;
+        height: 12px;
+        width: 12px;
+        float: left;
+        margin: 12px 6px;
+      }
+
+      .th[sorted]::before {
+        display: block;
+        content: "";
+        background-image: url('arrow-downward.svg');
+        background-size: 12px 12px;
+        height: 12px;
+        width: 12px;
+        float: left;
+        margin: 12px 6px;
+        transition: transform .1s linear;
+        transform: rotate(0deg);
+      }
+
+      :host([sort-direction='DESC']) .th[sorted]::before {
+        transform: rotate(180deg);
       }
     </style>
     <slot></slot>
@@ -20,7 +84,7 @@
      * @polymer
      * @demo demo/index.html
      */
-    class ExmgThead extends Polymer.GestureEventListeners(Polymer.Element) {
+    class ExmgThead extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.GestureEventListeners(Polymer.Element))  {
       static get is() { return 'exmg-thead'; }
       static get properties() {
         return {
@@ -29,6 +93,7 @@
           */
           sorted: {
             type: String,
+            reflectToAttribute: true,
             notify: true
           },
           /**
@@ -48,6 +113,18 @@
         ]
       }
 
+      ready() {
+        super.ready();
+
+        let templ = this.querySelector('template');
+
+        if(!templ) {
+          console.error('Error: exmg-thead template not found!');
+        }
+        this.templatize(templ);
+        this.shadowRoot.appendChild(this.stamp(null).root);
+      }
+
       connectedCallback() {
         super.connectedCallback();
         Polymer.Gestures.addListener(this, 'tap', this._handleTap);
@@ -62,8 +139,10 @@
       * Triggered on column change when sorting
       */
       _sortedByChanged(sorted) {
-        let headerColumns = this.querySelectorAll('.th');
+        let headerColumns = this.shadowRoot.querySelectorAll('.th');
+
         this._resetOldSorting();
+
         headerColumns.forEach((el) => {
           if(el.getAttribute('sortable') === sorted) {
             el.setAttribute('sorted','');
@@ -76,6 +155,7 @@
       */
       _handleTap(e) {
         let sortField = e.path[0].getAttribute("sortable");
+
         if(e.path[0].classList.contains('th') && sortField){
           if(this.sorted === sortField){
             this.set('sortDirection', this.sortDirection === 'ASC' ? 'DESC' : 'ASC');
@@ -89,7 +169,8 @@
       * Reset old column sorting attributes
       */
       _resetOldSorting(tr) {
-        let rowChildren = this.querySelectorAll('.th[sorted]');
+        let rowChildren = this.shadowRoot.querySelectorAll('.th[sorted]');
+      //  let rowChildren = this.querySelectorAll('.th[sorted]');
         rowChildren.forEach(el => el.removeAttribute('sorted'));
       }
     }

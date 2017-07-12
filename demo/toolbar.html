@@ -14,7 +14,7 @@
     <link rel="import" href="../../paper-slider/paper-slider.html">
     <link rel="import" href="../../paper-button/paper-button.html">
     <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
-    <link rel="import" href="../exmg-material-style.html">
+
     <link rel="import" href="../exmg-datatable.html">
     <link rel="import" href="../exmg-toolbar.html">
     <link rel="import" href="../exmg-thead.html">
@@ -29,20 +29,26 @@
 
   <dom-module id="x-table">
     <template>
-      <style include="exmg-material-style">
+      <style>
         :host {
           display: block;
         }
+
         paper-card {
           display: block;
           width: 800px;
           margin: auto;
           --paper-card-background-color: white;
         }
+
         h2,
         .buttons {
           width: 800px;
           margin: 20px auto;
+        }
+
+        exmg-toolbar .flex {
+          @apply --layout-flex;
         }
       </style>
 
@@ -50,7 +56,7 @@
         <!-- Table Toobar -->
         <exmg-toolbar selected-items="[[selectedItems]]">
           <div slot="default">
-            <div class="title-container">
+            <div class="title-container flex">
               <span>Admin Users</span>
             </div>
             <paper-icon-button icon="exmg-icons:add"></paper-icon-button>

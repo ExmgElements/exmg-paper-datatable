@@ -7,12 +7,14 @@
     <style>
       :host {
         display: table-row-group;
+        border-bottom: 1px solid #dbdbdb;
       }
       .tr {
         display:table-row;
         @apply --exmg-tbody-tr;
       }
       .tr.selected {
+        background-color: #E8EFFD;
         @apply --exmg-tbody-tr-selected;
       }
       .tr.expandable[aria-expanded] {
@@ -34,6 +36,15 @@
       }
       .td {
         display:table-cell;
+        height: 48px;
+        line-height: 36px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: 6px 6px 5px 24px;
+        overflow: hidden;
+        border: 0px;
+        border-bottom: 1px solid #dbdbdb;
+        box-sizing: border-box;
         @apply --exmg-tbody-td;
       }
       .tr[hidden] {
@@ -43,10 +54,13 @@
         display: none;
       }
       .tr:hover .td {
+        background-color: #f5f5f5;
         @apply --exmg-tbody-td-hover;
       }
       .tr:hover .td.hover > * {
         display: inline-block;
+        max-height: 35px;
+        margin-right: -6px;
         @apply --exmg-tbody-td-hover-content;
       }
     </style>

@@ -17,7 +17,7 @@
     <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
     <link rel="import" href="../../paper-checkbox/paper-checkbox.html">
     <link rel="import" href="../../iron-ajax/iron-ajax.html">
-    <link rel="import" href="../exmg-material-style.html">
+
     <link rel="import" href="../exmg-datatable.html">
     <link rel="import" href="../exmg-toolbar.html">
     <link rel="import" href="../exmg-thead.html">
@@ -35,7 +35,7 @@
 
   <dom-module id="x-table">
     <template>
-      <style include="exmg-material-style">
+      <style>
         :host {
           display: block;
         }
@@ -50,6 +50,9 @@
           width: 800px;
           margin: 20px auto;
         }
+        exmg-toolbar .flex {
+          @apply --layout-flex;
+        }
       </style>
 
       <h2>Complete Table</h2>
@@ -58,7 +61,7 @@
         <!-- Table Toobar -->
         <exmg-toolbar selected-items="[[selectedItems]]">
           <div slot="default">
-            <div class="title-container">
+            <div class="title-container flex">
               <span>Admin Users</span>
             </div>
             <paper-icon-button icon="exmg-icons:add"></paper-icon-button>
@@ -71,22 +74,26 @@
         <!-- DataTable -->
         <exmg-datatable>
           <!-- Colgroup -->
-          <div class="colgroup">
-            <div class="col" style="width:60px;"></div>
-            <div class="col" style="width:140px;"></div>
-            <div class="col" style="width:220px;"></div>
-            <div class="col" style="width:120px;"></div>
-            <div class="col" style="width:50%;"></div>
-          </div>
+          <template>
+            <div class="colgroup">
+              <div class="col" style="width:50px;"></div>
+              <div class="col" style="width:140px;"></div>
+              <div class="col" style="width:220px;"></div>
+              <div class="col" style="width:120px;"></div>
+              <div class="col" style="width:50%;"></div>
+            </div>
+          </template>
           <!-- THead -->
           <exmg-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
-            <div class="tr">
-              <div class="th"></div>
-              <div class="th" sortable="name">Name</div>
-              <div class="th" sortable="email">Email</div>
-              <div class="th" sortable="city">City</div>
-              <div class="th" sortable="country">Country</div>
-            </div>
+            <template>
+              <div class="tr">
+                <div class="th"></div>
+                <div class="th" sortable="name">Name</div>
+                <div class="th" sortable="email">Email</div>
+                <div class="th" sortable="city">City</div>
+                <div class="th" sortable="country">Country</div>
+              </div>
+            </template>
           </exmg-thead>
           <!-- TBody -->
           <exmg-tbody items='[[items]]' selection-enabled multi-selection selected-items="{{selectedItems}}">
