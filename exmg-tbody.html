@@ -294,6 +294,10 @@
         }
       }
 
+      _removeItem(item) {
+        this.$.selector.deselect(item);
+      }
+
       _forwardItemPath(path, value) {
         path = path.slice(6); // 'items.'.length == 6
         var dot = path.indexOf('.') + 1;
@@ -303,12 +307,8 @@
         var idx = parseInt(path.substring(0, dot), 10);
         var offscreenItem = this._offscreenFocusedItem;
         var isIndexRendered = this._isIndexRendered(idx);
-        var inst;
-        if (isIndexRendered) {
-          inst = this.modelForElement(this._physicalItems[this._getPhysicalIndex(idx)]);
-        } else if (offscreenItem) {
-          inst = this.modelForElement(offscreenItem);
-        }
+        var inst = this.modelForElement(this._physicalItems[this._getPhysicalIndex(idx)]);
+
         if (!inst || inst[this.indexAs] !== idx) {
           return;
         }
