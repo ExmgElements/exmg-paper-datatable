@@ -198,8 +198,6 @@
       * Select an item from an event object.
       */
       _selectionHandler(e) {
-        console.log('_selectionHandler', e);
-      //  debugger;
         var m = e.path.find(entry => {
           return entry.classList && entry.classList.contains('tr');
         });
@@ -238,12 +236,9 @@
 
       connectedCallback() {
         super.connectedCallback();
-
-        console.log('connectedCallback');
         if (this._physicalCount === 0) {
-          this._debounceTemplate(this._render);
+          this._debounceRender(this._render);
         }
-
       }
 
       _debounceRender(cb) {
@@ -277,7 +272,6 @@
       * to `items`, splices or updates to a single item.
       */
       _itemsChanged(change) {
-        console.log('_itemsChanged', change);
         if (change.path === 'items') {
           this.items = this.items || [];
           this._physicalCount = this._physicalCount || 0;
@@ -290,7 +284,9 @@
            }, this);
           this._debounceRender(this._render);
         } else {
-          this._forwardItemPath(change.path, change.value);
+          if(change.path !== 'items.length') {
+            this._forwardItemPath(change.path, change.value);
+          }
         }
       }
 
@@ -306,9 +302,9 @@
         }
         var idx = parseInt(path.substring(0, dot), 10);
         var offscreenItem = this._offscreenFocusedItem;
-        var isIndexRendered = this._isIndexRendered(idx);
-        var inst = this.modelForElement(this._physicalItems[this._getPhysicalIndex(idx)]);
 
+        var inst = this.modelForElement(this._physicalItems[idx]);
+      
         if (!inst || inst[this.indexAs] !== idx) {
           return;
         }
@@ -316,12 +312,6 @@
         path = this.as + (path ? '.' + path : '');
         inst._setPendingPropertyOrPath(path, value, false, true);
         inst._flushProperties && inst._flushProperties(true);
-        // TODO(blasten): V1 doesn't do this and it's a bug
-        if (isIndexRendered) {
-          this._updateMetrics([idx]);
-          this._positionItems();
-          this._updateScrollerSize();
-        }
       }
 
       /**
@@ -330,7 +320,6 @@
       * @param {number} size Size of the pool
       */
       _createPool(size) {
-        console.log('_createPool');
         var physicalItems = new Array(size);
         this._ensureTemplatized();
         for (var i = 0; i < size; i++) {
@@ -338,7 +327,6 @@
           // First element child is item; Safari doesn't support children[0]
           // on a doc fragment.
           physicalItems[i] = inst.root.querySelector('*');
-          console.log('_createPool', physicalItems[i]);
           this.shadowRoot.appendChild(inst.root);
         }
         return physicalItems;
@@ -396,7 +384,6 @@
       */
       _assignModels(itemSet) {
         var count = 0;
-        console.log('_assignModels, ', this._physicalItems, this._physicalCount);
         this._physicalItems.forEach((el) => {
           var inst = this.modelForElement(el);
           var item = this.items[count];
@@ -421,7 +408,6 @@
 
       /* Templatizer bindings for v2 */
       _forwardHostPropV2(prop, value) {
-        console.log('_forwardHostPropV2', prop, value);
         (this._physicalItems || [])
           .concat([this._offscreenFocusedItem, this._focusBackfillItem])
           .forEach(function(item) {
@@ -432,7 +418,6 @@
       }
 
       _notifyInstancePropV2(inst, prop, value) {
-        console.log('_notifyInstancePropV2', inst, prop, value);
        if (Polymer.Path.matches(this.as, prop)) {
           var idx = inst[this.indexAs];
           if (prop == this.as) {
@@ -449,7 +434,6 @@
       * @param {Object} item The item instance.
       */
       selectItem(item) {
-        console.log('selectItem', item);
         return this.selectIndex(this.items.indexOf(item));
       }
 
@@ -460,8 +444,6 @@
       * @param {Object} index The item instance.
       */
       selectIndex(index) {
-
-       console.log('selectIndex', index, this.multiSelection,this.selectedItem);
        if (index < 0 || index >= this.items) {
          return;
        }
@@ -475,7 +457,6 @@
        }
 
        this.$.selector.selectIndex(index);
-
       }
 
       /**
@@ -484,7 +465,6 @@
        * @method clearSelection
        */
       clearSelection() {
-        console.log('clearSelection');
         if(this._physicalItems) {
           this._physicalItems.map((el) => {
             this.modelForElement(el)[this.selectedAs] = false;
@@ -500,7 +480,6 @@
       * @param {Object} item The item instance.
       */
       deselectItem(item) {
-        console.log('deselectItem', item);
         return this.deselectIndex(this.items.indexOf(item));
       }
 
@@ -540,10 +519,8 @@
        * @param {Object} index The index of the item in the items array.
        */
       toggleSelectionForIndex(index) {
-        console.log('toggleSelectionForIndex', index, this.$.selector.isIndexSelected(index));
         var isSelected = this.$.selector.isIndexSelected
             ? this.$.selector.isIndexSelected(index) : this.$.selector.isSelected(this.items[index]);
-        console.log('isSelected', isSelected);
         isSelected ? this.deselectIndex(index) : this.selectIndex(index);
       }
 
