@@ -92,7 +92,8 @@
       }
 
       _computeLength(rawItems) {
-        return this.rawItems.length;
+        const rawItems = this.rawItems || [];
+        return rawItems.length;
       }
 
       _ramItemsChanged() {
@@ -105,21 +106,18 @@
       }
 
       _updatePage() {
-
-        console.log('pageIndex, pageSize',this.pageIndex, this.pageSize);
-
         if(this.rawItems === undefined) {
           return;
         }
         /* Make sure to always start with same array to ensure consistency in sorting results */
-        var workArray = this.rawItems.slice();
-        var start = (this.pageIndex * this.pageSize);
+        const workArray = this.rawItems.slice();
+        const start = (this.pageIndex * this.pageSize);
 
         console.log('start, this._doSort', start, this._doSort);
 
         if(this._doSort && this.sorted) {
-          var lookupItemByPath = (item, path) => {
-            var parts = path.split(".");
+          const lookupItemByPath = (item, path) => {
+            const parts = path.split(".");
             if (parts.length === 1){
               return item[parts[0]];
             }
@@ -127,8 +125,8 @@
           };
 
           workArray.sort((a, b) => {
-            var fieldA = lookupItemByPath(a, this.sorted);
-            var fieldB = lookupItemByPath(b, this.sorted);
+            const fieldA = lookupItemByPath(a, this.sorted);
+            const fieldB = lookupItemByPath(b, this.sorted);
             if(typeof fieldA === 'number' || typeof fieldA === 'boolean') {
               return this.sortDirection === 'ASC' ? fieldA - fieldB : fieldB - fieldA;
             } else {
@@ -148,14 +146,7 @@
         }
 
         this.set('items', []);
-
-        console.log('start, this._doSort', workArray, workArray.slice(start, start + this.pageSize));
         this.set('items', workArray.slice(start, start + this.pageSize));
-        // for(var i = start; i < start + this.pageSize; i++) {
-        //   if(workArray[i] !== undefined) {
-        //     this.push('items', workArray[i]);
-        //   }
-        // }
       }
 
     }
