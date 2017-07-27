@@ -141,9 +141,7 @@
       */
       _sortedByChanged(sorted) {
         let headerColumns = this.shadowRoot.querySelectorAll('.th');
-
         this._resetOldSorting();
-
         headerColumns.forEach((el) => {
           if(el.getAttribute('sortable') === sorted) {
             el.setAttribute('sorted','');
@@ -151,12 +149,12 @@
           }
         });
       }
+
       /*
       * Handle column header tap
       */
       _handleTap(e) {
         let sortField = e.path[0].getAttribute("sortable");
-
         if(e.path[0].classList.contains('th') && sortField){
           if(this.sorted === sortField){
             this.set('sortDirection', this.sortDirection === 'ASC' ? 'DESC' : 'ASC');
@@ -166,12 +164,12 @@
           }
         }
       }
+
       /*
       * Reset old column sorting attributes
       */
       _resetOldSorting(tr) {
         let rowChildren = this.shadowRoot.querySelectorAll('.th[sorted]');
-      //  let rowChildren = this.querySelectorAll('.th[sorted]');
         rowChildren.forEach(el => el.removeAttribute('sorted'));
       }
     }

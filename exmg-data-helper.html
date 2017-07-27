@@ -2,15 +2,6 @@
 <link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
 
 <dom-module id="exmg-data-helper">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-    <slot></slot>
-  </template>
-
   <script>
     /**
      * `exmg-data-helper`
@@ -20,6 +11,12 @@
      * @polymer
      * @demo demo/index.html
      */
+
+(function() {
+    const isArray = o => Array.isArray(o) || Object.prototype.toString.call(o) === '[object Array]';
+    const properArray = o => isArray(o) ? o : [];
+    const lookupValueByPath = (o, path) => path.split('.').reduce((r, p) => r[p], o);
+
     class ExmgDataHelper extends Polymer.GestureEventListeners(Polymer.Element) {
       static get is() { return 'exmg-data-helper'; }
       static get properties() {
@@ -91,9 +88,8 @@
         this._updatePage();
       }
 
-      _computeLength(rawItems) {
-        const rawItems = this.rawItems || [];
-        return rawItems.length;
+      _computeLength() {
+        return properArray(this.rawItems).length;
       }
 
       _ramItemsChanged() {
@@ -106,32 +102,19 @@
       }
 
       _updatePage() {
-        if(this.rawItems === undefined) {
-          return;
-        }
         /* Make sure to always start with same array to ensure consistency in sorting results */
-        const workArray = this.rawItems.slice();
-        const start = (this.pageIndex * this.pageSize);
-
-        console.log('start, this._doSort', start, this._doSort);
+        var workArray = [...properArray(this.rawItems)];
+        var start = (this.pageIndex * this.pageSize);
 
         if(this._doSort && this.sorted) {
-          const lookupItemByPath = (item, path) => {
-            const parts = path.split(".");
-            if (parts.length === 1){
-              return item[parts[0]];
-            }
-            return lookupItemByPath(item[parts[0]], parts.slice(1).join("."));
-          };
-
           workArray.sort((a, b) => {
-            const fieldA = lookupItemByPath(a, this.sorted);
-            const fieldB = lookupItemByPath(b, this.sorted);
+            let fieldA = lookupValueByPath(a, this.sorted);
+            let fieldB = lookupValueByPath(b, this.sorted);
             if(typeof fieldA === 'number' || typeof fieldA === 'boolean') {
               return this.sortDirection === 'ASC' ? fieldA - fieldB : fieldB - fieldA;
             } else {
-              fieldA = fieldA.toLowerCase();
-              fieldB = fieldB.toLowerCase();
+              fieldA = fieldA ? fieldA.toLowerCase() : '';
+              fieldB = fieldB ? fieldB.toLowerCase() : '';
               if (fieldA < fieldB) {
                 return this.sortDirection === 'ASC' ? -1 : 1;
               }
@@ -152,5 +135,7 @@
     }
 
     window.customElements.define(ExmgDataHelper.is, ExmgDataHelper);
+
+  })();
   </script>
 </dom-module>

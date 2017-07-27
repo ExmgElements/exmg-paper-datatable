@@ -92,7 +92,6 @@
         ]
       }
       _selectedItemsChanged(changes) {
-        console.log('_selectedItemsChanged', changes);
         if(changes.path === 'selectedItems') {
           this.set('_selectedRows', changes.value === null ? 0 : Array.isArray(changes.value) ? changes.value.length : 1);
         }

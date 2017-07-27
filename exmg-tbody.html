@@ -7,7 +7,7 @@
     <style>
       :host {
         display: table-row-group;
-        border-bottom: 1px solid #dbdbdb;
+
       }
       .tr {
         display:table-row;
@@ -198,17 +198,17 @@
       * Select an item from an event object.
       */
       _selectionHandler(e) {
-        var m = e.path.find(entry => {
+        let m = e.path.find(entry => {
           return entry.classList && entry.classList.contains('tr');
         });
-        var model = this.modelForElement(m);
+        let model = this.modelForElement(m);
         if (!model) {
          return;
         }
-        var modelTabIndex, activeElTabIndex;
-        var target = Polymer.dom(e).path[0];
-        var activeEl = Polymer.dom(this.domHost ? this.domHost.root : document).activeElement;
-        var physicalItem = this._physicalItems[model[this.indexAs]];
+        let modelTabIndex, activeElTabIndex;
+        let target = Polymer.dom(e).path[0];
+        let activeEl = Polymer.dom(this.domHost ? this.domHost.root : document).activeElement;
+        let physicalItem = this._physicalItems[model[this.indexAs]];
         // Safari does not focus certain form controls via mouse
         // https://bugs.webkit.org/show_bug.cgi?id=118043
         if (target.localName === 'input' ||
@@ -296,15 +296,15 @@
 
       _forwardItemPath(path, value) {
         path = path.slice(6); // 'items.'.length == 6
-        var dot = path.indexOf('.') + 1;
+        let dot = path.indexOf('.') + 1;
         if (dot === 0) {
           dot = path.length;
         }
-        var idx = parseInt(path.substring(0, dot), 10);
-        var offscreenItem = this._offscreenFocusedItem;
+        let idx = parseInt(path.substring(0, dot), 10);
+        let offscreenItem = this._offscreenFocusedItem;
 
-        var inst = this.modelForElement(this._physicalItems[idx]);
-      
+        let inst = this.modelForElement(this._physicalItems[idx]);
+
         if (!inst || inst[this.indexAs] !== idx) {
           return;
         }
@@ -320,10 +320,10 @@
       * @param {number} size Size of the pool
       */
       _createPool(size) {
-        var physicalItems = new Array(size);
+        let physicalItems = new Array(size);
         this._ensureTemplatized();
-        for (var i = 0; i < size; i++) {
-          var inst = this.stamp(null);
+        for (let i = 0; i < size; i++) {
+          let inst = this.stamp(null);
           // First element child is item; Safari doesn't support children[0]
           // on a doc fragment.
           physicalItems[i] = inst.root.querySelector('*');
@@ -336,12 +336,10 @@
       * Increases the pool size.
       */
       _increasePool(poolSize) {
-        var ts = window.performance.now();
         // Concat arrays in place.
         [].push.apply(this._physicalItems, this._createPool(poolSize));
         this._physicalCount = this._physicalItems.length;
         this._update();
-        this._templateCost = (window.performance.now() - ts);
       }
 
       /**
@@ -351,7 +349,7 @@
         // Check if already templatized
         if (!this.ctor) {
           // Template instance props that should be excluded from forwarding
-          var props = {};
+          let props = {};
           props.__key__ = true;
           props[this.as] = true;
           props[this.indexAs] = true;
@@ -383,10 +381,10 @@
       * @param {!Array<number>=} itemSet
       */
       _assignModels(itemSet) {
-        var count = 0;
+        let count = 0;
         this._physicalItems.forEach((el) => {
-          var inst = this.modelForElement(el);
-          var item = this.items[count];
+          let inst = this.modelForElement(el);
+          let item = this.items[count];
           if (item != null && item !== undefined) {
             //inst.__key__ = this._collection ? this._collection.getKey(item) : null;
             this._forwardProperty(inst, this.as, item);
@@ -419,7 +417,7 @@
 
       _notifyInstancePropV2(inst, prop, value) {
        if (Polymer.Path.matches(this.as, prop)) {
-          var idx = inst[this.indexAs];
+          let idx = inst[this.indexAs];
           if (prop == this.as) {
             this.items[idx] = value;
           }
@@ -451,7 +449,7 @@
         this.clearSelection();
        }
 
-       var model = this.modelForElement(this._physicalItems[index]);
+       let model = this.modelForElement(this._physicalItems[index]);
        if (model) {
          model[this.selectedAs] = true;
        }
@@ -494,7 +492,7 @@
           return;
         }
 
-        var model = this.modelForElement(this._physicalItems[index]);
+        let model = this.modelForElement(this._physicalItems[index]);
         model[this.selectedAs] = false;
 
         this.$.selector.deselectIndex(index);
@@ -519,7 +517,7 @@
        * @param {Object} index The index of the item in the items array.
        */
       toggleSelectionForIndex(index) {
-        var isSelected = this.$.selector.isIndexSelected
+        let isSelected = this.$.selector.isIndexSelected
             ? this.$.selector.isIndexSelected(index) : this.$.selector.isSelected(this.items[index]);
         isSelected ? this.deselectIndex(index) : this.selectIndex(index);
       }
