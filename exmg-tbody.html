@@ -6,13 +6,26 @@
   <template>
     <style>
       :host {
-        display: table-row-group;
-
+       width: 100%;
       }
       .tr {
-        display:table-row;
+        display: flex;
+        display: -webkit-flex;
+        flex-direction: row;
+        -webkit-flex-direction: row;
+        flex-grow: 0;
+        -webkit-flex-grow: 0;
+        flex-wrap: wrap;
+        -webkit-flex-wrap: wrap;
+        border-bottom: 1px solid #dbdbdb;
         @apply --exmg-tbody-tr;
       }
+      @media(max-width: 500px) {
+        .optional {
+          display: none;
+        }
+      }
+
       .tr.selected {
         background-color: #E8EFFD;
         @apply --exmg-tbody-tr-selected;
@@ -35,7 +48,9 @@
         @apply --exmg-tbody-tr-expandable;
       }
       .td {
-        display:table-cell;
+        flex-grow: 1;            -webkit-flex-grow: 1;
+        overflow: hidden;
+        width:120px;
         height: 48px;
         line-height: 36px;
         white-space: nowrap;
@@ -43,7 +58,7 @@
         padding: 6px 6px 5px 24px;
         overflow: hidden;
         border: 0px;
-        border-bottom: 1px solid #dbdbdb;
+
         box-sizing: border-box;
         @apply --exmg-tbody-td;
       }

@@ -45,12 +45,14 @@
         }
         paper-card {
           display: block;
-          width: 800px;
+          max-width: 936px;
           margin: auto;
+          width: 100%;
           --paper-card-background-color: white;
         }
         h2 {
-          width: 800px;
+          max-width: 936px;
+          width: 100%;
           margin: 20px auto;
         }
         iron-input {
@@ -112,24 +114,14 @@
         </exmg-toolbar>
         <!-- DataTable -->
         <exmg-datatable>
-          <!-- Colgroup -->
-          <template colgroup>
-            <div class="colgroup">
-              <div class="col" style="width:140px;"></div>
-              <div class="col" style="width:220px;"></div>
-              <div class="col" style="width:120px;"></div>
-              <div class="col" style="width:50%;"></div>
-              <div class="col" style="width:116px;"></div>
-            </div>
-          </template>
           <!-- THead -->
           <exmg-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
             <template>
               <div class="tr">
                 <div class="th" sortable="name">Name</div>
                 <div class="th" sortable="email">Email</div>
-                <div class="th" sortable="city">City</div>
-                <div class="th" sortable="country">Country</div>
+                <div class="th optional" sortable="city">City</div>
+                <div class="th optional" sortable="country">Country</div>
                 <div class="th"></div>
               </div>
             </template>
@@ -140,8 +132,8 @@
               <div class="tr">
                 <div class="td">[[item.name]]</div>
                 <div class="td">[[item.email]]</div>
-                <div class="td">[[item.city]]</div>
-                <div class="td">[[item.country]]</div>
+                <div class="td optional">[[item.city]]</div>
+                <div class="td optional">[[item.country]]</div>
                 <div class="td hover" style="text-align:right;">
                   <span>
                     <paper-icon-button icon="exmg-icons:content-copy" on-tap="_stopTap"></paper-icon-button>

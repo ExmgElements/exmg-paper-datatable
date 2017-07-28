@@ -42,13 +42,15 @@
         }
         paper-card {
           display: block;
-          width: 800px;
+          max-width: 936px;
           margin: auto;
+          width: 100%;
           --paper-card-background-color: white;
         }
         h2,
         .buttons {
-          width: 800px;
+          max-width: 936px;
+          width: 100%;
           margin: 20px auto;
         }
       </style>
@@ -64,8 +66,8 @@
               <div class="tr">
                 <div class="th" sortable="name">Name</div>
                 <div class="th" sortable="email">Email</div>
-                <div class="th" sortable="city">City</div>
-                <div class="th" sortable="country">Country</div>
+                <div class="th optional" sortable="city">City</div>
+                <div class="th optional" sortable="country">Country</div>
               </div>
             </template>
           </exmg-thead>
@@ -75,8 +77,8 @@
               <div class$="[[_computedClass(selected)]]">
                 <div class="td">[[item.name]]</div>
                 <div class="td">[[item.email]]</div>
-                <div class="td">[[item.city]]</div>
-                <div class="td">[[item.country]]</div>
+                <div class="td optional">[[item.city]]</div>
+                <div class="td optional">[[item.country]]</div>
               </div>
             </template>
           </exmg-tbody>
