@@ -1,88 +1,128 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 
 <dom-module id="exmg-thead">
   <template>
     <style>
       :host {
-       width: 100%;
+        width: 100%;
         font-weight: 500;
         border-bottom: 1px solid #dbdbdb;
         user-select: none;
         color: rgba(0,0,0,.64);
       }
 
+      .tr {
+        @apply --layout;
+        box-sizing: border-box;
+        border-bottom: 1px solid #dbdbdb;
+
+        @apply --exmg-thead-tr;
+      }
+
+      .th {
+        @apply --layout;
+        @apply --layout-center;
+        height: 36px;
+        box-sizing: border-box;
+        background-color: #f5f5f5;
+        overflow: hidden;
+        text-align: left;
+        padding: 0px 6px;
+        position: relative;
+
+        @apply --exmg-thead-th;
+      }
+
+      .th span {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        pointer-events: none;
+      }
+
+      .th:first-child {
+        padding-left: 24px;
+      }
+
+      .th:last-child {
+        padding-right: 24px;
+      }
+
+      .flex {
+        @apply --layout-flex;
+      }
+
+      .flex-auto {
+        /* stretch and squish */
+        @apply --layout-flex-auto;
+      }
+
+      .flex-none {
+        /* fixed width */
+        @apply --layout-flex-none;
+      }
+
+      .flex-right {
+        @apply --layout;
+        @apply --layout-end-justified;
+        padding-right: 24px;
+        padding-left: 6px !important;
+      }
+
+      .collapsable {
+        display: none;
+      }
+
+      @media(min-width: 600px) {
+        .collapsable {
+          @apply --layout;
+        }
+      }
+
       .th[sorted] {
         color: rgba(0,0,0,.78);
       }
 
-      .tr {
-        //display:table-row;
-        display: flex;           display: -webkit-flex;
-       flex-direction: row;     -webkit-flex-direction: row;
-       flex-grow: 0;            -webkit-flex-grow: 0;
-       flex-wrap: wrap;         -webkit-flex-wrap: wrap;
-        border-bottom: 1px solid #dbdbdb;
-      }
-
-      .th {
-        flex-grow: 1;            -webkit-flex-grow: 1;
-        overflow: hidden;
-        width:120px;
-        height: 36px;
-        line-height: 36px;
-        background-color: #f5f5f5;
-        box-sizing: border-box;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        padding: 0px 6px 0px 24px;
-        overflow:hidden;
-        text-align: left;
-      }
-
-      @media(max-width: 500px) {
-        .optional {
-          display: none;
-        }
-      }
-
-      .th[sortable]:hover,
-      .th[sorted]{
-        padding-left:0px;
-      }
-
       .th[sortable]:hover{
         cursor: pointer;
-        color: rgba(0,0,0, .87);
+        color: rgba(0,0,0,.87);
       }
 
-      .th[sortable]:hover::before {
+      .th[sortable]::after {
         display: block;
         content: "";
         background-image: url('arrow-downward.svg');
         background-size: 12px 12px;
         height: 12px;
         width: 12px;
-        float: left;
-        margin: 12px 6px;
+        margin: 0 0 0 4px;
+        opacity: 0;
       }
 
-      .th[sorted]::before {
-        display: block;
-        content: "";
-        background-image: url('arrow-downward.svg');
-        background-size: 12px 12px;
-        height: 12px;
-        width: 12px;
-        float: left;
-        margin: 12px 6px;
+      .th[sortable]:hover::after,
+      .th[sorted]::after {
+        opacity: 1;
+      }
+
+      .th[sorted]::after {
         transition: transform .1s linear;
         transform: rotate(0deg);
       }
 
-      :host([sort-direction='DESC']) .th[sorted]::before {
+      :host([sort-direction='DESC']) .th[sorted]::after {
         transform: rotate(180deg);
       }
+
+      .th.flex-right[sortable]::after,
+      .th.flex-right[sorted]::after {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        margin-top: -6px;
+      }
+
     </style>
     <slot></slot>
   </template>

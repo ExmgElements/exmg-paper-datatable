@@ -67,10 +67,22 @@
           <exmg-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
             <template>
               <div class="tr">
-                <div class="th" sortable="name">Name</div>
-                <div class="th" sortable="email">Email</div>
-                <div class="th optional" sortable="city">City</div>
-                <div class="th optional" sortable="country">Country</div>
+                <div class="th flex-none flex-right" sortable="index" style="width: 70px;">
+                  <span>Index</span>
+                </div>
+                <div class="th flex" sortable="name">
+                  <span>Name</span>
+                </div>
+                <div class="th flex" sortable="email" style="min-width: 30%">
+                  <span>Email</span>
+                </div>
+                <div class="th flex collapsable" sortable="city">
+                  <span>City</span>
+                </div>
+                <div class="th flex collapsable" sortable="country">
+                  <span>Country</span>
+                </div>
+
               </div>
             </template>
           </exmg-thead>
@@ -78,10 +90,21 @@
           <exmg-tbody items='[[items]]' selection-enabled>
             <template>
               <div class$="[[_computedClass(selected)]]">
-                <div class="td">[[item.name]]</div>
-                <div class="td">[[item.email]]</div>
-                <div class="td optional">[[item.city]]</div>
-                <div class="td optional">[[item.country]]</div>
+                <div class="td flex-none flex-right" style="width: 70px;">
+                  <span>[[item.index]]</span>
+                </div>
+                <div class="td flex">
+                  <span>[[item.name]]</span>
+                </div>
+                <div class="td flex" style="min-width: 30%">
+                  <span>[[item.email]]</span>
+                </div>
+                <div class="td flex collapsable">
+                  <span>[[item.city]]</span>
+                </div>
+                <div class="td flex collapsable">
+                  <span>[[item.country]]</span>
+                </div>
               </div>
             </template>
           </exmg-tbody>
