@@ -41,12 +41,12 @@
         <style>
           :host {
             display: block;
-            --exmg-tbody-tr-expandable: {
+            /*--exmg-tbody-tr-expandable: {
               padding: 8px;
             };
             --exmg-tbody-tr-expandable-expanded: {
               padding: 8px;
-            };
+            };*/
           }
 
           paper-card {
@@ -85,7 +85,7 @@
           <exmg-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
             <template>
               <div class="tr">
-                <div class="th flex"></div>
+                <!-- <div class="th flex"></div> -->
                 <div class="th flex" sortable="name">
                   <span class="cell-wrapper">Name</span>
                 </div>
@@ -104,10 +104,10 @@
           <!-- TBody -->
           <exmg-tbody items='[[items]]' selection-enabled selected-items="{{selectedItems}}">
             <template>
-              <div class$="[[_computedClass(selected)]]">
-                <div class="td flex"><paper-checkbox checked="{{selected}}">
+              <div class$="[[_computedClass(selected)]]" aria-expand$="[[selected]]">
+                <!-- <div class="td flex"><paper-checkbox checked="{{selected}}">
                   <span class="cell-wrapper"></paper-checkbox></span>
-                </div>
+                </div> -->
                 <div class="td flex">
                   <span class="cell-wrapper">[[item.name]]</span>
                 </div>
@@ -129,7 +129,7 @@
                     <p>[[item.mediumText]]</p>
                   </div>
                 </span>
-              </tr>
+              </div>
             </template>
           </exmg-tbody>
         </exmg-datatable>
