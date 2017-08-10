@@ -67,31 +67,26 @@
             <paper-icon-button icon="exmg-icons:add"></paper-icon-button>
           </div>
            <div slot="selected">
-             <span class="flex"></span>
+            <div class="flex"></div>
             <paper-icon-button icon="exmg-icons:delete"></paper-icon-button>
           </div>
         </exmg-toolbar>
         <!-- DataTable -->
         <exmg-datatable>
-          <!-- Colgroup -->
-          <template colgroup>
-            <div class="colgroup">
-              <div class="col" style="width:50px;"></div>
-              <div class="col" style="width:140px;"></div>
-              <div class="col" style="width:220px;"></div>
-              <div class="col" style="width:120px;"></div>
-              <div class="col" style="width:50%;"></div>
-            </div>
-          </template>
           <!-- THead -->
           <exmg-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
             <template>
               <div class="tr">
-                <div class="th"></div>
-                <div class="th" sortable="name">Name</div>
-                <div class="th" sortable="email">Email</div>
-                <div class="th" sortable="city">City</div>
-                <div class="th" sortable="country">Country</div>
+                <div class="th flex-none" style="width: 70px;"></div>
+                <div class="th flex" sortable="name">
+                  <span>Name</span></div>
+                <div class="th flex" sortable="email">
+                  <span>Email</span></div>
+                <div class="th flex" sortable="city">
+                  <span>City</span></div>
+                <div class="th flex" sortable="country">
+                  <span>Country</span>
+                </div>
               </div>
             </template>
           </exmg-thead>
@@ -99,11 +94,21 @@
           <exmg-tbody items='[[items]]' selection-enabled multi-selection selected-items="{{selectedItems}}">
             <template>
               <div class="tr">
-                <div class="td"><paper-checkbox checked="{{selected}}"></paper-checkbox></div>
-                <div class="td">[[item.name]]</div>
-                <div class="td">[[item.email]]</div>
-                <div class="td">[[item.city]]</div>
-                <div class="td">[[item.country]]</div>
+                <div class="td flex-none" style="width: 70px;">
+                  <paper-checkbox checked="{{selected}}"></paper-checkbox>
+                </div>
+                <div class="td flex">
+                  <span>[[item.name]]</span>
+                </div>
+                <div class="td flex">
+                  <span>[[item.email]]</span>
+                </div>
+                <div class="td flex">
+                  <span>[[item.city]]</span>
+                </div>
+                <div class="td flex">
+                  <span>[[item.country]]</span>
+                </div>
               </div>
             </template>
           </exmg-tbody>

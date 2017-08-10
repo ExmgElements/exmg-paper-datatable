@@ -66,7 +66,6 @@
           <exmg-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
             <template>
               <div class="tr">
-                <!-- <div class="th flex"></div> -->
                 <div class="th flex" sortable="name">
                   <span>Name</span>
                 </div>
@@ -86,9 +85,6 @@
           <exmg-tbody items='[[items]]' selection-enabled>
             <template>
               <div class$="[[_computedClass(selected)]]" aria-expand$="[[selected]]">
-                <!-- <div class="td flex"><paper-checkbox checked="{{selected}}">
-                  <span></paper-checkbox></span>
-                </div> -->
                 <div class="td flex">
                   <span>[[item.name]]</span>
                 </div>
