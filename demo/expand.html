@@ -21,12 +21,9 @@
     <link rel="import" href="../../iron-ajax/iron-ajax.html">
 
     <link rel="import" href="../exmg-datatable.html">
-    <link rel="import" href="../exmg-toolbar.html">
     <link rel="import" href="../exmg-thead.html">
     <link rel="import" href="../exmg-tbody.html">
-    <link rel="import" href="../exmg-paging.html">
     <link rel="import" href="../exmg-data-helper.html">
-    <link rel="import" href="../exmg-icons.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -41,12 +38,6 @@
         <style>
           :host {
             display: block;
-            /*--exmg-tbody-tr-expandable: {
-              padding: 8px;
-            };
-            --exmg-tbody-tr-expandable-expanded: {
-              padding: 8px;
-            };*/
           }
 
           paper-card {
@@ -67,18 +58,6 @@
       <h2>Expandable Table</h2>
 
       <paper-card elevation="1">
-        <!-- Table Toobar -->
-        <exmg-toolbar selected-items="[[selectedItems]]">
-          <div slot="default">
-            <div class="title-container flex">
-              <span>Admin Users</span>
-            </div>
-            <paper-icon-button icon="exmg-icons:add"></paper-icon-button>
-          </div>
-          <div slot="selected">
-            <paper-icon-button icon="exmg-icons:delete"></paper-icon-button>
-          </div>
-        </exmg-toolbar>
         <!-- DataTable -->
         <exmg-datatable>
           <!-- THead -->
@@ -102,7 +81,7 @@
             </template>
           </exmg-thead>
           <!-- TBody -->
-          <exmg-tbody items='[[items]]' selection-enabled selected-items="{{selectedItems}}">
+          <exmg-tbody items='[[items]]' selection-enabled>
             <template>
               <div class$="[[_computedClass(selected)]]" aria-expand$="[[selected]]">
                 <!-- <div class="td flex"><paper-checkbox checked="{{selected}}">
@@ -133,15 +112,13 @@
             </template>
           </exmg-tbody>
         </exmg-datatable>
-        <!-- Table Paging -->
-        <exmg-paging total-items="[[rawItems.length]]" page-index="{{pageIndex}}" page-size="{{pageSize}}"></exmg-paging>
       </paper-card>
 
       <!-- Load contacts from json file  -->
       <iron-ajax url="data/contacts.json" last-response="{{rawItems}}" auto></iron-ajax>
 
       <!-- Manage sorting and paging  -->
-      <exmg-data-helper raw-items="[[rawItems]]" items="{{items}}" page-index="[[pageIndex]]" page-size="[[pageSize]]" sorted="[[sorted]]" sort-direction="[[sortDirection]]" total-items="{{totalItems}}"></exmg-data-helper>
+      <exmg-data-helper raw-items="[[rawItems]]" items="{{items}}" page-index="[[pageIndex]]" page-size="[[pageSize]]" sorted="[[sorted]]" sort-direction="[[sortDirection]]"></exmg-data-helper>
 
     </template>
     <script>
