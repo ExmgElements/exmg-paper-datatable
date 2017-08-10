@@ -68,16 +68,16 @@
               <div class="tr">
                 <!-- <div class="th flex"></div> -->
                 <div class="th flex" sortable="name">
-                  <span class="cell-wrapper">Name</span>
+                  <span>Name</span>
                 </div>
                 <div class="th flex" sortable="email">
-                  <span class="cell-wrapper">Email</span>
+                  <span>Email</span>
                 </div>
                 <div class="th flex" sortable="city">
-                  <span class="cell-wrapper">City</span>
+                  <span>City</span>
                 </div>
                 <div class="th flex" sortable="country">
-                  <span class="cell-wrapper">Country</span>
+                  <span>Country</span>
                 </div>
               </div>
             </template>
@@ -87,23 +87,23 @@
             <template>
               <div class$="[[_computedClass(selected)]]" aria-expand$="[[selected]]">
                 <!-- <div class="td flex"><paper-checkbox checked="{{selected}}">
-                  <span class="cell-wrapper"></paper-checkbox></span>
+                  <span></paper-checkbox></span>
                 </div> -->
                 <div class="td flex">
-                  <span class="cell-wrapper">[[item.name]]</span>
+                  <span>[[item.name]]</span>
                 </div>
                 <div class="td flex">
-                  <span class="cell-wrapper">[[item.email]]</span>
+                  <span>[[item.email]]</span>
                 </div>
                 <div class="td flex">
-                  <span class="cell-wrapper">[[item.city]]</span>
+                  <span>[[item.city]]</span>
                 </div>
                 <div class="td flex">
-                  <span class="cell-wrapper">[[item.country]]</span>
+                  <span>[[item.country]]</span>
                 </div>
               </div>
               <div class="tr flex expandable" aria-expanded$="[[selected]]">
-                <span class="cell-wrapper">
+                <span>
                   <img src="[[item.image]]" />
                   <div>
                     <h3>[[item.shortText]]</h3>

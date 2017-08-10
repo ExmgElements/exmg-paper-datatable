@@ -69,7 +69,7 @@
         display: none;
       }
 
-      .tr .td.hover .cell-wrapper > * {
+      .tr .td.hover > span > * {
         display: none;
       }
 
@@ -79,7 +79,7 @@
         @apply --exmg-tbody-td-hover;
       }
 
-      .tr:hover .td.hover .cell-wrapper > * {
+      .tr:hover .td.hover > span > * {
         display: inline-block;
 
         @apply --exmg-tbody-td-hover-content;
@@ -95,7 +95,7 @@
         @apply --exmg-tbody-td;
       }
 
-      .td .cell-wrapper {
+      .td > span {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
