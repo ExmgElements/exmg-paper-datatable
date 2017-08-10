@@ -77,7 +77,10 @@
           <exmg-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
             <template>
               <div class="tr">
-                <div class="th flex-none" style="width: 70px;"></div>
+                <div class="th flex-none" style="width: 70px;">
+                  <!-- TODO: toggle all checkboxes -->
+                  <paper-checkbox checked="{{selected}}"></paper-checkbox>
+                </div>
                 <div class="th flex" sortable="name">
                   <span>Name</span></div>
                 <div class="th flex" sortable="email">
