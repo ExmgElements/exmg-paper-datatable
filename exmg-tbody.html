@@ -48,11 +48,10 @@
         box-sizing: border-box;
         overflow: hidden;
         padding: 0 6px;
-
         @apply --exmg-tbody-td;
       }
 
-      .td span {
+      .td > span {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -101,7 +100,7 @@
         display: none;
       }
 
-      .tr .td.hover > * {
+      .tr .td.hover > span > * {
         display: none;
       }
 
@@ -111,10 +110,8 @@
         @apply --exmg-tbody-td-hover;
       }
 
-      .tr:hover .td.hover > * {
+      .tr:hover .td.hover > span > * {
         display: inline-block;
-        max-height: 35px;
-        margin-right: -6px;
 
         @apply --exmg-tbody-td-hover-content;
       }
