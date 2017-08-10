@@ -68,19 +68,19 @@
             <template>
               <div class="tr">
                 <div class="th flex-none flex-right" sortable="index" style="width: 70px;">
-                  <span>Index</span>
+                  <span class="cell-wrapper">Index</span>
                 </div>
                 <div class="th flex" sortable="name">
-                  <span>Name</span>
+                  <span class="cell-wrapper">Name</span>
                 </div>
                 <div class="th flex" sortable="email" style="min-width: 30%">
-                  <span>Email</span>
+                  <span class="cell-wrapper">Email</span>
                 </div>
                 <div class="th flex collapsable" sortable="city">
-                  <span>City</span>
+                  <span class="cell-wrapper">City</span>
                 </div>
                 <div class="th flex collapsable" sortable="country">
-                  <span>Country</span>
+                  <span class="cell-wrapper">Country</span>
                 </div>
 
               </div>
@@ -91,19 +91,19 @@
             <template>
               <div class$="[[_computedClass(selected)]]">
                 <div class="td flex-none flex-right" style="width: 70px;">
-                  <span>[[item.index]]</span>
+                  <span class="cell-wrapper">[[item.index]]</span>
                 </div>
                 <div class="td flex">
-                  <span>[[item.name]]</span>
+                  <span class="cell-wrapper">[[item.name]]</span>
                 </div>
                 <div class="td flex" style="min-width: 30%">
-                  <span>[[item.email]]</span>
+                  <span class="cell-wrapper">[[item.email]]</span>
                 </div>
                 <div class="td flex collapsable">
-                  <span>[[item.city]]</span>
+                  <span class="cell-wrapper">[[item.city]]</span>
                 </div>
                 <div class="td flex collapsable">
-                  <span>[[item.country]]</span>
+                  <span class="cell-wrapper">[[item.country]]</span>
                 </div>
               </div>
             </template>

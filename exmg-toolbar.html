@@ -12,21 +12,24 @@
         border-bottom: 1px solid #dbdbdb;
         color: rgba(0,0,0,.87);
         font-size: 20px;
-        height: 64px;
+
       }
 
       #selected-toolbar {
-        padding:0px 12px 0px 24px;
+        padding: 0px 24px;
       }
 
-      ::slotted(*){
-        @apply --layout-horizontal;
+      ::slotted(*) {
+        @apply --layout;
         @apply --layout-center;
-        @apply --layout-fit;
-        padding:0px 12px 0px 24px;
+        padding: 0px 24px;
+        height: 64px;
+        width: 100%;
+        box-sizing: border-box;
       }
 
-      #selected-toolbar{
+
+      #selected-toolbar {
         background: var(--exm-toolbar-selection-color, #E8EFFD);
         transition: transform .1s linear;
         transform: scale(1,0);
@@ -42,6 +45,7 @@
         @apply --layout-center;
         @apply --layout-fit;
       }
+
     </style>
 
     <div id="default-toolbar">

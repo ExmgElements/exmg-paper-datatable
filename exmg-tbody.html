@@ -17,28 +17,58 @@
       }
 
       .tr.selected {
-        background-color: #E8EFFD;
+        /*border-bottom: none;
+        width: calc(100% + 24px);
+        margin-left: -12px;*/
+        background: #fff;
+
         @apply --exmg-tbody-tr-selected;
       }
 
-      .tr.expandable[aria-expanded] {
-        display: table-cell;
+      .tr.selected:hover .td {
+        background: none;
       }
 
-      .tr.expandable[aria-expanded] > div {
+      .tr.expandable {
+        display: none;
+        @apply --exmg-tbody-tr-expandable;
+      }
+
+      .tr.expandable[aria-expanded] {
+        @apply --layout;
+
+        @apply --exmg-tbody-tr-expandable-expanded;
+      }
+
+      /*.tr.expandable[aria-expanded] .row-expand {
+        border: 1px solid red;
+
         float: left;
         position: relative;
         left: 0;
         top: 0px;
         height: 100px;
         width: 780px;
-        @apply --layout-horizontal;
-        @apply --exmg-tbody-tr-expandable-expanded;
+      }*/
+
+      .tr[hidden] {
+        display: none;
       }
 
-      .tr.expandable {
+      .tr .td.hover .cell-wrapper > * {
         display: none;
-        @apply --exmg-tbody-tr-expandable;
+      }
+
+      .tr:hover .td {
+        background-color: #f5f5f5;
+
+        @apply --exmg-tbody-td-hover;
+      }
+
+      .tr:hover .td.hover .cell-wrapper > * {
+        display: inline-block;
+
+        @apply --exmg-tbody-td-hover-content;
       }
 
       .td {
@@ -51,7 +81,7 @@
         @apply --exmg-tbody-td;
       }
 
-      .td > span {
+      .td .cell-wrapper {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -94,26 +124,6 @@
         .collapsable {
           @apply --layout;
         }
-      }
-
-      .tr[hidden] {
-        display: none;
-      }
-
-      .tr .td.hover > span > * {
-        display: none;
-      }
-
-      .tr:hover .td {
-        background-color: #f5f5f5;
-
-        @apply --exmg-tbody-td-hover;
-      }
-
-      .tr:hover .td.hover > span > * {
-        display: inline-block;
-
-        @apply --exmg-tbody-td-hover-content;
       }
 
     </style>

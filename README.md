@@ -10,7 +10,7 @@ Supports:
  - Toolbar
  - Paging/Sorting
  - Sorting/filtering helper elements for working with local data sets
- - Easily customizable like collapsible rows
+ - Easily customizable like expandable rows
 
 ## Install
 
