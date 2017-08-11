@@ -16,6 +16,7 @@
     <link rel="import" href="../../paper-slider/paper-slider.html">
     <link rel="import" href="../../paper-button/paper-button.html">
     <link rel="import" href="../../paper-input/paper-input.html">
+    <link rel="import" href="../../paper-tooltip/paper-tooltip.html">
     <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
     <link rel="import" href="../../paper-checkbox/paper-checkbox.html">
     <link rel="import" href="../../iron-ajax/iron-ajax.html">
@@ -24,6 +25,7 @@
     <link rel="import" href="../exmg-thead.html">
     <link rel="import" href="../exmg-tbody.html">
     <link rel="import" href="../exmg-data-helper.html">
+    <link rel="import" href="../exmg-icons.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -78,6 +80,7 @@
                 <div class="th flex" sortable="country">
                   <span>Country</span>
                 </div>
+                <div class="th flex-none" style="width: 100px"></div>
               </div>
             </template>
           </exmg-thead>
@@ -97,7 +100,16 @@
                 <div class="td flex">
                   <span>[[item.country]]</span>
                 </div>
+                <div class="td flex-none hover" style="width: 100px">
+                  <span>
+                    <span>
+                      <paper-icon-button icon="exmg-icons:edit"></paper-icon-button>
+                      <paper-tooltip>Edit</paper-tooltip>
+                    </span>
+                  </span>
+                </div>
               </div>
+              <!-- TODO: close expandable only when clicking on 'close' button -->
               <div class="tr flex expandable" aria-expanded$="[[selected]]">
                 <span class="">
                   <img src="[[item.image]]" />
