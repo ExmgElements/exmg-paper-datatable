@@ -2,7 +2,7 @@
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../shadycss/apply-shim.html">
 
-<dom-module id="exmg-toolbar">
+<dom-module id="exmg-paper-toolbar">
   <template>
     <style>
       :host {
@@ -68,7 +68,7 @@
 
   <script>
     /**
-     * `exmg-toolbar`
+     * `exmg-paper-toolbar`
      * Datatable
      *
      * @customElement
@@ -76,7 +76,9 @@
      * @demo demo/index.html
      */
     class ExmgToolbar extends Polymer.Element {
-      static get is() { return 'exmg-toolbar'; }
+      static get is() {
+        return 'exmg-paper-toolbar';
+      }
       static get properties() {
         return {
           /**
@@ -84,7 +86,7 @@
           */
           _selectedRows: {
             type: Number,
-            value: 0
+            value: 0,
           },
 
           /**
@@ -98,13 +100,13 @@
       static get observers() {
         return [
             '_selectedItemsChanged(selectedItems.*)',
-        ]
+        ];
       }
       _selectedItemsChanged(changes) {
-        if(changes.path === 'selectedItems') {
+        if (changes.path === 'selectedItems') {
           this.set('_selectedRows', changes.value === null ? 0 : Array.isArray(changes.value) ? changes.value.length : 1);
         }
-        if(changes.path === 'selectedItems.length') {
+        if (changes.path === 'selectedItems.length') {
           this.set('_selectedRows', changes.value);
         }
       }

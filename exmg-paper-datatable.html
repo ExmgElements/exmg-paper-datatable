@@ -1,6 +1,6 @@
 <link rel="import" href="../polymer/polymer-element.html">
 
-<dom-module id="exmg-datatable">
+<dom-module id="exmg-paper-datatable">
   <template>
     <style>
       :host {
@@ -15,7 +15,7 @@
 
   <script>
     /**
-     * `exmg-datatable`
+     * `exmg-paper-datatable`
      * Datatable
      *
      * @customElement
@@ -23,14 +23,13 @@
      * @demo demo/index.html
      */
     class ExmgDatatable extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.Element) {
-      static get is() { return 'exmg-datatable'; }
-
+      static get is() {
+        return 'exmg-paper-datatable';
+      }
       ready() {
         super.ready();
-
         let templ = this.querySelector('template[colgroup]');
-
-        if(!templ) {
+        if (!templ) {
           return;
         }
         this.templatize(templ);

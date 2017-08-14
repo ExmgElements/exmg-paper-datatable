@@ -1,10 +1,10 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
 
-<dom-module id="exmg-data-helper">
+<dom-module id="exmg-paper-data-helper">
   <script>
     /**
-     * `exmg-data-helper`
+     * `exmg-paper-data-helper`
      * Datatable
      *
      * @customElement
@@ -13,19 +13,21 @@
      */
 
 (function() {
-    const isArray = o => Array.isArray(o) || Object.prototype.toString.call(o) === '[object Array]';
-    const properArray = o => isArray(o) ? o : [];
+    const isArray = (o) => Array.isArray(o) || Object.prototype.toString.call(o) === '[object Array]';
+    const properArray = (o) => isArray(o) ? o : [];
     const lookupValueByPath = (o, path) => path.split('.').reduce((r, p) => r[p], o);
 
     class ExmgDataHelper extends Polymer.GestureEventListeners(Polymer.Element) {
-      static get is() { return 'exmg-data-helper'; }
+      static get is() {
+        return 'exmg-paper-data-helper';
+      }
       static get properties() {
         return {
           /**
            * Raw item list
            */
           rawItems: {
-            type: Array
+            type: Array,
           },
 
           /**
@@ -33,7 +35,7 @@
            */
           items: {
             type: Array,
-            notify: true
+            notify: true,
           },
 
           /**
@@ -43,7 +45,7 @@
           totalItems: {
             notify: true,
             type: Number,
-            computed: '_computeLength(rawItems.*)'
+            computed: '_computeLength(rawItems.*)',
           },
 
           /**
@@ -51,7 +53,7 @@
           */
           pageIndex: {
             type: Number,
-            value: 0
+            value: 0,
           },
 
           /**
@@ -59,7 +61,7 @@
           */
           pageSize: {
             type: Number,
-            value: 10
+            value: 10,
           },
 
           /**
@@ -79,8 +81,8 @@
         return [
           '_sortChanged(sorted,sortDirection)',
           '_ramItemsChanged(rawItems.*)',
-          '_pageChanged(pageIndex, pageSize)'
-        ]
+          '_pageChanged(pageIndex, pageSize)',
+        ];
       }
 
       _sortChanged(sorted, sortDirection) {
@@ -106,11 +108,11 @@
         var workArray = [...properArray(this.rawItems)];
         var start = (this.pageIndex * this.pageSize);
 
-        if(this._doSort && this.sorted) {
+        if (this._doSort && this.sorted) {
           workArray.sort((a, b) => {
             let fieldA = lookupValueByPath(a, this.sorted);
             let fieldB = lookupValueByPath(b, this.sorted);
-            if(typeof fieldA === 'number' || typeof fieldA === 'boolean') {
+            if (typeof fieldA === 'number' || typeof fieldA === 'boolean') {
               return this.sortDirection === 'ASC' ? fieldA - fieldB : fieldB - fieldA;
             } else {
               fieldA = fieldA ? fieldA.toLowerCase() : '';
@@ -131,11 +133,9 @@
         this.set('items', []);
         this.set('items', workArray.slice(start, start + this.pageSize));
       }
-
     }
 
     window.customElements.define(ExmgDataHelper.is, ExmgDataHelper);
-
   })();
   </script>
 </dom-module>

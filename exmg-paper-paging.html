@@ -5,9 +5,9 @@
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
-<link rel="import" href="exmg-icons.html">
+<link rel="import" href="exmg-paper-icons.html">
 
-<dom-module id="exmg-paging">
+<dom-module id="exmg-paper-paging">
   <template>
     <style>
       :host {
@@ -27,13 +27,13 @@
           width: 68px;
         };
         --paper-dropdown-menu-icon: {
-          color: var(--exmg-paging-icon-color, rgba(0,0,0,.54));
+          color: var(--exmg-paper-paging-icon-color, rgba(0,0,0,.54));
         };
         --paper-icon-button: {
-          color: var(--exmg-paging-icon-color, rgba(0,0,0,.54));
+          color: var(--exmg-paper-paging-icon-color, rgba(0,0,0,.54));
         };
         --paper-icon-button-disabled: {
-          color: var(--exmg-paging-icon-disabled-color, rgba(0,0,0,.36));
+          color: var(--exmg-paper-paging-icon-disabled-color, rgba(0,0,0,.36));
         };
         --paper-input-container-underline-focus: { display: none; };
         --paper-input-container-underline-disabled: { display: none; };
@@ -61,14 +61,14 @@
       -
       [[_pageInfoEnd(pageIndex,pageSize,totalItems)]] of [[totalItems]]
     </span>
-    <paper-icon-button icon="exmg-icons:chevron-left" on-tap="previousPage" disabled="[[_isFirstPage(pageIndex)]]"></paper-icon-button>
-    <paper-icon-button icon="exmg-icons:chevron-right" on-tap="nextPage" disabled="[[_isLastPage(pageIndex, pageSize, totalItems)]]"></paper-icon-button>
+    <paper-icon-button icon="exmg-paper-icons:chevron-left" on-tap="previousPage" disabled="[[_isFirstPage(pageIndex)]]"></paper-icon-button>
+    <paper-icon-button icon="exmg-paper-icons:chevron-right" on-tap="nextPage" disabled="[[_isLastPage(pageIndex, pageSize, totalItems)]]"></paper-icon-button>
 
   </template>
 
   <script>
     /**
-     * `exmg-paging`
+     * `exmg-paper-paging`
      * Datatable
      *
      * @customElement
@@ -76,7 +76,9 @@
      * @demo demo/index.html
      */
     class ExmgPaging extends Polymer.GestureEventListeners(Polymer.Element) {
-      static get is() { return 'exmg-paging'; }
+      static get is() {
+        return 'exmg-paper-paging';
+      }
       static get properties() {
         return {
           /**
@@ -84,7 +86,7 @@
           */
           totalItems: {
             type: Number,
-            value: 0
+            value: 0,
           },
 
           /**
@@ -93,7 +95,7 @@
           pageIndex: {
             type: Number,
             notify: true,
-            value: 0
+            value: 0,
           },
 
           /**
@@ -102,12 +104,12 @@
           pageSize: {
             type: Number,
             notify: true,
-            value: 10
+            value: 10,
           },
 
           _pageSize: {
             type: Number,
-          }
+          },
         };
       }
 
@@ -115,7 +117,7 @@
         return [
           '_observePageSizeList(_pageSize)',
           '_observePageSize(pageSize)',
-        ]
+        ];
       }
 
       _observePageSizeList(ps) {
@@ -150,7 +152,6 @@
       previousPage() {
         this.pageIndex--;
       }
-
     }
 
     window.customElements.define(ExmgPaging.is, ExmgPaging);

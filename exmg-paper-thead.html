@@ -2,7 +2,7 @@
 <link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 
-<dom-module id="exmg-thead">
+<dom-module id="exmg-paper-thead">
   <template>
     <style>
       :host {
@@ -18,7 +18,7 @@
         box-sizing: border-box;
         border-bottom: 1px solid #dbdbdb;
 
-        @apply --exmg-thead-tr;
+        @apply --exmg-paper-thead-tr;
       }
 
       .th {
@@ -31,7 +31,7 @@
         text-align: left;
         padding: 0px 6px;
         position: relative;
-        @apply --exmg-thead-th;
+        @apply --exmg-paper-thead-th;
       }
 
       .th > span {
@@ -128,15 +128,17 @@
 
   <script>
     /**
-     * `exmg-thead`
+     * `exmg-paper-thead`
      * Datatable
      *
      * @customElement
      * @polymer
      * @demo demo/index.html
      */
-    class ExmgThead extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.GestureEventListeners(Polymer.Element))  {
-      static get is() { return 'exmg-thead'; }
+    class ExmgThead extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.GestureEventListeners(Polymer.Element)) {
+      static get is() {
+        return 'exmg-paper-thead';
+      }
       static get properties() {
         return {
           /**
@@ -145,7 +147,7 @@
           sorted: {
             type: String,
             reflectToAttribute: true,
-            notify: true
+            notify: true,
           },
           /**
           * An string containing 'ASC' or 'DESC' to indicate the sorting direction
@@ -154,14 +156,15 @@
             type: String,
             notify: true,
             reflectToAttribute: true,
-            value: 'ASC'
-          }
+            value: 'ASC',
+          },
         };
       }
+
       static get observers() {
         return [
           '_sortedByChanged(sorted)',
-        ]
+        ];
       }
 
       ready() {
@@ -169,8 +172,8 @@
 
         let templ = this.querySelector('template');
 
-        if(!templ) {
-          console.error('Error: exmg-thead template not found!');
+        if (!templ) {
+          console.error('Error: exmg-paper-thead template not found!');
           return;
         }
         this.templatize(templ);
@@ -194,8 +197,8 @@
         let headerColumns = this.shadowRoot.querySelectorAll('.th');
         this._resetOldSorting();
         headerColumns.forEach((el) => {
-          if(el.getAttribute('sortable') === sorted) {
-            el.setAttribute('sorted','');
+          if (el.getAttribute('sortable') === sorted) {
+            el.setAttribute('sorted', '');
             this.set('sortDirection', 'ASC');
           }
         });
@@ -205,9 +208,9 @@
       * Handle column header tap
       */
       _handleTap(e) {
-        let sortField = e.path[0].getAttribute("sortable");
-        if(e.path[0].classList.contains('th') && sortField){
-          if(this.sorted === sortField){
+        let sortField = e.path[0].getAttribute('sortable');
+        if (e.path[0].classList.contains('th') && sortField) {
+          if (this.sorted === sortField) {
             this.set('sortDirection', this.sortDirection === 'ASC' ? 'DESC' : 'ASC');
           } else {
             this._resetOldSorting();
@@ -221,7 +224,7 @@
       */
       _resetOldSorting(tr) {
         let rowChildren = this.shadowRoot.querySelectorAll('.th[sorted]');
-        rowChildren.forEach(el => el.removeAttribute('sorted'));
+        rowChildren.forEach((el) => el.removeAttribute('sorted'));
       }
     }
 

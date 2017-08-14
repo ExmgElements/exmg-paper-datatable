@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>exmg-datatable Complete Demo</title>
+    <title>exmg-paper-datatable Complete Demo</title>
 
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
@@ -18,13 +18,13 @@
     <link rel="import" href="../../paper-checkbox/paper-checkbox.html">
     <link rel="import" href="../../iron-ajax/iron-ajax.html">
 
-    <link rel="import" href="../exmg-datatable.html">
-    <link rel="import" href="../exmg-toolbar.html">
-    <link rel="import" href="../exmg-thead.html">
-    <link rel="import" href="../exmg-tbody.html">
-    <link rel="import" href="../exmg-paging.html">
-    <link rel="import" href="../exmg-data-helper.html">
-    <link rel="import" href="../exmg-icons.html">
+    <link rel="import" href="../exmg-paper-datatable.html">
+    <link rel="import" href="../exmg-paper-toolbar.html">
+    <link rel="import" href="../exmg-paper-thead.html">
+    <link rel="import" href="../exmg-paper-tbody.html">
+    <link rel="import" href="../exmg-paper-paging.html">
+    <link rel="import" href="../exmg-paper-data-helper.html">
+    <link rel="import" href="../exmg-paper-icons.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -50,7 +50,7 @@
           width: 800px;
           margin: 20px auto;
         }
-        exmg-toolbar .flex {
+        exmg-paper-toolbar .flex {
           @apply --layout-flex;
         }
       </style>
@@ -59,22 +59,22 @@
 
       <paper-card elevation="1">
         <!-- Table Toobar -->
-        <exmg-toolbar selected-items="[[selectedItems]]">
+        <exmg-paper-toolbar selected-items="[[selectedItems]]">
           <div slot="default">
             <div class="title-container flex">
               <span>Admin Users</span>
             </div>
-            <paper-icon-button icon="exmg-icons:add"></paper-icon-button>
+            <paper-icon-button icon="exmg-paper-icons:add"></paper-icon-button>
           </div>
            <div slot="selected">
             <div class="flex"></div>
-            <paper-icon-button icon="exmg-icons:delete"></paper-icon-button>
+            <paper-icon-button icon="exmg-paper-icons:delete"></paper-icon-button>
           </div>
-        </exmg-toolbar>
+        </exmg-paper-toolbar>
         <!-- DataTable -->
-        <exmg-datatable>
+        <exmg-paper-datatable>
           <!-- THead -->
-          <exmg-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
+          <exmg-paper-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
             <template>
               <div class="tr">
                 <div class="th flex-none" style="width: 70px;">
@@ -92,9 +92,9 @@
                 </div>
               </div>
             </template>
-          </exmg-thead>
+          </exmg-paper-thead>
           <!-- TBody -->
-          <exmg-tbody items='[[items]]' selection-enabled multi-selection selected-items="{{selectedItems}}">
+          <exmg-paper-tbody items='[[items]]' selection-enabled multi-selection selected-items="{{selectedItems}}">
             <template>
               <div class="tr">
                 <div class="td flex-none" style="width: 70px;">
@@ -114,32 +114,34 @@
                 </div>
               </div>
             </template>
-          </exmg-tbody>
-        </exmg-datatable>
+          </exmg-paper-tbody>
+        </exmg-paper-datatable>
         <!-- Table Paging -->
-        <exmg-paging total-items="[[rawItems.length]]" page-index="{{pageIndex}}" page-size="{{pageSize}}"></exmg-paging>
+        <exmg-paper-paging total-items="[[rawItems.length]]" page-index="{{pageIndex}}" page-size="{{pageSize}}"></exmg-paper-paging>
       </paper-card>
 
       <!-- Load contacts from json file  -->
       <iron-ajax url="data/contacts.json" last-response="{{rawItems}}" auto></iron-ajax>
 
       <!-- Manage sorting and paging  -->
-      <exmg-data-helper raw-items="[[rawItems]]" items="{{items}}" page-index="[[pageIndex]]" page-size="[[pageSize]]" sorted="[[sorted]]" sort-direction="[[sortDirection]]" total-items="{{totalItems}}"></exmg-data-helper>
+      <exmg-paper-data-helper raw-items="[[rawItems]]" items="{{items}}" page-index="[[pageIndex]]" page-size="[[pageSize]]" sorted="[[sorted]]" sort-direction="[[sortDirection]]"></exmg-paper-data-helper>
 
     </template>
     <script>
     window.addEventListener('WebComponentsReady', function() {
       class XTable extends Polymer.Element {
-        static get is() { return 'x-table'; }
+        static get is() {
+          return 'x-table';
+        }
         static get properties() {
           return {
             pageIndex: {
               type: Number,
-              value: 0
+              value: 0,
             },
             pageSize: {
               type: Number,
-              value: 10
+              value: 10,
             },
             sorted: {
               type: String,
@@ -148,7 +150,7 @@
             sortDirection: {
               type: String,
               value: 'ASC',
-            }
+            },
           };
         }
       }

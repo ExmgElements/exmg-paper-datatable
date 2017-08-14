@@ -2,7 +2,7 @@
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../polymer/lib/elements/array-selector.html">
 
-<dom-module id="exmg-tbody">
+<dom-module id="exmg-paper-tbody">
   <template>
     <style>
       :host {
@@ -13,7 +13,7 @@
         @apply --layout;
         box-sizing: border-box;
         border-bottom: 1px solid #dbdbdb;
-        @apply --exmg-tbody-tr;
+        @apply --exmg-paper-tbody-tr;
       }
 
       .tr.selected {
@@ -21,7 +21,7 @@
         position: relative;
         z-index: 20;
 
-        @apply --exmg-tbody-tr-selected;
+        @apply --exmg-paper-tbody-tr-selected;
       }
 
       .tr.selected:hover .td {
@@ -42,12 +42,12 @@
 
       .tr:hover .td {
         background-color: #f5f5f5;
-        @apply --exmg-tbody-td-hover;
+        @apply --exmg-paper-tbody-td-hover;
       }
 
       .tr:hover .td.hover > span > * {
         display: inline-block;
-        @apply --exmg-tbody-td-hover-content;
+        @apply --exmg-paper-tbody-td-hover-content;
       }
 
       .tr.expandable {
@@ -66,7 +66,7 @@
             0 1px 5px 0 rgba(0, 0, 0, 0.12),
             0 3px 1px -2px rgba(0, 0, 0, 0.2);
 
-        @apply --exmg-tbody-tr-expandable;
+        @apply --exmg-paper-tbody-tr-expandable;
       }
 
       .tr.expandable[aria-expanded] {
@@ -76,7 +76,7 @@
       .tr.expandable > span {
         @apply --layout;
         @apply --layout-center;
-        @apply --exmg-tbody-tr-expandable-expanded;
+        @apply --exmg-paper-tbody-tr-expandable-expanded;
       }
 
       .tr.expandable > span > * {
@@ -90,7 +90,7 @@
         box-sizing: border-box;
         overflow: hidden;
         padding: 0 6px;
-        @apply --exmg-tbody-td;
+        @apply --exmg-paper-tbody-td;
       }
 
       .td > span {
@@ -161,7 +161,7 @@
 
   <script>
     /**
-     * `exmg-tbody`
+     * `exmg-paper-tbody`
      * Datatable
      *
      * @customElement
@@ -169,8 +169,13 @@
      * @demo demo/index.html
      */
 
+  (function() {
+    const SECRET_TABINDEX = -100;
+
     class ExmgTbody extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.Element) {
-      static get is() { return 'exmg-tbody'; }
+      static get is() {
+        return 'exmg-paper-tbody';
+      }
       static get properties() {
         return {
           /**
@@ -178,7 +183,7 @@
           * to stamp and that that each template instance should bind to.
           */
           items: {
-            type: Array
+            type: Array,
           },
           /**
           * The name of the variable to add to the binding scope for the array
@@ -186,7 +191,7 @@
           */
           as: {
             type: String,
-            value: 'item'
+            value: 'item',
           },
           /**
           * The name of the variable to add to the binding scope to indicate
@@ -194,7 +199,7 @@
           */
           selectedAs: {
             type: String,
-            value: 'selected'
+            value: 'selected',
           },
           /**
           * The name of the variable to add to the binding scope with the index
@@ -202,7 +207,7 @@
           */
           indexAs: {
             type: String,
-            value: 'index'
+            value: 'index',
           },
           /**
           * When true, tapping a row will select the item, placing its data model
@@ -213,7 +218,7 @@
           */
           selectionEnabled: {
             type: Boolean,
-            value: false
+            value: false,
           },
           /**
           * When `multiSelection` is false, this is the currently selected item, or `null`
@@ -221,14 +226,14 @@
           */
           selectedItem: {
             type: Object,
-            notify: true
+            notify: true,
           },
           /**
           * When `multiSelection` is true, this is an array that contains the selected items.
           */
           selectedItems: {
             type: Object,
-            notify: true
+            notify: true,
           },
           /**
           * When `true`, multiple items may be selected at once (in this case,
@@ -237,7 +242,7 @@
           */
           multiSelection: {
             type: Boolean,
-            value: false
+            value: false,
           },
 
           /**
@@ -245,8 +250,8 @@
           */
           checkboxUsed: {
             type: Boolean,
-            value: false
-          }
+            value: false,
+          },
         };
       }
 
@@ -254,8 +259,8 @@
         return [
           '_itemsChanged(items.*)',
           '_multiSelectionChanged(multiSelection)',
-          '_selectionEnabledChanged(selectionEnabled)'
-        ]
+          '_selectionEnabledChanged(selectionEnabled)',
+        ];
       }
 
       _multiSelectionChanged(multiSelection) {
@@ -268,7 +273,7 @@
       * it will remove the listener otherwise.
       */
       _selectionEnabledChanged(selectionEnabled) {
-        if(selectionEnabled) {
+        if (selectionEnabled) {
           this._addTapListener();
         } else {
           this._removeTapListener();
@@ -287,14 +292,15 @@
       * Select an item from an event object.
       */
       _selectionHandler(e) {
-        let m = e.path.find(entry => {
+        let m = e.path.find((entry) => {
           return entry.classList && entry.classList.contains('tr');
         });
         let model = this.modelForElement(m);
         if (!model) {
          return;
         }
-        let modelTabIndex, activeElTabIndex;
+        let modelTabIndex;
+        let activeElTabIndex;
         let target = Polymer.dom(e).path[0];
         let activeEl = Polymer.dom(this.domHost ? this.domHost.root : document).activeElement;
         let physicalItem = this._physicalItems[model[this.indexAs]];
@@ -312,7 +318,8 @@
         model.tabIndex = modelTabIndex;
         // Only select the item if the tap wasn't on a focusable child
         // or the element bound to `tabIndex`
-        if (activeEl && physicalItem !== activeEl && physicalItem.contains(activeEl) && activeElTabIndex !== SECRET_TABINDEX) {
+        if (activeEl && physicalItem !== activeEl &&
+          physicalItem.contains(activeEl) && activeElTabIndex !== SECRET_TABINDEX) {
           return;
         }
         this.toggleSelectionForItem(model[this.as]);
@@ -348,7 +355,7 @@
        if (this._physicalCount === 0) {
           this._increasePool(this.items.length);
         } else {
-          if(this.items.length > this._physicalCount) {
+          if (this.items.length > this._physicalCount) {
             this._increasePool(this.items.length - this._physicalCount);
           } else {
             this._update();
@@ -373,7 +380,7 @@
            }, this);
           this._debounceRender(this._render);
         } else {
-          if(change.path !== 'items.length') {
+          if (change.path !== 'items.length') {
             this._forwardItemPath(change.path, change.value);
           }
         }
@@ -390,10 +397,7 @@
           dot = path.length;
         }
         let idx = parseInt(path.substring(0, dot), 10);
-        let offscreenItem = this._offscreenFocusedItem;
-
         let inst = this.modelForElement(this._physicalItems[idx]);
-
         if (!inst || inst[this.indexAs] !== idx) {
           return;
         }
@@ -475,7 +479,6 @@
           let inst = this.modelForElement(el);
           let item = this.items[count];
           if (item != null && item !== undefined) {
-            //inst.__key__ = this._collection ? this._collection.getKey(item) : null;
             this._forwardProperty(inst, this.as, item);
             this._forwardProperty(inst, this.selectedAs, this.$.selector.isSelected(item));
             this._forwardProperty(inst, this.indexAs, count);
@@ -552,7 +555,7 @@
        * @method clearSelection
        */
       clearSelection() {
-        if(this._physicalItems) {
+        if (this._physicalItems) {
           this._physicalItems.map((el) => {
             this.modelForElement(el)[this.selectedAs] = false;
           });
@@ -610,9 +613,9 @@
             ? this.$.selector.isIndexSelected(index) : this.$.selector.isSelected(this.items[index]);
         isSelected ? this.deselectIndex(index) : this.selectIndex(index);
       }
-
     }
 
     window.customElements.define(ExmgTbody.is, ExmgTbody);
+  })();
   </script>
 </dom-module>

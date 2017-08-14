@@ -1,7 +1,7 @@
-# \<exmg-datatable\>
+exmg-paper-datatable [![Build Status](https://travis-ci.org/ExmgElements/exmg-paper-datatable.svg?branch=master)](https://travis-ci.org/ExmgElements/exmg-paper-datatable)
 ================
 
-Polymer 2.0 Material design datatable. Please visit the [API Documentation and demo](http://exmg.github.io/exmg-datatable/) page for more information.
+Polymer 2.0 Material design datatable. Please visit the [API Documentation and demo](http://ExmgElements.github.io/exmg-paper-datatable/) page for more information.
 
 Please note due to the removal of support for extending native elements in Polymer 2.0 it was not possible to create a hybrid approach for the data table. Old version is available here [EXM-DATATABLE Polymer 1.0](https://github.com/exmg/exm-datatable).
 
@@ -17,7 +17,7 @@ Supports:
 Install the component using bower
 
 ```
-$ bower install --save exmg-datatable
+$ bower install --save exmg-paper-datatable
 ```
 
 ## Development

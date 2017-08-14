@@ -1,9 +1,9 @@
 {
-  "name": "exmg-datatable",
+  "name": "exmg-paper-datatable",
   "version": "2.0.7",
   "description": "Material design data table (Polymer 2.0)",
   "authors": [
-    "Mark Smits"
+    "Ex Machina Group"
   ],
   "keywords": [
     "web-components",
@@ -12,16 +12,16 @@
     "table"
   ],
   "main": [
-    "exmg-datatable.html",
-    "exmg-thead.html",
-    "exmg-tbody.html",
-    "exmg-toolbar.html",
-    "exmg-paging.html"
+    "exmg-paper-datatable.html",
+    "exmg-paper-thead.html",
+    "exmg-paper-tbody.html",
+    "exmg-paper-toolbar.html",
+    "exmg-paper-paging.html"
   ],
-  "homepage": "http://exmg.github.io/exmg-datatable/",
+  "homepage": "https://github.com/ExmgElements/exmg-paper-datatable",
   "repository": {
     "type": "git",
-    "url": "git://github.com/exmg/exmg-datatable.git"
+    "url": "git@bitbucket.org:ExmgElements/exmg-paper-datatable.git"
   },
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",

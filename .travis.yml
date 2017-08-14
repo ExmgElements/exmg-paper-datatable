@@ -1,0 +1,20 @@
+language: node_js
+node_js: stable
+sudo: required
+install:
+- npm install -g polymer-cli
+- npm install -g eslint eslint-plugin-html
+before_script:
+- polymer install
+- polymer lint --rules polymer-2 --input *.html
+- eslint . --ext js,html --ignore-path .gitignore
+addons:
+  firefox: latest
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
+
+script: xvfb-run polymer test
+dist: trusty

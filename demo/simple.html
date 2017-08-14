@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>exmg-datatable Simple Demo</title>
+    <title>exmg-paper-datatable Simple Demo</title>
 
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
@@ -18,11 +18,11 @@
     <link rel="import" href="../../paper-checkbox/paper-checkbox.html">
     <link rel="import" href="../../iron-ajax/iron-ajax.html">
 
-    <link rel="import" href="../exmg-datatable.html">
-    <link rel="import" href="../exmg-thead.html">
-    <link rel="import" href="../exmg-tbody.html">
-    <link rel="import" href="../exmg-data-helper.html">
-    <link rel="import" href="../exmg-icons.html">
+    <link rel="import" href="../exmg-paper-datatable.html">
+    <link rel="import" href="../exmg-paper-thead.html">
+    <link rel="import" href="../exmg-paper-tbody.html">
+    <link rel="import" href="../exmg-paper-data-helper.html">
+    <link rel="import" href="../exmg-paper-icons.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -39,7 +39,7 @@
       <style>
         :host {
           display: block;
-          --exmg-tbody-tr-selected: {
+          --exmg-paper-tbody-tr-selected: {
             background-color: #dbdbdb;
           };
         }
@@ -62,9 +62,9 @@
 
       <paper-card elevation="1">
         <!-- DataTable -->
-        <exmg-datatable>
+        <exmg-paper-datatable>
           <!-- THead -->
-          <exmg-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
+          <exmg-paper-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
             <template>
               <div class="tr">
                 <div class="th flex-none flex-right" sortable="index" style="width: 70px;">
@@ -85,9 +85,9 @@
 
               </div>
             </template>
-          </exmg-thead>
+          </exmg-paper-thead>
           <!-- TBody -->
-          <exmg-tbody items='[[items]]' selection-enabled>
+          <exmg-paper-tbody items='[[items]]' selection-enabled>
             <template>
               <div class$="[[_computedClass(selected)]]">
                 <div class="td flex-none flex-right" style="width: 70px;">
@@ -107,8 +107,8 @@
                 </div>
               </div>
             </template>
-          </exmg-tbody>
-        </exmg-datatable>
+          </exmg-paper-tbody>
+        </exmg-paper-datatable>
         <!-- Table Paging -->
       </paper-card>
 
@@ -116,22 +116,24 @@
       <iron-ajax url="data/contacts.json" last-response="{{rawItems}}" auto></iron-ajax>
 
       <!-- Manage sorting and paging  -->
-      <exmg-data-helper raw-items="[[rawItems]]" items="{{items}}" page-index="[[pageIndex]]" sorted="[[sorted]]" sort-direction="[[sortDirection]]" page-size="[[pageSize]]" ></exmg-data-helper>
+      <exmg-paper-data-helper raw-items="[[rawItems]]" items="{{items}}" page-index="[[pageIndex]]" sorted="[[sorted]]" sort-direction="[[sortDirection]]" page-size="[[pageSize]]" ></exmg-paper-data-helper>
 
     </template>
     <script>
     window.addEventListener('WebComponentsReady', function() {
       class XTable extends Polymer.Element {
-        static get is() { return 'x-table'; }
+        static get is() {
+          return 'x-table';
+        }
         static get properties() {
           return {
             pageIndex: {
               type: Number,
-              value: 0
+              value: 0,
             },
             pageSize: {
               type: Number,
-              value: 10
+              value: 10,
             },
             sorted: {
               type: String,
@@ -140,7 +142,7 @@
             sortDirection: {
               type: String,
               value: 'ASC',
-            }
+            },
           };
         }
         _computedClass(isSelected) {

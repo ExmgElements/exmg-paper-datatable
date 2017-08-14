@@ -1,22 +1,22 @@
 <link rel="import" href="../polymer/polymer-element.html">
 
 <!--
- `exmg-data-filter` is filter element that lets you filter local data sets.
+ `exmg-paper-data-filter` is filter element that lets you filter local data sets.
 
  ```html
  <iron-ajax url="data/contacts.json" last-response="{{rawItems}}" auto></iron-ajax>
 
- <exmg-data-filter
+ <exmg-paper-data-filter
    raw-items="[[rawItems]]"
    items="{{filteredItems}}"
    filter-value="[[filterValue]]"
    filter-fields="name,email">
- </exmg-data-filter>
+ </exmg-paper-data-filter>
 
  <input is="iron-input" bind-value="{{filterValue}}">
 
- <exmg-datatable>
-   <exmg-tbody items='[[filteredItems]]'>
+ <exmg-paper-datatable>
+   <exmg-paper-tbody items='[[filteredItems]]'>
      <template>
        <tr>
          <td>[[item.name]]</td>
@@ -24,8 +24,8 @@
          <td>[[item.phone]]</td>
        </tr>
      </template>
-   </exmg-tbody>
- </exmg-datatable>
+   </exmg-paper-tbody>
+ </exmg-paper-datatable>
  ```
 
  @element exm-data-filter
@@ -34,17 +34,19 @@
  @demo demo/index.html
  -->
 
-<dom-module id="exmg-data-filter">
+<dom-module id="exmg-paper-data-filter">
   <script>
     class ExmgDataFilter extends Polymer.Element {
-      static get is() { return 'exmg-data-filter'; }
+      static get is() {
+        return 'exmg-paper-data-filter';
+      }
       static get properties() {
         return {
           /**
            * Raw item list
            */
           rawItems: {
-            type: Array
+            type: Array,
           },
 
           /**
@@ -52,39 +54,38 @@
            */
           items: {
             type: Array,
-            notify: true
+            notify: true,
           },
 
           /**
            * Text string used for filtering the fields.
            */
           filterValue: {
-            type: String
+            type: String,
           },
 
           /**
            * Comma seperated list of filter fields.
            */
           filterFields: {
-            type: String
-          }
+            type: String,
+          },
         };
       }
       static get observers() {
         return [
-          '_updateItems(rawItems.*, filterValue, filterFields)'
-        ]
+          '_updateItems(rawItems.*, filterValue, filterFields)',
+        ];
       }
 
       _updateItems() {
-
         /* Skip if raw items or filterfields are not set */
-        if(!this.rawItems || !this.filterFields) {
+        if (!this.rawItems || !this.filterFields) {
           return;
         }
 
         /* return all items when filter is empty */
-        if(!this.filterValue || this.filterValue === '') {
+        if (!this.filterValue || this.filterValue === '') {
             this.set('items', []);
             this.set('items', this.rawItems);
             return;
@@ -93,14 +94,12 @@
         /* Look for occurances of the filter value in the item fields */
         let items = [];
         const filterFields = this.filterFields.split(',');
-        this.rawItems.forEach(o => { filterFields.some(p => o[p].indexOf(this.filterValue) !== -1) && items.push(o)});
+        this.rawItems.forEach((o) => {filterFields.some((p) => o[p].indexOf(this.filterValue) !== -1) && items.push(o);});
 
         /* Reset result array before adding new results */
         this.set('items', []);
         this.set('items', items);
-
       }
-
     }
 
     window.customElements.define(ExmgDataFilter.is, ExmgDataFilter);
