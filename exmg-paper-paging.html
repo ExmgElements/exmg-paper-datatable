@@ -7,21 +7,49 @@
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="exmg-paper-icons.html">
 
+<!--
+`exmg-paper-paging` is the paging controll element that can be positioned at the footer of the table.
+
+```html
+<exmg-paper-paging total-items="[[rawItems.length]]" page-index="{{pageIndex}}" page-size="{{pageSize}}"></exmg-paper-paging>
+```
+
+### Styling
+The following custom properties and mixins are also available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--exmg-paper-paging-background-color` | Background color | `none`
+`--exmg-paper-paging-text-color` | Text color | `87% black`
+`--exmg-paper-paging` | Mixin applied to host element | `{}`
+`--exmg-paper-paging-icon-color` | Text color of table| `54% black`
+`--exmg-paper-paging-icon-disabled-color` | Mixin applied to the datatable | `36% black`
+`--exmg-paper-paging-page-information` | Mixin applied to page information container | `{}`
+
+@customElement
+@polymer
+@group Exmg Paper Elements
+@element exmg-paper-datatable
+@demo demo/index.html
+-->
+
 <dom-module id="exmg-paper-paging">
   <template>
     <style>
       :host {
         display: block;
+        @apply(--paper-font-common-base);
+        background: var(--exmg-paper-paging-background-color, none);
+        color: var(--exmg-paper-paging-text-color, rgba(0,0,0,.87));
+        font-size: 12px;
+        font-weight: 500;
         height:56px;
         padding:0px 6px;
         @apply --layout-horizontal;
         @apply --layout-end-justified;
         @apply --layout-center;
+        @apply --exmg-paper-paging;
 
-        --paper-input-container-input: {
-          font-size: 14px;
-          font-weight: 500;
-        };
         --paper-dropdown-menu: {
           text-align: right;
           width: 68px;
@@ -38,6 +66,10 @@
         --paper-input-container-underline-focus: { display: none; };
         --paper-input-container-underline-disabled: { display: none; };
         --paper-input-container-underline: { display: none; };
+        --paper-input-container-input: {
+          font-size: 14px;
+          font-weight: 500;
+        };
       }
 
       .page-information {
@@ -67,14 +99,6 @@
   </template>
 
   <script>
-    /**
-     * `exmg-paper-paging`
-     * Datatable
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
     class ExmgPaging extends Polymer.GestureEventListeners(Polymer.Element) {
       static get is() {
         return 'exmg-paper-paging';

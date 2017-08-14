@@ -1,18 +1,47 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
 
+<!--
+ `exmg-paper-data-helper` is helper element that facilitates sorting and paging on local data sets.
+
+ ```html
+ <iron-ajax url="data/contacts.json" last-response="{{rawItems}}" auto></iron-ajax>
+
+ <exm-data-helper
+   raw-items="[[rawItems]]"
+   items="{{items}}"
+   page-index="[[pageIndex]]"
+   page-size="[[pageSize]]"
+   sorted="[[sorted]]"
+   sort-direction="[[sortDirection]]"
+   total-items="{{totalItems}}">
+ </exm-data-helper>
+
+ <exmg-paper-datatable>
+   <exmg-paper-tbody items='[[items]]'>
+     <template>
+      ...
+     </template>
+   </exmg-paper-tbody>
+ </exmg-paper-datatable>
+
+ <exm-paging
+   total-items="[[totalItems]]"
+   page-index="{{pageIndex}}"
+   page-size="{{pageSize}}">
+ </exm-paging>
+ ```
+
+ @customElement
+ @polymer
+ @group Exmg Paper Elements
+ @element exmg-paper-datatable
+ @demo demo/index.html
+ -->
+
 <dom-module id="exmg-paper-data-helper">
   <script>
-    /**
-     * `exmg-paper-data-helper`
-     * Datatable
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
-
-(function() {
+  (function() {
     const isArray = (o) => Array.isArray(o) || Object.prototype.toString.call(o) === '[object Array]';
     const properArray = (o) => isArray(o) ? o : [];
     const lookupValueByPath = (o, path) => path.split('.').reduce((r, p) => r[p], o);

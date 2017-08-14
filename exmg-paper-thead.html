@@ -2,22 +2,68 @@
 <link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 
+<!--
+`exmg-datatable-thead` which adds sorting functionality to the thead table element.
+
+```html
+<exmg-paper-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
+  <template>
+    <div class="tr">
+      <div class="th flex-none flex-right" sortable="index" style="width: 70px;">
+        <span>Index</span>
+      </div>
+      <div class="th flex" sortable="name">
+        <span>Name</span>
+      </div>
+      <div class="th flex" sortable="email" style="min-width: 30%">
+        <span>Email</span>
+      </div>
+      <div class="th flex collapsable" sortable="city">
+        <span>City</span>
+      </div>
+      <div class="th flex collapsable" sortable="country">
+        <span>Country</span>
+      </div>
+    </div>
+  </template>
+</exmg-paper-thead>
+```
+
+### Styling
+The following custom properties and mixins are also available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--exmg-datatable-thead-color` | font color of thead | `54% black`
+`--exmg-datatable-thead` | Mixin applied to the thead | `{}`
+`--exmg-datatable-thead-th` | Mixin applied to the th | `{}`
+`--exmg-datatable-thead-text-color-hover` | font color of th on hover | `87% black`
+`--exmg-datatable-thead-text-color-sorted` | font color of th when sorted | `78% black`
+
+@customElement
+@polymer
+@group Exmg Paper Elements
+@element exmg-paper-datatable
+@demo demo/index.html
+-->
+
 <dom-module id="exmg-paper-thead">
   <template>
     <style>
       :host {
+        @apply(--paper-font-common-base);
         width: 100%;
         font-weight: 500;
-        border-bottom: 1px solid #dbdbdb;
+        border-bottom: 1px solid var(--divider-color);
         user-select: none;
-        color: rgba(0,0,0,.64);
+        color: var(--exm-thead-color, rgba(0,0,0,.64));
+        @apply(--exmg-datatable-thead);
       }
 
       .tr {
         @apply --layout;
         box-sizing: border-box;
-        border-bottom: 1px solid #dbdbdb;
-
+        border-bottom: 1px solid var(--divider-color);
         @apply --exmg-paper-thead-tr;
       }
 
@@ -81,12 +127,12 @@
       }
 
       .th[sorted] {
-        color: rgba(0,0,0,.78);
+        color: var(--exmg-datatable-thead-text-color-sorted, rgba(0,0,0, .78));
       }
 
       .th[sortable]:hover{
         cursor: pointer;
-        color: rgba(0,0,0,.87);
+        color: var(--exmg-datatable-thead-text-color-hover, rgba(0,0,0, .87));
       }
 
       .th[sortable]::after {
@@ -127,14 +173,6 @@
   </template>
 
   <script>
-    /**
-     * `exmg-paper-thead`
-     * Datatable
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
     class ExmgThead extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.GestureEventListeners(Polymer.Element)) {
       static get is() {
         return 'exmg-paper-thead';

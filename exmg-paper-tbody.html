@@ -2,6 +2,74 @@
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../polymer/lib/elements/array-selector.html">
 
+<!--
+`exmg-datatable-tbody` will visualise the table as a material design data table. It also facilitates rows selection
+and templating fucntionality.
+
+### Template model
+List item templates should bind to template models of the following structure:
+```js
+{
+  index: 0,        // index in the visual item array
+  selected: false, // true if the current item is selected
+  item: {}         // user data corresponding to items[index]
+}
+```
+Alternatively, you can change the property name used as data index by changing the
+`indexAs` property. The `as` property defines the name of the variable to add to the binding
+scope for the array.
+For example, given the following `data` array:
+##### data.json
+```js
+[
+  {"name": "Bob", "email": "bob@test.com"},
+  {"name": "Tim", "email": "tim@test.com"},
+  {"name": "Mike", "email": "mike@test.com"}
+]
+```
+The following code would render the table:
+```html
+<exmg-paper-tbody items='[[items]]' selection-enabled>
+  <template>
+    <div class$="[[_computedClass(selected)]]">
+      <div class="td flex-none flex-right" style="width: 70px;">
+        <span>[[item.index]]</span>
+      </div>
+      <div class="td flex">
+        <span>[[item.name]]</span>
+      </div>
+      <div class="td flex" style="min-width: 30%">
+        <span>[[item.email]]</span>
+      </div>
+      <div class="td flex collapsable">
+        <span>[[item.city]]</span>
+      </div>
+      <div class="td flex collapsable">
+        <span>[[item.country]]</span>
+      </div>
+    </div>
+  </template>
+</exmg-paper-tbody>
+```
+
+### Styling
+The following custom properties and mixins are also available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--exmg-paper-tbody-background-hover` | Background hover color for the table row | `#EEEEEE`
+`--exmg-paper-tbody-row-bottom-border-color` | Color of table row bottom border | `#DBDBDB`
+`--exmg-paper-tbody-td` | Mixin applied to all TD's' | `{}`
+`--exmg-paper-tbody-td-hover-content` | Mixin applied to the TD on hover | `{}`
+
+@customElement
+@polymer
+@group Exmg Paper Elements
+@element exmg-paper-datatable
+@demo demo/index.html
+-->
+
+<!-- TODO: Update above styling table with final properties -->
 <dom-module id="exmg-paper-tbody">
   <template>
     <style>
@@ -12,7 +80,7 @@
       .tr {
         @apply --layout;
         box-sizing: border-box;
-        border-bottom: 1px solid #dbdbdb;
+        border-bottom: 1px solid var(--divider-color);
         @apply --exmg-paper-tbody-tr;
       }
 
@@ -20,7 +88,6 @@
         background: #fff;
         position: relative;
         z-index: 20;
-
         @apply --exmg-paper-tbody-tr-selected;
       }
 
@@ -61,11 +128,10 @@
         width: calc(100% + 24px);
         height: calc(100% + 48px);
         background: #fff;
-        border: 1px solid #dbdbdb;
+        border: 1px solid var(--divider-color);
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
             0 1px 5px 0 rgba(0, 0, 0, 0.12),
             0 3px 1px -2px rgba(0, 0, 0, 0.2);
-
         @apply --exmg-paper-tbody-tr-expandable;
       }
 
@@ -160,15 +226,6 @@
   </template>
 
   <script>
-    /**
-     * `exmg-paper-tbody`
-     * Datatable
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
-
   (function() {
     const SECRET_TABINDEX = -100;
 

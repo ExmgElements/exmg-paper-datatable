@@ -11,13 +11,7 @@
     "datatable",
     "table"
   ],
-  "main": [
-    "exmg-paper-datatable.html",
-    "exmg-paper-thead.html",
-    "exmg-paper-tbody.html",
-    "exmg-paper-toolbar.html",
-    "exmg-paper-paging.html"
-  ],
+  "main": "exmg-paper-datatable.html",
   "homepage": "https://github.com/ExmgElements/exmg-paper-datatable",
   "repository": {
     "type": "git",
@@ -28,6 +22,7 @@
     "paper-item": "PolymerElements/paper-item#^2.0.0",
     "paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
     "paper-icon-button": "PolymerElements/paper-icon-button#^2.0.0",
+    "paper-styles": "PolymerElements/paper-styles#^2.0.0",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^2.0.0"

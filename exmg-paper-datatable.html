@@ -1,4 +1,38 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-styles/paper-styles.html">
+
+<!--
+
+Material design: Datatables (https://material.io/guidelines/components/data-tables.html)
+
+`exmg-paper-datatable` is the base table component that needs to be extended in the table element.
+
+```html
+<exmg-paper-datatable>
+  <exmg-paper-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
+    <template>...</template>
+  </exmg-paper-thead>
+  <exmg-paper-tbody items='[[items]]' selection-enabled>
+    <template>...</template>
+  </exmg-paper-tbody>
+</exmg-paper-datatable>
+```
+
+### Styling
+The following custom properties and mixins are also available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--exmg-paper-datatable-background-color` | Background color of table| `Based on the button's color`
+`--exmg-paper-datatable-text-color` | Text color of table| `87% black`
+`--exmg-paper-datatable` | Mixin applied to the datatable | `{}`
+
+@customElement
+@polymer
+@group Exmg Paper Elements
+@element exmg-paper-datatable
+@demo demo/index.html
+-->
 
 <dom-module id="exmg-paper-datatable">
   <template>
@@ -6,34 +40,21 @@
       :host {
         font-size: 12px;
         color: rgba(0,0,0,.78);
-        font-family: 'Roboto', 'Noto', sans-serif;
+        @apply --paper-font-common-base;
         -webkit-font-smoothing: antialiased;
+        background: var(--exmg-paper-datatable-background-color, none);
+        color: var(--exmg-paper-datatable-text-color, rgba(0,0,0,.87));
+        @apply --exmg-paper-datatable;
       }
     </style>
     <slot></slot>
   </template>
 
   <script>
-    /**
-     * `exmg-paper-datatable`
-     * Datatable
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
+
     class ExmgDatatable extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.Element) {
       static get is() {
         return 'exmg-paper-datatable';
-      }
-      ready() {
-        super.ready();
-        let templ = this.querySelector('template[colgroup]');
-        if (!templ) {
-          return;
-        }
-        this.templatize(templ);
-        this.shadowRoot.appendChild(this.stamp(null).root);
       }
     }
 
