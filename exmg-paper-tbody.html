@@ -523,14 +523,14 @@ Custom property | Description | Default
         if ((itemSet && itemSet.length === 0) || this._physicalCount === 0) {
          return;
         }
-        this._assignModels(itemSet);
+        this._assignModels();
       }
 
       /**
       * Assigns the data models to a given set of items.
       * @param {!Array<number>=} itemSet
       */
-      _assignModels(itemSet) {
+      _assignModels() {
         let count = 0;
         this._physicalItems.forEach((el) => {
           let inst = this.modelForElement(el);

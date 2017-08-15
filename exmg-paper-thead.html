@@ -260,7 +260,7 @@ Custom property | Description | Default
       /*
       * Reset old column sorting attributes
       */
-      _resetOldSorting(tr) {
+      _resetOldSorting() {
         let rowChildren = this.shadowRoot.querySelectorAll('.th[sorted]');
         rowChildren.forEach((el) => el.removeAttribute('sorted'));
       }
