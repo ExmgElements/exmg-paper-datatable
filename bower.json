@@ -43,7 +43,7 @@
     "paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
     "paper-input": "PolymerElements/paper-input#^2.0.0",
     "paper-item": "PolymerElements/paper-item#^2.0.0",
-    "paper-tooltip": "PolymerElements/paper-tooltip#^2.0.0",
+    "exmg-paper-tooltip": "ExmgElements/exmg-paper-tooltip#^1.0.0",
     "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.0"
   },
   "resolutions": {
