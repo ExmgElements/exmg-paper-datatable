@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>exmg-exmg-paper-tooltip test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../test-fixture/test-fixture-mocha.js"></script>
+
+    <link rel="import" href="../../test-fixture/test-fixture.html">
+    <link rel="import" href="../exmg-paper-datatable.html">
+  </head>
+  <body>
+
+    <test-fixture id="basic">
+      <template>
+        <exmg-paper-datatable></exmg-paper-datatable>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('basic', function() {
+        let el;
+        setup(function() {
+          el = fixture('basic');
+        });
+        test('element is upgraded', function() {
+          assert.equal(el.constructor.is, 'exmg-paper-datatable');
+        });
+      });
+    </script>
+
+  </body>
+</html>

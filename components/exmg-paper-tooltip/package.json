@@ -1,0 +1,28 @@
+{
+  "name": "exmg-paper-tooltip",
+  "private": true,
+  "description": "Material design style cards",
+  "main": "exmg-paper-tooltip.html",
+  "repository": "ExmgElements/exmg-paper-tooltip",
+  "keywords": [
+    "Exmg",
+    "ExmgElements",
+    "exmg-paper-tooltip",
+    "web-components",
+    "web-component",
+    "polymer"
+  ],
+  "author": "Ex Machina",
+  "devDependencies": {
+    "bower": "latest",
+    "eslint": "^4.0.0",
+    "eslint-plugin-html": "^3.0.0",
+    "polymer-cli": "^1.2.0"
+  },
+  "homepage": "https://github.com/ExmgElements/",
+  "scripts": {
+    "lint": "polymer lint --rules polymer-2 --input *.html",
+    "eslint": "eslint . --ext js,html --ignore-path .gitignore",
+    "analyze": "polymer analyze --input exmg-paper-tooltip.html > analysis.json"
+  }
+}

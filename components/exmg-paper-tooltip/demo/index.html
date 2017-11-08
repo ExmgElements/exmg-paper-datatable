@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>exmg-paper-tooltip demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../paper-styles/color.html">
+    <link rel="import" href="../exmg-paper-tooltip.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      input, .avatar {
+        margin: 0 10px;
+      }
+
+      .avatar {
+        box-sizing: border-box;
+        width: 40px;
+        height: 40px;
+        padding: 8px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .blue {
+        background-color: var(--paper-light-blue-300);
+      }
+      .orange {
+        background-color: var(--paper-amber-500);
+      }
+      .green {
+        background-color: var(--paper-green-500);
+      }
+      .red {
+        background-color: var(--paper-pink-500);
+      }
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic exmg-paper-tooltip demo</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+          <!-- Adding a tabindex so that we can show the tooltip when the whole box is tabbed to -->
+          <div tabindex="0">
+            <input type="checkbox">allosaurus
+            <exmg-paper-tooltip>the name means "different lizard"</exmg-paper-tooltip>
+          </div>
+          <div tabindex="0">
+            <input type="checkbox">brontosaurus
+            <exmg-paper-tooltip>the name means "thunder lizard"</exmg-paper-tooltip>
+          </div>
+          <div tabindex="0">
+            <input type="checkbox">megalosaurus
+            <exmg-paper-tooltip>the name means "roof lizard"</exmg-paper-tooltip>
+          </div>
+        </template>
+      </demo-snippet>
+
+      <h3>Tooltips can open in different directions</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+          <div id="dir_1" class="avatar red" tabindex="0"></div>
+          <div id="dir_2" class="avatar blue" tabindex="0"></div>
+          <div id="dir_3" class="avatar green" tabindex="0"></div>
+          <div id="dir_4" class="avatar orange" tabindex="0"></div>
+
+          <exmg-paper-tooltip for="dir_1" position="left" animation-delay="0">👈</exmg-paper-tooltip>
+          <exmg-paper-tooltip for="dir_2" position="right" animation-delay="0">👉</exmg-paper-tooltip>
+          <exmg-paper-tooltip for="dir_3" position="top" animation-delay="0">👍</exmg-paper-tooltip>
+          <exmg-paper-tooltip for="dir_4" position="bottom" animation-delay="0">👎</exmg-paper-tooltip>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

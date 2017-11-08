@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>exmg-paper-datatable demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../paper-card/paper-card.html">
+    <link rel="import" href="../../paper-slider/paper-slider.html">
+    <link rel="import" href="../../paper-button/paper-button.html">
+    <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+
+    <link rel="import" href="../exmg-paper-datatable.html">
+    <link rel="import" href="../exmg-paper-toolbar.html">
+    <link rel="import" href="../exmg-paper-thead.html">
+    <link rel="import" href="../exmg-paper-icons.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+
+  <dom-module id="x-table">
+    <template>
+      <style>
+        :host {
+          display: block;
+        }
+
+        paper-card {
+          display: block;
+          width: 800px;
+          margin: auto;
+          --paper-card-background-color: white;
+        }
+
+        h2,
+        .buttons {
+          width: 800px;
+          margin: 20px auto;
+        }
+
+      </style>
+
+      <paper-card elevation="1">
+        <!-- Table Toolbar -->
+        <exmg-paper-toolbar selected-items="[[selectedItems]]">
+          <div slot="default">
+            <div class="title-container flex">
+              <span>Admin Users</span>
+            </div>
+            <div class="button-container">
+              <paper-icon-button icon="exmg-paper-icons:add"></paper-icon-button>
+            </div>
+          </div>
+          <div slot="selected">
+            <span class="flex"></span>
+            <div class="button-container">
+              <paper-icon-button icon="exmg-paper-icons:delete"></paper-icon-button>
+            </div>
+          </div>
+        </exmg-paper-toolbar>
+      </paper-card>
+
+      <br><br>
+
+      <paper-card elevation="1">
+        <exmg-paper-toolbar selected-items="[[selectedItems]]">
+          <div slot="default">
+            <paper-button>ADD</paper-button>
+            <paper-button>REMOVE</paper-button>
+            <span class="flex"></span>
+            <paper-icon-button icon="exmg-paper-icons:filter-list"></paper-icon-button>
+            <paper-icon-button icon="exmg-paper-icons:more-vert"></paper-icon-button>
+          </div>
+          <div slot="selected">
+            <span class="flex"></span>
+            <paper-icon-button icon="exmg-paper-icons:filter-list"></paper-icon-button>
+            <paper-icon-button icon="exmg-paper-icons:more-vert"></paper-icon-button>
+          </div>
+        </exmg-paper-toolbar>
+      </paper-card>
+
+      <div class="buttons"><paper-slider id="slider" min="0" max="10" value="{{nrSelectedItems}}"></paper-slider></div>
+
+    </template>
+    <script>
+    window.addEventListener('WebComponentsReady', function() {
+      class XTable extends Polymer.Element {
+        static get is() {
+          return 'x-table';
+        }
+        static get properties() {
+          return {
+            nrSelectedItems: {
+              type: Number,
+              value: 0,
+            },
+            selectedItems: {
+              type: Array,
+            },
+          };
+        }
+        static get observers() {
+          return [
+            '_observeSelectedChange(nrSelectedItems)',
+          ];
+        }
+        _observeSelectedChange(nrSelectedItems) {
+          this.set('selectedItems', []);
+          for (var i = 0; i < nrSelectedItems; i++) {
+            this.push('selectedItems', {});
+          }
+        }
+      }
+      window.customElements.define(XTable.is, XTable);
+    });
+    </script>
+  </dom-module>
+
+ <x-table></x-table>
+
+
+
+
+  </body>
+</html>

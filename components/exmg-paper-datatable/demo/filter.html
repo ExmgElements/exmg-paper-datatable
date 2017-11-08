@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>exmg-paper-datatable Filter Demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../paper-card/paper-card.html">
+    <link rel="import" href="../../iron-input/iron-input.html">
+    <link rel="import" href="../../paper-slider/paper-slider.html">
+    <link rel="import" href="../../paper-button/paper-button.html">
+    <link rel="import" href="../../paper-input/paper-input.html">
+    <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../../paper-checkbox/paper-checkbox.html">
+    <link rel="import" href="../../exmg-paper-tooltip/exmg-paper-tooltip.html">
+
+    <link rel="import" href="../../iron-ajax/iron-ajax.html">
+
+    <link rel="import" href="../exmg-paper-datatable.html">
+    <link rel="import" href="../exmg-paper-toolbar.html">
+    <link rel="import" href="../exmg-paper-thead.html">
+    <link rel="import" href="../exmg-paper-tbody.html">
+    <link rel="import" href="../exmg-paper-paging.html">
+    <link rel="import" href="../exmg-paper-data-helper.html">
+    <link rel="import" href="../exmg-paper-data-filter.html">
+    <link rel="import" href="../exmg-paper-icons.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      body {
+        background-color: #eceff1;
+      }
+      </style>
+    </custom-style>
+  </head>
+  <body>
+
+  <dom-module id="x-table">
+    <template>
+      <style>
+        :host {
+          display: block;
+        }
+
+        paper-card {
+          display: block;
+          max-width: 936px;
+          margin: auto;
+          width: 100%;
+          --paper-card-background-color: #fff;
+        }
+
+        h2 {
+          max-width: 936px;
+          width: 100%;
+          margin: 20px auto;
+        }
+
+        iron-input {
+          width: 100%;
+        }
+
+        input {
+          font-size: 14px;
+          margin: 0px 4px;
+          padding: 4px;
+          border: 0px solid var(--divider-color);
+          width: 100%;
+        }
+
+        exmg-paper-toolbar span.interactive-content {
+          margin-left: 10px;
+          white-space: nowrap;
+          overflow: hidden;
+          color: rgba(0,0,0,0.38);
+          font-size: 14px;
+          text-overflow: ellipsis;
+          letter-spacing: .005em;
+          box-sizing: border-box;
+          font-weight: 400;
+          cursor: pointer;
+          width: 100%;
+        }
+
+        .search {
+          background: #fff;
+          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+              0 1px 5px 0 rgba(0, 0, 0, 0.12),
+              0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        }
+
+        .search input {
+          outline: none;
+        }
+
+      </style>
+
+      <h2>Filter Table</h2>
+
+      <paper-card elevation="1">
+        <!-- Table Toobar -->
+        <exmg-paper-toolbar>
+          <div slot="default" class$="[[_computeSearchClasses(isSearch)]]">
+            <template is="dom-if" if="[[isSearch]]" restamp="true">
+              <iron-icon icon="exmg-paper-icons:search"></iron-icon>
+              <iron-input bind-value="{{filterValue}}" >
+                <input id="searchInput" placeholder="[[placeHolder]]" on-keyup="_handleKeyUp" on-blur="_handleInputBlur">
+              </iron-input>
+            </template>
+            <template is="dom-if" if="[[!isSearch]]" restamp="true">
+              <iron-icon icon="exmg-paper-icons:search"></iron-icon>
+              <span class="interactive-content" on-tap="_showSearch">[[_getFilterValue(filterValue)]]</span>
+              <paper-icon-button icon="exmg-paper-icons:add" on-tap="_addItem"></paper-icon-button>
+            </template>
+          </div>
+        </exmg-paper-toolbar>
+        <!-- DataTable -->
+        <exmg-paper-datatable>
+          <!-- THead -->
+          <exmg-paper-thead sorted="{{sorted}}" sort-direction="{{sortDirection}}">
+            <template>
+              <div class="tr">
+                <div class="th flex" sortable="name">
+                  <span>Name</span>
+                </div>
+                <div class="th flex" sortable="email">
+                  <span>Email</span>
+                </div>
+                <div class="th flex collapsable" sortable="city">
+                  <span>City</span>
+                </div>
+                <div class="th flex collapsable" sortable="country">
+                  <span>Country</span>
+                </div>
+                <div class="th flex-right flex-none" style="width: 120px"></div>
+              </div>
+            </template>
+          </exmg-paper-thead>
+          <!-- TBody -->
+          <exmg-paper-tbody items='[[items]]'>
+            <template>
+              <div class="tr">
+                <div class="td flex">
+                  <span>[[item.name]]</span>
+                </div>
+                <div class="td flex">
+                  <span>[[item.email]]</span>
+                </div>
+                <div class="td flex collapsable">
+                  <span>[[item.city]]</span>
+                </div>
+                <div class="td flex collapsable">
+                  <span>[[item.country]]</span>
+                </div>
+                <div class="td flex-right flex-none hover" style="width: 120px">
+                  <span>
+                    <span>
+                      <paper-icon-button icon="exmg-paper-icons:content-copy" on-tap="_stopTap"></paper-icon-button>
+                      <exmg-paper-tooltip>Copy users UID</exmg-paper-tooltip>
+                    </span>
+                    <span>
+                      <paper-icon-button icon="exmg-paper-icons:more-vert" on-tap="_stopTap"></paper-icon-button>
+                      <exmg-paper-tooltip>More user options</exmg-paper-tooltip>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </template>
+          </exmg-paper-tbody>
+        </exmg-paper-datatable>
+        <!-- Table Paging -->
+        <exmg-paper-paging total-items="[[totalItems]]" page-index="{{pageIndex}}" page-size="{{pageSize}}"></exmg-paper-paging>
+      </paper-card>
+
+      <!-- Load contacts from json file  -->
+      <iron-ajax url="data/contacts.json" last-response="{{rawItems}}" auto></iron-ajax>
+
+      <!-- Filter items by filter value and return resulting items to the data provider  -->
+      <exmg-paper-data-filter raw-items="[[rawItems]]" items="{{filteredItems}}" filter-value="[[filterValue]]" filter-fields="name,email"></exmg-paper-data-filter>
+
+      <!-- Manage sorting and paging  -->
+      <exmg-paper-data-helper raw-items="[[filteredItems]]" items="{{items}}" page-index="[[pageIndex]]" page-size="[[pageSize]]" sorted="[[sorted]]" sort-direction="[[sortDirection]]" total-items="{{totalItems}}"></exmg-paper-data-helper>
+
+    </template>
+    <script>
+    window.addEventListener('WebComponentsReady', function() {
+      class XTable extends Polymer.Element {
+        static get is() {
+          return 'x-table';
+        }
+        static get properties() {
+          return {
+            pageIndex: {
+              type: Number,
+              value: 0,
+            },
+            pageSize: {
+              type: Number,
+              value: 10,
+            },
+            sorted: {
+              type: String,
+              value: 'name',
+            },
+            sortDirection: {
+              type: String,
+              value: 'ASC',
+            },
+            filterValue: {
+              type: String,
+              value: '',
+            },
+            isSearch: {
+              type: Boolean,
+              value: false,
+            },
+            placeHolder: {
+              type: String,
+              value: 'Search admin user by name',
+            },
+          };
+        }
+        _stopTap(e) {
+          // Do something
+          e.stopPropagation();
+        }
+        _getFilterValue(filterValue) {
+          return filterValue || this.placeHolder;
+        }
+        _handleKeyUp(e) {
+          if (e.keyCode === 27) {
+            this._hideSearch();
+          }
+        }
+        _handleInputBlur() {
+          this._hideSearch();
+        }
+        _hideSearch() {
+          this.set('isSearch', false);
+        }
+        _showSearch() {
+          this.set('isSearch', true);
+          setTimeout(() => this.shadowRoot.querySelector('#searchInput').focus(), 200);
+        }
+        _computeSearchClasses(isSearch) {
+          return isSearch ? 'search' : '';
+        }
+      }
+      window.customElements.define(XTable.is, XTable);
+    });
+    </script>
+  </dom-module>
+
+  <x-table></x-table>
+
+  </body>
+</html>
