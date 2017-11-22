@@ -349,18 +349,16 @@ Custom property | Description | Default
       * Select an item from an event object.
       */
       _selectionHandler(e) {
-        let m = e.path.find((entry) => {
+        const m = e.path.find((entry) => {
           return entry.classList && entry.classList.contains('tr');
         });
-        let model = this.modelForElement(m);
+        const model = this.modelForElement(m);
         if (!model) {
-         return;
+          return;
         }
-        let modelTabIndex;
-        let activeElTabIndex;
-        let target = Polymer.dom(e).path[0];
-        let activeEl = Polymer.dom(this.domHost ? this.domHost.root : document).activeElement;
-        let physicalItem = this._physicalItems[model[this.indexAs]];
+        const target = Polymer.dom(e).path[0];
+        const activeEl = Polymer.dom(this.domHost ? this.domHost.root : document).activeElement;
+        const physicalItem = this._physicalItems[model[this.indexAs]];
         // Safari does not focus certain form controls via mouse
         // https://bugs.webkit.org/show_bug.cgi?id=118043
         if (target.localName === 'input' ||
@@ -369,9 +367,9 @@ Custom property | Description | Default
           return;
         }
         // Set a temporary tabindex
-        modelTabIndex = model.tabIndex;
+        const modelTabIndex = model.tabIndex;
         model.tabIndex = -100;
-        activeElTabIndex = activeEl ? activeEl.tabIndex : -1;
+        const activeElTabIndex = activeEl ? activeEl.tabIndex : -1;
         model.tabIndex = modelTabIndex;
         // Only select the item if the tap wasn't on a focusable child
         // or the element bound to `tabIndex`
@@ -405,11 +403,11 @@ Custom property | Description | Default
       /**
       * Renders the a new list.
       */
-     _render() {
-       if (!this.isAttached) {
-         return;
-       }
-       if (this._physicalCount === 0) {
+      _render() {
+        if (!this.isAttached) {
+          return;
+        }
+        if (this._physicalCount === 0) {
           this._increasePool(this.items.length);
         } else {
           if (this.items.length > this._physicalCount) {
@@ -418,7 +416,7 @@ Custom property | Description | Default
             this._update();
           }
         }
-     }
+      }
 
       /**
       * Called when the items have changed. That is, ressignments
@@ -431,10 +429,10 @@ Custom property | Description | Default
           this._physicalItems = this._physicalItems || [];
           this._debounceRender(this._render);
         } else if (change.path === 'items.splices') {
-           change.value.indexSplices.forEach(function(splice) {
+          change.value.indexSplices.forEach(function(splice) {
             // deselect removed items
             splice.removed.forEach(this._removeItem, this);
-           }, this);
+          }, this);
           this._debounceRender(this._render);
         } else {
           if (change.path !== 'items.length') {
@@ -453,8 +451,8 @@ Custom property | Description | Default
         if (dot === 0) {
           dot = path.length;
         }
-        let idx = parseInt(path.substring(0, dot), 10);
-        let inst = this.modelForElement(this._physicalItems[idx]);
+        const idx = parseInt(path.substring(0, dot), 10);
+        const inst = this.modelForElement(this._physicalItems[idx]);
         if (!inst || inst[this.indexAs] !== idx) {
           return;
         }
@@ -470,10 +468,10 @@ Custom property | Description | Default
       * @param {number} size Size of the pool
       */
       _createPool(size) {
-        let physicalItems = new Array(size);
+        const physicalItems = new Array(size);
         this._ensureTemplatized();
         for (let i = 0; i < size; i++) {
-          let inst = this.stamp(null);
+          const inst = this.stamp(null);
           // First element child is item; Safari doesn't support children[0]
           // on a doc fragment.
           physicalItems[i] = inst.root.querySelector('*');
@@ -499,7 +497,7 @@ Custom property | Description | Default
         // Check if already templatized
         if (!this.ctor) {
           // Template instance props that should be excluded from forwarding
-          let props = {};
+          const props = {};
           props.__key__ = true;
           props[this.as] = true;
           props[this.indexAs] = true;
@@ -521,7 +519,7 @@ Custom property | Description | Default
       */
       _update(itemSet) {
         if ((itemSet && itemSet.length === 0) || this._physicalCount === 0) {
-         return;
+          return;
         }
         this._assignModels();
       }
@@ -533,8 +531,8 @@ Custom property | Description | Default
       _assignModels() {
         let count = 0;
         this._physicalItems.forEach((el) => {
-          let inst = this.modelForElement(el);
-          let item = this.items[count];
+          const inst = this.modelForElement(el);
+          const item = this.items[count];
           if (item != null && item !== undefined) {
             this._forwardProperty(inst, this.as, item);
             this._forwardProperty(inst, this.selectedAs, this.$.selector.isSelected(item));
@@ -565,8 +563,8 @@ Custom property | Description | Default
       }
 
       _notifyInstancePropV2(inst, prop, value) {
-       if (Polymer.Path.matches(this.as, prop)) {
-          let idx = inst[this.indexAs];
+        if (Polymer.Path.matches(this.as, prop)) {
+          const idx = inst[this.indexAs];
           if (prop == this.as) {
             this.items[idx] = value;
           }
@@ -591,19 +589,19 @@ Custom property | Description | Default
       * @param {Object} index The item instance.
       */
       selectIndex(index) {
-       if (index < 0 || index >= this.items) {
-         return;
-       }
-       if (!this.multiSelection && this.selectedItem) {
-        this.clearSelection();
-       }
+        if (index < 0 || index >= this.items) {
+          return;
+        }
+        if (!this.multiSelection && this.selectedItem) {
+          this.clearSelection();
+        }
 
-       let model = this.modelForElement(this._physicalItems[index]);
-       if (model) {
-         model[this.selectedAs] = true;
-       }
+        const model = this.modelForElement(this._physicalItems[index]);
+        if (model) {
+          model[this.selectedAs] = true;
+        }
 
-       this.$.selector.selectIndex(index);
+        this.$.selector.selectIndex(index);
       }
 
       /**
@@ -641,7 +639,7 @@ Custom property | Description | Default
           return;
         }
 
-        let model = this.modelForElement(this._physicalItems[index]);
+        const model = this.modelForElement(this._physicalItems[index]);
         model[this.selectedAs] = false;
 
         this.$.selector.deselectIndex(index);
@@ -666,8 +664,8 @@ Custom property | Description | Default
        * @param {Object} index The index of the item in the items array.
        */
       toggleSelectionForIndex(index) {
-        let isSelected = this.$.selector.isIndexSelected
-            ? this.$.selector.isIndexSelected(index) : this.$.selector.isSelected(this.items[index]);
+        const isSelected = this.$.selector.isIndexSelected
+          ? this.$.selector.isIndexSelected(index) : this.$.selector.isSelected(this.items[index]);
         isSelected ? this.deselectIndex(index) : this.selectIndex(index);
       }
     }

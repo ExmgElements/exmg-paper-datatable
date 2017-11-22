@@ -46,7 +46,7 @@ Custom property | Description | Default
         display: block;
         position: relative;
         border-bottom: 1px solid var(--divider-color);
-        @apply(--paper-font-common-base);
+        @apply --paper-font-common-base;
         background: var(--exmg-paper-toolbar-background-color, #f5f5f5);
         color: var(--exmg-paper-toolbar-text-color, rgba(0,0,0,.87));
         font-size: 20px;
@@ -129,7 +129,7 @@ Custom property | Description | Default
       }
       static get observers() {
         return [
-            '_selectedItemsChanged(selectedItems.*)',
+          '_selectedItemsChanged(selectedItems.*)',
         ];
       }
       _selectedItemsChanged(changes) {

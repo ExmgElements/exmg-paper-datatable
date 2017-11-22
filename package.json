@@ -1,0 +1,29 @@
+{
+  "name": "exmg-paper-datatable",
+  "private": true,
+  "description": "Material design data table (Polymer 2.0)",
+  "main": "exmg-paper-datatable.html",
+  "repository": "ExmgElements/exmg-paper-datatable",
+  "keywords": [
+    "Exmg",
+    "ExmgElements",
+    "exmg-paper-datatable",
+    "web-components",
+    "web-component",
+    "polymer"
+  ],
+  "author": "Ex Machina",
+  "devDependencies": {
+    "bower": "latest",
+    "eslint": "^4.11.0",
+    "eslint-config-exmg": "latest",
+    "eslint-plugin-html": "^3.0.0",
+    "polymer-cli": "^1.2.0"
+  },
+  "homepage": "https://github.com/ExmgElements/",
+  "scripts": {
+    "lint": "polymer lint --rules polymer-2 --input *.html",
+    "eslint": "eslint . --ext js,html --ignore-path .gitignore",
+    "analyze": "polymer analyze --input exmg-paper-datatable.html exmg-paper-thead.html exmg-paper-tbody.html exmg-paper-toolbar.html exmg-paper-paging.html exmg-paper-data-helper.html exmg-paper-data-filter.html > analysis.json"
+  }
+}
