@@ -49,23 +49,20 @@ Custom property | Description | Default
         @apply --paper-font-common-base;
         background: var(--exmg-paper-toolbar-background-color, #f5f5f5);
         color: var(--exmg-paper-toolbar-text-color, rgba(0,0,0,.87));
-        font-size: 20px;
+        font-size: 16px;
       }
-
       #selected-toolbar {
         padding: 0px 24px;
       }
-
       ::slotted(*) {
         @apply --layout;
         @apply --layout-center;
         @apply --layout-justified;
-        padding: 0px 24px;
-        height: 64px;
+        padding: 0px 12px 0px 24px;
+        height: 56px;
         width: 100%;
         box-sizing: border-box;
       }
-
       #selected-toolbar {
         @apply --layout;
         @apply --layout-justified;
@@ -78,17 +75,14 @@ Custom property | Description | Default
       #selected-toolbar[data-visible]{
         transform: scale(1,1);
       }
-
       #selected-toolbar {
         @apply --layout-horizontal;
         @apply --layout-center;
         @apply --layout-fit;
       }
-
       .title-container {
         padding: 0 24px;
       }
-
     </style>
 
     <div id="default-toolbar">

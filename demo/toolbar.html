@@ -33,20 +33,25 @@
         :host {
           display: block;
         }
-
-        paper-card {
-          display: block;
-          width: 800px;
-          margin: auto;
-          --paper-card-background-color: white;
-        }
-
         h2,
-        .buttons {
+        .buttons,
+        paper-card  {
           width: 800px;
           margin: 20px auto;
         }
-
+        paper-card {
+          display: block;
+          --paper-card-background-color: white;
+        }
+        .flex{
+          @apply --layout-flex;
+        }
+        exmg-paper-toolbar paper-button {
+          color: var(--text-primary-color);
+          background-color: var(--primary-color);
+          margin: 12px 0px;
+          height: 32px;
+        }
       </style>
 
       <paper-card elevation="1">
@@ -74,8 +79,6 @@
       <paper-card elevation="1">
         <exmg-paper-toolbar selected-items="[[selectedItems]]">
           <div slot="default">
-            <paper-button>ADD</paper-button>
-            <paper-button>REMOVE</paper-button>
             <span class="flex"></span>
             <paper-icon-button icon="exmg-paper-icons:filter-list"></paper-icon-button>
             <paper-icon-button icon="exmg-paper-icons:more-vert"></paper-icon-button>
@@ -84,6 +87,17 @@
             <span class="flex"></span>
             <paper-icon-button icon="exmg-paper-icons:filter-list"></paper-icon-button>
             <paper-icon-button icon="exmg-paper-icons:more-vert"></paper-icon-button>
+          </div>
+        </exmg-paper-toolbar>
+      </paper-card>
+
+      <br><br>
+
+      <paper-card elevation="1">
+        <exmg-paper-toolbar selected-items="[[selectedItems]]">
+          <div slot="default">
+            <span class="flex"></span>
+            <paper-button>Add User</paper-button>
           </div>
         </exmg-paper-toolbar>
       </paper-card>
