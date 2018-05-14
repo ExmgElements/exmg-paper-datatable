@@ -8,6 +8,9 @@
   "plugins": [
     "html"
   ],
+  "parserOptions": {
+    "sourceType": "module"
+  },
   "globals": {
     "Polymer": true,
     "Exmg": true,

@@ -1,29 +1,55 @@
 {
-  "name": "exmg-paper-datatable",
-  "private": true,
-  "description": "Material design data table (Polymer 2.0)",
-  "main": "exmg-paper-datatable.html",
-  "repository": "ExmgElements/exmg-paper-datatable",
-  "keywords": [
-    "Exmg",
-    "ExmgElements",
-    "exmg-paper-datatable",
-    "web-components",
-    "web-component",
-    "polymer"
+  "name": "@exmg/exmg-paper-datatable",
+  "flat": true,
+  "version": "3.0.0",
+  "description": "Material design data table (Polymer 3.0)",
+  "contributors": [
+    "Ex Machina Group"
   ],
-  "author": "Ex Machina",
-  "devDependencies": {
-    "bower": "latest",
-    "eslint": "^4.11.0",
-    "eslint-config-exmg": "latest",
-    "eslint-plugin-html": "^3.0.0",
-    "polymer-cli": "^1.2.0"
+  "keywords": [
+    "web-components",
+    "polymer",
+    "datatable",
+    "table"
+  ],
+  "main": "exmg-paper-datatable.html",
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:ExmgElements/exmg-paper-datatable.git"
   },
-  "homepage": "https://github.com/ExmgElements/",
+  "homepage": "https://github.com/ExmgElements/exmg-paper-datatable",
+  "dependencies": {
+    "@polymer/iron-flex-layout": "^3.0.0-pre.1",
+    "@polymer/paper-dropdown-menu": "^3.0.0-pre.1",
+    "@polymer/paper-icon-button": "^3.0.0-pre.1",
+    "@polymer/paper-item": "^3.0.0-pre.1",
+    "@polymer/paper-listbox": "^3.0.0-pre.1",
+    "@polymer/paper-styles": "^3.0.0-pre.1",
+    "@polymer/polymer": "^3.0.0-pre.13"
+  },
+  "devDependencies": {
+    "@polymer/iron-component-page": "^3.0.0-pre.19",
+    "@polymer/paper-button": "^3.0.0-pre.19",
+    "@polymer/paper-slider": "^3.0.0-pre.19",
+    "@polymer/iron-iconset-svg": "^3.0.0-pre.1",
+    "@polymer/paper-card": "^3.0.0-pre.19",
+    "@polymer/paper-checkbox": "^3.0.0-pre.19",
+    "@polymer/iron-demo-helpers": "^3.0.0-pre.12",
+    "@webcomponents/webcomponentsjs": "^2.0.0-beta.2",
+    "@exmg/exmg-paper-tooltip": "^3.0.0",
+    "eslint-config-exmg": "latest",
+    "wct-browser-legacy": "^1.0.0"
+  },
+  "resolutions": {
+    "@webcomponents/webcomponentsjs": "2.0.0",
+    "type-detect": "1.0.0",
+    "supports-color": "3.1.2",
+    "inherits": "2.0.3",
+    "samsam": "1.1.2"
+  },
   "scripts": {
-    "lint": "polymer lint --rules polymer-2 --input *.html",
+    "lint": "polymer lint --rules polymer-3 --input *.js",
     "eslint": "eslint . --ext js,html --ignore-path .gitignore",
-    "analyze": "polymer analyze --input exmg-paper-datatable.html exmg-paper-thead.html exmg-paper-tbody.html exmg-paper-toolbar.html exmg-paper-paging.html exmg-paper-data-helper.html exmg-paper-data-filter.html > analysis.json"
+    "analyze": "polymer analyze --input exmg-paper-datatable.js exmg-paper-toolbar.js exmg-paper-thead.js exmg-paper-tbody.js exmg-paper-data-helper.js exmg-data-filter.js exmg-paper-paging.js > analysis.json"
   }
 }

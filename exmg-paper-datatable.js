@@ -1,7 +1,9 @@
-<link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../paper-styles/paper-styles.html">
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import '@polymer/paper-styles/paper-styles.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import { Templatizer } from '@polymer/polymer/lib/legacy/templatizer-behavior.js';
 
-<!--
+/**
 
 Material design: Datatables (https://material.io/guidelines/components/data-tables.html)
 
@@ -32,10 +34,10 @@ Custom property | Description | Default
 @group Exmg Paper Elements
 @element exmg-paper-datatable
 @demo demo/index.html
--->
-
-<dom-module id="exmg-paper-datatable">
-  <template>
+*/
+class ExmgPaperDatatableElement extends mixinBehaviors([Templatizer], PolymerElement) {
+  static get template() {
+    return html`
     <style>
       :host {
         font-size: 12px;
@@ -47,17 +49,14 @@ Custom property | Description | Default
         @apply --exmg-paper-datatable;
       }
     </style>
-    <slot></slot>
-  </template>
+    <slot></slot>`;
+  }
 
-  <script>
+  static get is() {
+    return 'exmg-paper-datatable';
+  }
+}
 
-    class ExmgDatatable extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.Element) {
-      static get is() {
-        return 'exmg-paper-datatable';
-      }
-    }
+window.customElements.define(ExmgPaperDatatableElement.is, ExmgPaperDatatableElement);
 
-    window.customElements.define(ExmgDatatable.is, ExmgDatatable);
-  </script>
-</dom-module>
+Exmg.ExmgPaperDatatableElement = ExmgPaperDatatableElement;

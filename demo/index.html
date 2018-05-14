@@ -6,15 +6,21 @@
 
     <title>exmg-paper-datatable demo</title>
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <script type="module" src="../node_modules/@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+    <script type="module" src="../node_modules/@polymer/iron-demo-helpers/demo-snippet.js"></script>
 
-    <custom-style>
-      <style is="custom-style" include="demo-pages-shared-styles">
-      </style>
-    </custom-style>
+    <script type="module">
+      const $_documentContainer = document.createElement('div');
+
+      $_documentContainer.innerHTML = `<custom-style>
+            <style is="custom-style" include="demo-pages-shared-styles">
+            </style>
+          </custom-style>`;
+
+      document.body.appendChild($_documentContainer);
+    </script>
   </head>
   <body>
     <div class="horizontal-section-container">

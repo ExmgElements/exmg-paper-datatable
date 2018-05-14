@@ -12,14 +12,6 @@ Supports:
  - Sorting/filtering helper elements for working with local data sets
  - Easily customizable like expandable rows
 
-## Install
-
-Install the component using bower
-
-```
-$ bower install --save exmg-paper-datatable
-```
-
 ## Development
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run polymer server to launch the demo page.

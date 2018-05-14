@@ -1,13 +1,12 @@
-<link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../paper-listbox/paper-listbox.html">
-<link rel="import" href="../paper-item/paper-item.html">
-<link rel="import" href="exmg-paper-icons.html">
-
-<!--
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/paper-icon-button/paper-icon-button.js';
+import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
+import '@polymer/paper-listbox/paper-listbox.js';
+import '@polymer/paper-item/paper-item.js';
+import './exmg-paper-icons.js';
+/**
 `exmg-paper-paging` is the paging controll element that can be positioned at the footer of the table.
 
 ```html
@@ -31,10 +30,10 @@ Custom property | Description | Default
 @group Exmg Paper Elements
 @element exmg-paper-datatable
 @demo demo/index.html
--->
-
-<dom-module id="exmg-paper-paging">
-  <template>
+*/
+class ExmgPaperPagingElement extends GestureEventListeners(PolymerElement) {
+  static get template() {
+    return html`
     <style>
       :host {
         display: block;
@@ -79,7 +78,7 @@ Custom property | Description | Default
     </style>
 
     <span>Rows per page:</span>
-    <paper-dropdown-menu no-label-float no-animations>
+    <paper-dropdown-menu no-label-float="" no-animations="">
       <paper-listbox slot="dropdown-content" selected="{{_pageSize}}" attr-for-selected="value">
         <paper-item value="5">5</paper-item>
         <paper-item value="10">10</paper-item>
@@ -95,89 +94,87 @@ Custom property | Description | Default
     </span>
     <paper-icon-button icon="exmg-paper-icons:chevron-left" on-tap="previousPage" disabled="[[_isFirstPage(pageIndex)]]"></paper-icon-button>
     <paper-icon-button icon="exmg-paper-icons:chevron-right" on-tap="nextPage" disabled="[[_isLastPage(pageIndex, pageSize, totalItems)]]"></paper-icon-button>
+`;
+  }
 
-  </template>
+  static get is() {
+    return 'exmg-paper-paging';
+  }
+  static get properties() {
+    return {
+      /**
+      * Total items
+      */
+      totalItems: {
+        type: Number,
+        value: 0,
+      },
 
-  <script>
-    class ExmgPaging extends Polymer.GestureEventListeners(Polymer.Element) {
-      static get is() {
-        return 'exmg-paper-paging';
-      }
-      static get properties() {
-        return {
-          /**
-          * Total items
-          */
-          totalItems: {
-            type: Number,
-            value: 0,
-          },
+      /**
+      * This property can be used to change the current visible page
+      */
+      pageIndex: {
+        type: Number,
+        notify: true,
+        value: 0,
+      },
 
-          /**
-          * This property can be used to change the current visible page
-          */
-          pageIndex: {
-            type: Number,
-            notify: true,
-            value: 0,
-          },
+      /**
+      * Set the page size of the table. Valid options are 5/10/25/50/100
+      */
+      pageSize: {
+        type: Number,
+        notify: true,
+        value: 10,
+      },
 
-          /**
-          * Set the page size of the table. Valid options are 5/10/25/50/100
-          */
-          pageSize: {
-            type: Number,
-            notify: true,
-            value: 10,
-          },
+      _pageSize: {
+        type: Number,
+      },
+    };
+  }
 
-          _pageSize: {
-            type: Number,
-          },
-        };
-      }
+  static get observers() {
+    return [
+      '_observePageSizeList(_pageSize)',
+      '_observePageSize(pageSize)',
+    ];
+  }
 
-      static get observers() {
-        return [
-          '_observePageSizeList(_pageSize)',
-          '_observePageSize(pageSize)',
-        ];
-      }
+  _observePageSizeList(ps) {
+    this.pageSize = Number(ps);
+  }
 
-      _observePageSizeList(ps) {
-        this.pageSize = Number(ps);
-      }
+  _observePageSize(ps) {
+    this._pageSize = Number(ps);
+  }
 
-      _observePageSize(ps) {
-        this._pageSize = Number(ps);
-      }
+  _pageInfoStart(pageIndex, pageSize) {
+    return pageIndex * pageSize;
+  }
 
-      _pageInfoStart(pageIndex, pageSize) {
-        return pageIndex * pageSize;
-      }
+  _pageInfoEnd(pageIndex, pageSize, totalItems) {
+    const end = (pageIndex + 1) * pageSize;
+    return end < totalItems ? end : totalItems;
+  }
 
-      _pageInfoEnd(pageIndex, pageSize, totalItems) {
-        const end = (pageIndex + 1) * pageSize;
-        return end < totalItems ? end : totalItems;
-      }
+  _isFirstPage() {
+    return this.pageIndex < 1;
+  }
 
-      _isFirstPage() {
-        return this.pageIndex < 1;
-      }
+  _isLastPage() {
+    return ((this.pageIndex + 1) * this.pageSize) > this.totalItems;
+  }
 
-      _isLastPage() {
-        return ((this.pageIndex + 1) * this.pageSize) > this.totalItems;
-      }
+  nextPage() {
+    this.pageIndex++;
+  }
 
-      nextPage() {
-        this.pageIndex++;
-      }
+  previousPage() {
+    this.pageIndex--;
+  }
+}
 
-      previousPage() {
-        this.pageIndex--;
-      }
-    }
+window.customElements.define(ExmgPaperPagingElement.is, ExmgPaperPagingElement);
 
-    window.customElements.define(ExmgPaging.is, ExmgPaging);
-  </script>
-</dom-module>
+Exmg.ExmgPaperPagingElement = ExmgPaperPagingElement;

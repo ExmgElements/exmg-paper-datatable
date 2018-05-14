@@ -1,8 +1,13 @@
-<link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../shadycss/apply-shim.html">
+import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@webcomponents/shadycss/entrypoints/apply-shim.js';
 
-<!--
+/**
+* @namespace Exmg
+*/
+window.Exmg = window.Exmg || {};
+
+/**
 `exmg-paper-toolbar` will add configurable toolbar at the top of the table. This toolbar supports
 a default and selected state. This state will toggle based on the content provided to the
 selected items attribute.
@@ -37,10 +42,10 @@ Custom property | Description | Default
 @group Exmg Paper Elements
 @element exmg-paper-datatable
 @demo demo/index.html
--->
-
-<dom-module id="exmg-paper-toolbar">
-  <template>
+*/
+class ExmgPaperToolbarElement extends PolymerElement {
+  static get template() {
+    return html`
     <style>
       :host {
         display: block;
@@ -88,7 +93,7 @@ Custom property | Description | Default
     <div id="default-toolbar">
       <slot name="default"></slot>
     </div>
-    <div id="selected-toolbar" data-visible$="[[_isSelectedToolbarVisible(_selectedRows)]]">
+    <div id="selected-toolbar" data-visible\$="[[_isSelectedToolbarVisible(_selectedRows)]]">
       <div class="title-container">
         <span>[[_selectedRows]]</span> item<template is="dom-if" if="[[_multipleItemsSelected(_selectedRows)]]">s</template> selected
       </div>
@@ -96,52 +101,51 @@ Custom property | Description | Default
         <slot name="selected"></slot>
       </div>
     </div>
-  </template>
+    `;
+  }
 
-  <script>
-    class ExmgToolbar extends Polymer.Element {
-      static get is() {
-        return 'exmg-paper-toolbar';
-      }
-      static get properties() {
-        return {
-          /**
-          * Number of selected rows
-          */
-          _selectedRows: {
-            type: Number,
-            value: 0,
-          },
+  static get is() {
+    return 'exmg-paper-toolbar';
+  }
+  static get properties() {
+    return {
+      /**
+      * Number of selected rows
+      */
+      _selectedRows: {
+        type: Number,
+        value: 0,
+      },
 
-          /**
-          * When `multiSelection` is true, this is an array that contains the selected items.
-          */
-          selectedItems: {
-            type: Object,
-          },
-        };
-      }
-      static get observers() {
-        return [
-          '_selectedItemsChanged(selectedItems.*)',
-        ];
-      }
-      _selectedItemsChanged(changes) {
-        if (changes.path === 'selectedItems') {
-          this.set('_selectedRows', changes.value === null ? 0 : Array.isArray(changes.value) ? changes.value.length : 1);
-        }
-        if (changes.path === 'selectedItems.length') {
-          this.set('_selectedRows', changes.value);
-        }
-      }
-      _isSelectedToolbarVisible() {
-        return this._selectedRows > 0 ? true : false;
-      }
-      _multipleItemsSelected() {
-        return this._selectedRows > 1 ? true : false;
-      }
+      /**
+      * When `multiSelection` is true, this is an array that contains the selected items.
+      */
+      selectedItems: {
+        type: Object,
+      },
+    };
+  }
+  static get observers() {
+    return [
+      '_selectedItemsChanged(selectedItems.*)',
+    ];
+  }
+  _selectedItemsChanged(changes) {
+    if (changes.path === 'selectedItems') {
+      this.set('_selectedRows', changes.value === null ? 0 : Array.isArray(changes.value) ? changes.value.length : 1);
     }
+    if (changes.path === 'selectedItems.length') {
+      this.set('_selectedRows', changes.value);
+    }
+  }
+  _isSelectedToolbarVisible() {
+    return this._selectedRows > 0 ? true : false;
+  }
+  _multipleItemsSelected() {
+    return this._selectedRows > 1 ? true : false;
+  }
+}
 
-    window.customElements.define(ExmgToolbar.is, ExmgToolbar);
-  </script>
-</dom-module>
+window.customElements.define(ExmgPaperToolbarElement.is, ExmgPaperToolbarElement);
+
+Exmg.ExmgPaperToolbarElement = ExmgPaperToolbarElement;
