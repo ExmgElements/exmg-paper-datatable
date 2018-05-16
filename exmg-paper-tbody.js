@@ -1,14 +1,14 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/polymer/lib/elements/array-selector.js';
-import { addListener, removeListener } from '@polymer/polymer/lib/utils/gestures.js';
-import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
-import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
-import { animationFrame } from '@polymer/polymer/lib/utils/async.js';
-import { enqueueDebouncer } from '@polymer/polymer/lib/utils/flush.js';
-import { matches, translate } from '@polymer/polymer/lib/utils/path.js';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import { Templatizer } from '@polymer/polymer/lib/legacy/templatizer-behavior.js';
+import {addListener, removeListener} from '@polymer/polymer/lib/utils/gestures.js';
+import {dom} from '@polymer/polymer/lib/legacy/polymer.dom.js';
+import {Debouncer} from '@polymer/polymer/lib/utils/debounce.js';
+import {animationFrame} from '@polymer/polymer/lib/utils/async.js';
+import {enqueueDebouncer} from '@polymer/polymer/lib/utils/flush.js';
+import {matches, translate} from '@polymer/polymer/lib/utils/path.js';
+import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
+import {Templatizer} from '@polymer/polymer/lib/legacy/templatizer-behavior.js';
 
 /**
 * @namespace Exmg

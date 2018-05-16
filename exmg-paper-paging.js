@@ -1,5 +1,5 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
+import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import {GestureEventListeners} from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';

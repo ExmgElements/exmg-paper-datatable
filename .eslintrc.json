@@ -8,6 +8,10 @@
   "plugins": [
     "html"
   ],
+  "rules": {
+    "no-extend-native": [2, {"exceptions": ["String"]}],
+    "max-len": ["error", { "code": 140, "ignoreTemplateLiterals": true }]
+  },
   "parserOptions": {
     "sourceType": "module"
   },

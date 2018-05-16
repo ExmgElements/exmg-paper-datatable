@@ -1,4 +1,4 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import {PolymerElement} from '@polymer/polymer/polymer-element.js';
 
 /**
  *  `exmg-paper-data-filter` is filter element that lets you filter local data sets.

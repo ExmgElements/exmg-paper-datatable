@@ -1,8 +1,8 @@
 import '@polymer/iron-iconset-svg/iron-iconset-svg.js';
-const $_documentContainer = document.createElement('div');
-$_documentContainer.setAttribute('style', 'display: none;');
+const documentContainer = document.createElement('div');
+documentContainer.setAttribute('style', 'display: none;');
 
-$_documentContainer.innerHTML = `<iron-iconset-svg name="exmg-paper-icons" size="24">
+documentContainer.innerHTML = `<iron-iconset-svg name="exmg-paper-icons" size="24">
   <svg>
     <defs>
       <g id="chevron-left"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path></g>
@@ -18,4 +18,4 @@ $_documentContainer.innerHTML = `<iron-iconset-svg name="exmg-paper-icons" size=
   </svg>
 </iron-iconset-svg>`;
 
-document.head.appendChild($_documentContainer);
+document.head.appendChild(documentContainer);

@@ -1,4 +1,4 @@
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import {PolymerElement} from '@polymer/polymer/polymer-element.js';
 
 /**
   * `exmg-paper-data-helper` is helper element that facilitates sorting and paging on local data sets.
@@ -146,7 +146,7 @@ class PaperDataHelperElement extends PolymerElement {
         }
       }
       return 0;
-    }
+    };
 
     if (this.sorted) {
       workArray.sort((a, b) => sortArray(a, b));

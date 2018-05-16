@@ -1,7 +1,13 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-styles/paper-styles.js';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import { Templatizer } from '@polymer/polymer/lib/legacy/templatizer-behavior.js';
+import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
+import {Templatizer} from '@polymer/polymer/lib/legacy/templatizer-behavior.js';
+
+
+/**
+* @namespace Exmg
+*/
+window.Exmg = window.Exmg || {};
 
 /**
 

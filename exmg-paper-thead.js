@@ -1,9 +1,9 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
+import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import {GestureEventListeners} from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
-import { addListener, removeListener } from '@polymer/polymer/lib/utils/gestures.js';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import { Templatizer } from '@polymer/polymer/lib/legacy/templatizer-behavior.js';
+import {addListener, removeListener} from '@polymer/polymer/lib/utils/gestures.js';
+import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
+import {Templatizer} from '@polymer/polymer/lib/legacy/templatizer-behavior.js';
 
 /**
 * @namespace Exmg
@@ -146,7 +146,7 @@ class ExmgPaperTheadElement extends mixinBehaviors([Templatizer], GestureEventLi
           .th[sortable]::after {
             display: block;
             content: "";
-            background-image: url('arrow-downward.svg');
+            background-image: url('/arrow-downward.svg');
             background-size: 12px 12px;
             height: 12px;
             width: 12px;
