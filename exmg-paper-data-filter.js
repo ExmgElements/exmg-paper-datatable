@@ -30,7 +30,7 @@ import {PolymerElement} from '@polymer/polymer/polymer-element.js';
  * @element exmg-paper-datatable
  * @demo demo/index.html
  */
-class DataFilterElement extends PolymerElement {
+export class DataFilterElement extends PolymerElement {
   static get is() {
     return 'exmg-paper-data-filter';
   }

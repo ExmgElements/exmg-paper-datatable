@@ -54,7 +54,7 @@ Custom property | Description | Default
 @element exmg-paper-datatable
 @demo demo/index.html
 */
-class ExmgPaperTheadElement extends mixinBehaviors([Templatizer], GestureEventListeners(PolymerElement)) {
+export class ExmgPaperTheadElement extends mixinBehaviors([Templatizer], GestureEventListeners(PolymerElement)) {
   static get template() {
     return html`
         <style>
