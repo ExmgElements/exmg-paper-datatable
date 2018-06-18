@@ -41,7 +41,7 @@ Custom property | Description | Default
 @element exmg-paper-datatable
 @demo demo/index.html
 */
-class ExmgPaperDatatableElement extends mixinBehaviors([Templatizer], PolymerElement) {
+export class ExmgPaperDatatableElement extends mixinBehaviors([Templatizer], PolymerElement) {
   static get template() {
     return html`
     <style>

@@ -31,7 +31,7 @@ Custom property | Description | Default
 @element exmg-paper-datatable
 @demo demo/index.html
 */
-class ExmgPaperPagingElement extends GestureEventListeners(PolymerElement) {
+export class ExmgPaperPagingElement extends GestureEventListeners(PolymerElement) {
   static get template() {
     return html`
     <style>

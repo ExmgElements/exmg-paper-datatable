@@ -44,7 +44,7 @@ const properArray = (o) => {
 };
 const lookupValueByPath = (o, path) => path.split('.').reduce((r, p) => r[p], o);
 
-class PaperDataHelperElement extends PolymerElement {
+export class PaperDataHelperElement extends PolymerElement {
   static get is() {
     return 'exmg-paper-data-helper';
   }

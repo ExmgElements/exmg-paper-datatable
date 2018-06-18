@@ -43,7 +43,7 @@ Custom property | Description | Default
 @element exmg-paper-datatable
 @demo demo/index.html
 */
-class ExmgPaperToolbarElement extends PolymerElement {
+export class ExmgPaperToolbarElement extends PolymerElement {
   static get template() {
     return html`
     <style>

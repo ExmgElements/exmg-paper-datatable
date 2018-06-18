@@ -17,7 +17,7 @@ window.Exmg = window.Exmg || {};
 
 const SECRET_TABINDEX = -100;
 
-class ExmgPaperTbodyElement extends mixinBehaviors([Templatizer], PolymerElement) {
+export class ExmgPaperTbodyElement extends mixinBehaviors([Templatizer], PolymerElement) {
   static get template() {
     return html`
     <style>
