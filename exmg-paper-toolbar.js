@@ -93,7 +93,7 @@ class ExmgPaperToolbarElement extends PolymerElement {
     <div id="default-toolbar">
       <slot name="default"></slot>
     </div>
-    <div id="selected-toolbar" data-visible\$="[[_isSelectedToolbarVisible(_selectedRows)]]">
+    <div id="selected-toolbar" data-visible$="[[_isSelectedToolbarVisible(_selectedRows)]]">
       <div class="title-container">
         <span>[[_selectedRows]]</span> item<template is="dom-if" if="[[_multipleItemsSelected(_selectedRows)]]">s</template> selected
       </div>
