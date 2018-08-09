@@ -42,8 +42,8 @@ export class ExmgPaperPagingElement extends GestureEventListeners(PolymerElement
         color: var(--exmg-paper-paging-text-color, rgba(0,0,0,.87));
         font-size: 12px;
         font-weight: 500;
-        height:56px;
-        padding:0px 6px;
+        height: 56px;
+        padding: 0px 6px;
         @apply --layout-horizontal;
         @apply --layout-end-justified;
         @apply --layout-center;
@@ -58,6 +58,9 @@ export class ExmgPaperPagingElement extends GestureEventListeners(PolymerElement
         };
         --paper-icon-button: {
           color: var(--exmg-paper-paging-icon-color, rgba(0,0,0,.54));
+          padding: 0;
+          width: 24px;
+          height: 24px;
         };
         --paper-icon-button-disabled: {
           color: var(--exmg-paper-paging-icon-disabled-color, rgba(0,0,0,.36));
@@ -74,6 +77,9 @@ export class ExmgPaperPagingElement extends GestureEventListeners(PolymerElement
       .page-information {
         margin: 0 20px 0 32px;
         @apply --exm-paging-page-information;
+      }
+      .page-actions {
+        margin: 0 20px 0 12px;
       }
     </style>
 
@@ -92,8 +98,12 @@ export class ExmgPaperPagingElement extends GestureEventListeners(PolymerElement
       -
       [[_pageInfoEnd(pageIndex,pageSize,totalItems)]] of [[totalItems]]
     </span>
-    <paper-icon-button icon="exmg-paper-icons:chevron-left" on-tap="previousPage" disabled="[[_isFirstPage(pageIndex)]]"></paper-icon-button>
-    <paper-icon-button icon="exmg-paper-icons:chevron-right" on-tap="nextPage" disabled="[[_isLastPage(pageIndex, pageSize, totalItems)]]"></paper-icon-button>
+    <div class="page-actions">
+      <paper-icon-button icon="exmg-paper-icons:first-page" on-tap="firstPage" disabled="[[_isFirstPage(pageIndex)]]"></paper-icon-button>
+      <paper-icon-button icon="exmg-paper-icons:chevron-left" on-tap="previousPage" disabled="[[_isFirstPage(pageIndex)]]"></paper-icon-button>
+      <paper-icon-button icon="exmg-paper-icons:chevron-right" on-tap="nextPage" disabled="[[_isLastPage(pageIndex, pageSize, totalItems)]]"></paper-icon-button>
+      <paper-icon-button class="last-page-button" icon="exmg-paper-icons:last-page" on-tap="lastPage" disabled="[[_isLastPage(pageIndex, pageSize, totalItems)]]"></paper-icon-button>
+    </div>
 `;
   }
 
@@ -163,7 +173,7 @@ export class ExmgPaperPagingElement extends GestureEventListeners(PolymerElement
   }
 
   _isLastPage() {
-    return ((this.pageIndex + 1) * this.pageSize) > this.totalItems;
+    return ((this.pageIndex + 1) * this.pageSize) > (this.totalItems - 1);
   }
 
   nextPage() {
@@ -172,6 +182,14 @@ export class ExmgPaperPagingElement extends GestureEventListeners(PolymerElement
 
   previousPage() {
     this.pageIndex--;
+  }
+
+  firstPage() {
+    this.pageIndex = 0;
+  }
+
+  lastPage() {
+    this.pageIndex = Math.floor((this.totalItems - 1) / this.pageSize);
   }
 }
 
