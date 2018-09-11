@@ -1,12 +1,19 @@
-language: node_js
-node_js: stable
 sudo: required
+language: node_js
+node_js: 8.0
+
+cache:
+  directories:
+    - node_modules
+
 install:
 - npm install
+- npm i polymer-cli
+
 before_script:
-- polymer install
 - polymer lint --rules polymer-3 --input *.html
 - eslint . --ext js,html --ignore-path .gitignore
+
 addons:
   firefox: latest
   apt:
@@ -15,5 +22,7 @@ addons:
     packages:
     - google-chrome-stable
 
-script: xvfb-run polymer test
+script:
+- xvfb-run polymer test
+
 dist: trusty

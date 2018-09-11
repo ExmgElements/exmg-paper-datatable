@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
     <title>exmg-exmg-paper-tooltip test</title>
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+    <script src="../node_modules/wct-browser-legacy/browser.js"></script>
 
-    <script src="@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="web-component-tester/browser.js"></script>
-    <script src="@polymer/test-fixture/test-fixture-mocha.js"></script>
-
-    <script type="module" src="@polymer/test-fixture/test-fixture.js"></script>
     <script type="module" src="../exmg-paper-datatable.js"></script>
+    <script type="module" src="../exmg-paper-toolbar.js"></script>
+    <script type="module" src="../exmg-paper-data-filter.js"></script>
+    <script type="module" src="../exmg-paper-data-helper.js"></script>
   </head>
   <body>
 
@@ -21,19 +21,114 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="toolbar">
+      <template>
+        <exmg-paper-toolbar></exmg-paper-toolbar>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="filter">
+      <template>
+        <exmg-paper-data-filter filter-value="Mark" filter-fields="name,email"></exmg-paper-data-filter>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="helper">
+      <template>
+        <exmg-paper-data-helper></exmg-paper-data-helper>
+      </template>
+    </test-fixture>
+
     <script type="module">
-import '@polymer/test-fixture/test-fixture.js';
-import '../exmg-paper-datatable.js';
-suite('basic', function() {
-  let el;
-  setup(function() {
-    el = fixture('basic');
-  });
-  test('element is upgraded', function() {
-    assert.equal(el.constructor.is, 'exmg-paper-datatable');
-  });
-});
-</script>
+
+      suite('basic', () => {
+        let table;
+        setup(() => {
+          table = fixture('basic');
+        });
+        test('table is upgraded', () => {
+          assert.equal(table.constructor.is, 'exmg-paper-datatable');
+        });
+      });
+
+      suite('toolbar', () => {
+        let toolbar;
+        setup(() => {
+          toolbar = fixture('toolbar');
+        });
+        test('toolbar is upgraded', () => {
+          assert.equal(toolbar.constructor.is, 'exmg-paper-toolbar');
+        });
+
+        test('toolbar selected items displayed', (done) => {
+          toolbar.selectedItems = [{},{}];
+          assert.equal(toolbar.constructor.is, 'exmg-paper-toolbar');
+          flush(() => {
+            var elCopy = toolbar.shadowRoot.querySelector('.title-container span');
+            assert.equal('2', elCopy.textContent);
+            done();
+          });
+        });
+
+      });
+      suite('Filter element', () => {
+        let filterEl;
+
+        setup(() => {
+          filterEl = fixture('filter');
+        });
+        test('filter is upgraded', () => {
+          assert.equal(filterEl.constructor.is, 'exmg-paper-data-filter');
+        });
+        test('Check filter items result', () => {
+          filterEl.rawItems = [{name: 'Mark', email:'mark@test.com'}, {name: 'Kees', email:'kees@test.com'}, {name: 'Andy', email:'andy@test1.com'}];
+          assert.equal(filterEl.items.length, 1);
+        });
+        test('Check filter ignore caps', () => {
+          filterEl.filterValue = 'mark';
+          filterEl.rawItems = [{name: 'Mark', email:'mark@test.com'}, {name: 'Kees', email:'kees@test.com'}, {name: 'Andy', email:'andy@test1.com'}];
+          assert.equal(filterEl.items.length, 1);
+        });
+        test('Check filter in multiple fields', () => {
+          filterEl.filterValue = 'ma';
+          filterEl.rawItems = [{name: 'Mark', email:'mark@test.com'}, {name: 'Keez', email:'kees@mask.com'}, {name: 'Andy', email:'andy@test1.com'}];
+          assert.equal(filterEl.items.length, 2);
+        });
+      });
+
+      suite('Helper element', () => {
+        let helperEl;
+
+        setup(() => {
+          helperEl = fixture('helper');
+        });
+        test('filter is upgraded', () => {
+          assert.equal(helperEl.constructor.is, 'exmg-paper-data-helper');
+        });
+        test('Check sorting on name column ASC', () => {
+          helperEl.sorted = 'name';
+          helperEl.sortDirection = 'ASC';
+          helperEl.rawItems = [{id: 1, name: 'Mark', email:'mark@test.com'}, {id: 2, name: 'Kees', email:'kees@test.com'}, {id: 3, name: 'Andy', email:'andy@test1.com'}];
+          assert.equal(helperEl.items[0].id, 3);
+        });
+
+        test('Check sorting on name column DESC', () => {
+          helperEl.sorted = 'name';
+          helperEl.sortDirection = 'DESC';
+          helperEl.rawItems = [{id: 1, name: 'Mark', email:'mark@test.com'}, {id: 2, name: 'Kees', email:'kees@test.com'}, {id: 3, name: 'Andy', email:'andy@test1.com'}];
+          assert.equal(helperEl.items[0].id, 1);
+        });
+
+        test('Check paging', () => {
+          helperEl.pageIndex = 1;
+          helperEl.pageSize = 2;
+          helperEl.rawItems = [{id: 1, name: 'Mark', email:'mark@test.com'}, {id: 2, name: 'Kees', email:'kees@test.com'}, {id: 3, name: 'Andy', email:'andy@test1.com'}];
+          assert.equal(helperEl.items.length, 1);
+        });
+      
+      });
+    
+    </script>
 
   </body>
 </html>
