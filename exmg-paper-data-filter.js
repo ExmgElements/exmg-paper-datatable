@@ -90,7 +90,7 @@ export class DataFilterElement extends PolymerElement {
     const items = [];
     const filterFields = this.filterFields.split(',');
     this.rawItems.forEach((o) => {
-      filterFields.some((p) => o[p].indexOf(this.filterValue) !== -1) && items.push(o);
+      filterFields.some((p) => String(o[p]).indexOf(this.filterValue) !== -1) && items.push(o);
     });
 
     /* Reset result array before adding new results */
