@@ -2,8 +2,22 @@
 <html>
   <head>
     <meta charset="utf-8">
-    
-    <script src="../node_modules/wct-browser-legacy/browser.js"></script>
+    <script>
+        window.WCT = {
+          environmentScripts: [
+            'stacky/browser.js',
+            'async/dist/async.js',
+            'wct-browser-legacy/node_modules/lodash/index.js',
+            'mocha/mocha.js',
+            'chai/chai.js',
+            '@polymer/sinonjs/sinon.js',
+            'sinon-chai/lib/sinon-chai.js',
+            'accessibility-developer-tools/dist/js/axs_testing.js',
+            '@polymer/test-fixture/test-fixture.js'
+          ]
+        };
+      </script>
+      <script src="../node_modules/wct-browser-legacy/browser.js"></script>
   </head>
   <body>
     <script>

@@ -90,12 +90,18 @@ export class DataFilterElement extends PolymerElement {
     const items = [];
     const filterFields = this.filterFields.split(',');
     this.rawItems.forEach((o) => {
-      filterFields.some((p) => String(o[p]).indexOf(this.filterValue) !== -1) && items.push(o);
+      filterFields.some((p) => this._compareListItemToFilterValue(o[p])) && items.push(o);
     });
 
     /* Reset result array before adding new results */
     this.set('items', []);
     this.set('items', items);
+  }
+  _compareListItemToFilterValue(listItemValue) {
+    const listItemValueUpperCase = String(listItemValue).toUpperCase();
+    const filterValueUpperCase = this.filterValue.toUpperCase();
+
+    return listItemValueUpperCase.indexOf(filterValueUpperCase) !== -1;
   }
 }
 window.customElements.define(DataFilterElement.is, DataFilterElement);
